@@ -1,6 +1,6 @@
 <section class="login admin text-center">
     <div class="logo text-center">
-        <div ng-bind-html="RootCtrl.logo"></div>
+        <img ng-src="{{RootCtrl.logo}}" style="display: inline-block;"/>
     </div>
     <form novalidate class="registration-form text-left" ng-submit="CustomerRegistrationCtrl.addCustomer(newCustomer)">
         <div class="box-content">

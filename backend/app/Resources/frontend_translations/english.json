@@ -192,6 +192,7 @@
       "new_second": "Repeat new password",
       "do_not_match": "Passwords do not match"
     },
+    "assigned_seller": "Assigned Merchant",
     "inactive": "Inactive",
     "delete_confirmation_description": "This customer will be deactivated and there will be no possibility to activate him again",
     "delete_confirmation": "Deactivate this customer?",
@@ -395,7 +396,6 @@
     "type_prompt": "",
     "description_prompt": "",
     "active_prompt": "",
-    "type_prompt": "",
     "start_at_prompt": "",
     "end_at_prompt": "",
     "event_name_prompt": "",
@@ -536,6 +536,8 @@
     "long_prompt": ""
   },
   "seller": {
+    "select_seller": "Select merchant",
+    "no_seller": "There are no merchants available",
     "heading": "Merchants",
     "add": "Add merchant",
     "edit": "Edit merchant",
@@ -701,6 +703,8 @@
     }
   },
   "settings": {
+    "logo": "Logo",
+    "program_logo": "Program logo",
     "title": "Settings",
     "currency": "Currency",
     "heading": "Settings",
@@ -724,6 +728,11 @@
     "excluded_skus": "Excluded SKUs of delivery cost",
     "excluded_level_skus": "SKUs excluded from levels",
     "excludes_level_skus_prompt": "",
+    "statuses": "Customer earning and spending statuses",
+    "statuses_earning": "Customer earning statuses",
+    "customerStatusesEarning_prompt": "",
+    "statuses_spending": "Customer spending statuses",
+    "customerStatusesSpending_prompt": "",
     "identification_priority": "Matching transaction with customer",
     "add_identification_priority": "",
     "priority": "Priority",
@@ -836,6 +845,8 @@
     }
   },
   "campaign": {
+    "more_information_link": "More information link",
+    "more_information_link_prompt": "",
     "coupons_count": "Coupons count ",
     "users_in_campaign": "Users in campaign ",
     "details_heading": "Campaign details",
@@ -1464,6 +1475,9 @@
     }
   },
   "customer_global": {
+    "owner_data": {
+      "text": "Lorem ipsum dolor sit amet"
+    },
     "configuration": "Configuration",
     "users": "Users",
     "cancel": "Cancel",
@@ -1557,6 +1571,9 @@
       "my_profile": "My profile"
     },
     "customer_campaign": {
+      "more_information": {
+        "button": "Click here for more info"
+      },
       "coupon_used": "This coupon has been used",
       "not_enough_points": "Not enough points",
       "will_be_active_dates": "This reward campaign will be active from {{from}} to {{to}}",

@@ -225,7 +225,7 @@ export default class CustomerController {
                 res => {
                     let message = self.$filter('translate')('xhr.post_cancel_transfer.success');
                     self.Flash.create('success', message);
-                    self.tableParams.reload();
+                    self.getTransfersData();
                     this.loaderStates.cancelTransfer = false;
                 },
                 () => {

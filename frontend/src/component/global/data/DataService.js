@@ -10,6 +10,7 @@ export default class DataService {
         this._availableReferralEvents = null;
         this._availableReferralTypes = null;
         this.availableFrontendTranslations = null;
+        this.availableCustomerStatuses = null;
         this._availableEarningRuleLimitPeriods = null;
         this.availableCurrencies = [
             {
@@ -53,6 +54,7 @@ export default class DataService {
 
         let languages = self.Restangular.one('settings').one('choices').one('language').get();
         let availableFrontendTranslations = self.Restangular.one('settings').one('choices').one('availableFrontendTranslations').get();
+        let availableCustomerStatuses = self.Restangular.one('settings').one('choices').one('availableCustomerStatuses').get();
         let availableEarningRuleLimitPeriods = self.Restangular.one('settings').one('choices').one('earningRuleLimitPeriod').get();
         let timezones = self.Restangular.one('settings').one('choices').one('timezone').get();
         let countries = self.Restangular.one('settings').one('choices').one('country').get();
@@ -62,7 +64,7 @@ export default class DataService {
 
         let dfd = self.$q.defer();
 
-        self.$q.all([languages, timezones, countries, events, availableFrontendTranslations, availableEarningRuleLimitPeriods, referralEvents, referralTypes])
+        self.$q.all([languages, timezones, countries, events, availableCustomerStatuses, availableEarningRuleLimitPeriods, referralEvents, referralTypes, availableCustomerStatuses])
             .then(
                 function (res) {
                     if (res[0].choices) {
@@ -198,6 +200,21 @@ export default class DataService {
 
                         self._availableReferralTypes = events;
                     }
+                    if (res[8].choices) {
+                        let statuses = [];
+                        let index = 0;
+
+                        for (let i in res[8].choices) {
+                            statuses.push({
+                                _id: index,
+                                name: res[8].choices[i],
+                                code: res[8].choices[i]
+                            });
+                            ++index;
+                        }
+
+                        self.availableCustomerStatuses = statuses;
+                    }
 
                     dfd.resolve()
                 },
@@ -255,6 +272,14 @@ export default class DataService {
 
     getAvailableFrontendTranslations() {
         return this.availableFrontendTranslations
+    }
+
+    setAvailableCustomerStatuses(data) {
+        this.availableCustomerStatuses = data;
+    }
+
+    getAvailableCustomerStatuses() {
+        return this.availableCustomerStatuses
     }
 
     getAvailableEarningRuleLimitPeriods() {

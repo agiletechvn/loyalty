@@ -17,7 +17,8 @@ RUN chown www-data:www-data /usr/local/bin/phing
 COPY ./backend /var/www/openloyalty
 COPY --from=composer /usr/local/bin/composer /usr/local/bin/composer
 
-RUN mkdir /var/www/openloyalty/var/cache && chmod 755 /var/www/openloyalty/var && chmod 755 /var/www/openloyalty/var/cache && chmod 755 /var/www/openloyalty/var/logs
+RUN rm -rf /var/www/openloyalty/var/cache && rm -rf /var/www/openloyalty/var/logs
+RUN mkdir /var/www/openloyalty/var/cache && mkdir /var/www/openloyalty/var/logs && chmod 755 /var/www/openloyalty/var && chmod 755 /var/www/openloyalty/var/cache && chmod 755 /var/www/openloyalty/var/logs
 
 WORKDIR /var/www/openloyalty
 COPY ./docker/prod/php/bin/init.sh init.sh

@@ -46,6 +46,15 @@
                     </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.more_information_link" | translate }} </label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.moreInformationLink.errors">
+                            <input type="text" ng-model="newCampaign.moreInformationLink"/>
+                            <span class="prompt">{{ "campaign.more_information_link_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
                             <label>{{ "campaign.active" | translate }} <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.active.errors"

@@ -9,6 +9,7 @@ FROM divante/open-loyalty-base-nginx as www
 RUN usermod -u 1000 www-data
 COPY ./docker/prod/web/bin/init.sh init.sh
 RUN chmod a+x init.sh
+RUN rm -f /etc/nginx/conf.d/*
 COPY ./docker/prod/web/backend.conf /etc/nginx/conf.d/backend.conf
 COPY ./backend/web/ /var/www/openloyalty/web
 COPY ./docker/prod/web/frontend.conf /etc/nginx/conf.d/front.conf

@@ -13,4 +13,4 @@ COPY --from=composer /usr/local/bin/composer /usr/local/bin/composer
 RUN mkdir /var/www/openloyalty/var/cache && chmod 755 /var/www/openloyalty/var && chmod 755 /var/www/openloyalty/var/cache && chmod 755 /var/www/openloyalty/var/logs
 
 WORKDIR /var/www/openloyalty
-RUN composer install && bin/console assets:install && chown -R www-data:www-data /var/www/openloyalty/var
+RUN composer install && bin/console assets:install && chown -R www-data:www-data /var/www/openloyalty

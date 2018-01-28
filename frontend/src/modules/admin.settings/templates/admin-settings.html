@@ -5,7 +5,7 @@
 </div>
 <div style="clear:both"></div>
 
-<form novalidate ng-submit="SettingsCtrl.editSettings()">
+<form novalidate ng-submit="SettingsCtrl.editSettings(settings)">
     <div class="box-content">
         <div class="row">
             <div class="columns medium-12">
@@ -203,6 +203,65 @@
                         </div>
                     </div>
                 </fieldset>
+                <fieldset class="fieldset">
+                    <legend>{{"settings.program_logo"|translate}}</legend>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.logo" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns"
+                             form-validation="fileValidate.file.errors">
+                            <div ng-show="!logoFilePath">
+                                <input type="file" file-model="$parent.$parent.logoFile" style="padding:9px">
+                            </div>
+                            <div ng-show="logoFilePath" class="campainFileWrapper">
+                                <img ng-src="{{SettingsCtrl.generateLogoRoute()}}" style="display: inline-block; background-color: #ccc;"/>
+                                <button class="button button-septenary-colorized text-uppercase"
+                                        style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
+                                        type="button"
+                                        ng-click="SettingsCtrl.deleteLogo()">
+                                    {{ "global.remove" | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset">
+                    <legend>{{"settings.statuses"|translate}}</legend>
+
+
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.statuses_earning" | translate }}<span class="required">*</span></label>
+                        </div>
+                        <div class="small-9 medium-10 columns"
+                             form-validation="validate.customerStatusesEarning.errors">
+                            <selectize ng-model="settings.customerStatusesEarning"
+                                       options="availableCustomerStatuses"
+                                       config="SettingsCtrl.customerStatusesEarningConfig"
+                                       required
+                            ></selectize>
+                            <span class="prompt">{{ "settings.customerStatusesEarning_prompt"|translate}}</span>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.statuses_spending" | translate }}<span class="required">*</span></label>
+                        </div>
+                        <div class="small-9 medium-10 columns"
+                             form-validation="validate.customerStatusesSpending.errors">
+                            <selectize ng-model="settings.customerStatusesSpending"
+                                       options="availableCustomerStatuses"
+                                       config="SettingsCtrl.customerStatusesSpendingConfig"
+                                       required
+                            ></selectize>
+                            <span class="prompt">{{ "settings.customerStatusesSpending_prompt"|translate}}</span>
+                        </div>
+                    </div>
+                </fieldset>
+
                 <fieldset class="fieldset">
                     <legend>{{"settings.identification_priority"|translate}}</legend>
                     <div class="collection"

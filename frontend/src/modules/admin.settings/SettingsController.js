@@ -13,10 +13,12 @@ export default class SettingsController {
         this.$scope.refresh = false;
         this.$scope.languages = this.DataService.getLanguages();
         this.$scope.availableFrontendTranslations = this.DataService.getAvailableFrontendTranslations();
+        this.$scope.availableCustomerStatuses = this.DataService.getAvailableCustomerStatuses();
         this.$scope.timezones = this.DataService.getTimezones();
         this.$scope.countries = this.DataService.getCountries();
         this.$scope.currencies = this.DataService.getCurrencies();
         this.$scope.validate = {};
+        this.$scope.fileValidate = this.SettingsService.storedFileError;
         this.currencyConfig = {
             valueField: 'code',
             labelField: 'name',
@@ -56,6 +58,44 @@ export default class SettingsController {
                     self.$scope.refresh = true;
                 }
                 this.defaultFrontendTranslationValue = value;
+            }
+        };
+        this.customerStatusesEarningConfig = {
+            valueField: 'code',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField: 'name',
+            maxItems: self.$scope.availableCustomerStatuses.length,
+            persist: false,
+            plugins: ['remove_button'],
+            onChange: function (value) {
+                if (!this.customerStatusesEarningValue) {
+                    this.customerStatusesEarningValue = value;
+                }
+                if (this.customerStatusesEarningValue != value) {
+                    self.$scope.refresh = true;
+                }
+                this.customerStatusesEarningValue = value;
+            }
+        };
+        this.customerStatusesSpendingConfig = {
+            valueField: 'code',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField: 'name',
+            maxItems: self.$scope.availableCustomerStatuses.length,
+            persist: false,
+            plugins: ['remove_button'],
+            onChange: function (value) {
+                if (!this.customerStatusesSpendingValue) {
+                    this.customerStatusesSpendingValue = value;
+                }
+                if (this.customerStatusesSpendingValue != value) {
+                    self.$scope.refresh = true;
+                }
+                this.customerStatusesSpendingValue = value;
             }
         };
         this.timezoneConfig = {
@@ -142,6 +182,41 @@ export default class SettingsController {
         // }
     }
 
+    /**
+     * Generating logo route
+     *
+     * @method generateLogoRoute
+     * @returns {string}
+     */
+    generateLogoRoute() {
+        return this.DataService.getConfig().apiUrl + '/settings/logo';
+    }
+
+    /**
+     * Deletes logo
+     *
+     * @method deleteLogo
+     */
+    deleteLogo() {
+        let self = this;
+
+        this.SettingsService.deleteLogo()
+            .then(
+                res => {
+                    self.$scope.campaignFilePath = false;
+                    let message = self.$filter('translate')('xhr.delete_settings_logo.success');
+                    self.Flash.create('success', message);
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.delete_settings_logo.error');
+                    self.Flash.create('danger', message);
+                }
+            )
+    }
+
     getData() {
         let self = this;
         self.loaderStates.adminSettings = true;
@@ -160,24 +235,40 @@ export default class SettingsController {
                     self.loaderStates.adminSettings = false;
                     self.loaderStates.coverLoader = false;
                 }
-            )
-    }
-
-    editSettings() {
-        let self = this;
-        // let validateFields = angular.copy(self.$scope.frontValidate);
-        // if (self.$scope.settings.customersIdentificationPriority) {
-        //     validateFields.customersIdentificationPriority = {};
-        //     for(let i = 0; i < self.$scope.settings.customersIdentificationPriority.length; i++) {
-        //         validateFields.customersIdentificationPriority[i] = angular.copy(self.$scope.externalValidation)
-        //     }
-        // }
-        //
-        // let frontValidation = self.Validation.frontValidation(self.$scope.settings, validateFields);
-        // if (_.isEmpty(frontValidation)) {
-        self.SettingsService.postSettings(self.$scope.settings)
+            );
+        self.SettingsService.getLogo()
             .then(
                 res => {
+                    self.$scope.logoFilePath = true;
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.logoFilePath = false;
+                }
+            );
+    }
+
+    editSettings(settings) {
+        let self = this;
+
+        self.SettingsService.postSettings(settings)
+            .then(
+                res => {
+                    if (self.$scope.logoFile) {
+                        self.$scope.fileValidate = {};
+                        self.SettingsService.postLogo(self.$scope.logoFile)
+                            .catch(
+                                err => {
+                                    self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
+                                    let message = self.$filter('translate')('xhr.put_campaign.error');
+                                    self.Flash.create('danger', message);
+                                    self.loaderStates.coverLoader = false;
+                                }
+                            );
+                        self.$scope.refresh = true;
+                    }
+
                     let message = self.$filter('translate')('xhr.put_settings.success');
                     self.Flash.create('success', message);
                     self.$scope.validate = {};

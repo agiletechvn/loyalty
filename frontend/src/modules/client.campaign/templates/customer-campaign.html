@@ -20,6 +20,14 @@
                         <p ng-if="c.shortDescription" class="desc">{{c.shortDescription || "customer_campaign.no_desc" |
                             translate}}</p>
                         <span class="points"><b>{{c.costInPoints}}</b> <b class="points-word">{{ "customer_campaign.points"| translate }}</b></span>
+                        <a ng-if="c.moreInformationLink"
+                           ng-href="{{c.moreInformationLink}}"
+                           target="_blank"
+                            type="button">{{ "customer_campaign.more_information.button" |translate }}
+                        </a>
+                        <span>
+                            <img ng-if="c.campaignFilePath" ng-src="{{CustomerCampaignCtrl.generatePhotoRoute(c.campaignId)}}" alt="" />
+                        </span>
                         <button ng-if="!c.will_be_active_from && !c.will_be_active_to && availablePoints >= c.costInPoints"
                                 class="button button-septenary-colorized square large"
                                 ng-click="c.showConfirmationModal=true"

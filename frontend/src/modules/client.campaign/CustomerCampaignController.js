@@ -75,6 +75,19 @@ export default class CustomerCampaignController {
                         res => {
                             self.$scope.loaderVisible = false;
                             self.$scope.campaigns = res;
+                            angular.forEach(self.$scope.campaigns, function(campaign, key) {
+                                self.CustomerCampaignService.getCampaignImage(campaign.campaignId)
+                                    .then(
+                                        res => {
+                                            campaign.campaignFilePath = true;
+                                        }
+                                    )
+                                    .catch(
+                                        err => {
+                                            campaign.campaignFilePath = false;
+                                        }
+                                    );
+                            });
                             params.total(res.total);
                             self.available = true;
                             dfd.resolve(res)
@@ -143,6 +156,18 @@ export default class CustomerCampaignController {
             );
 
     }
+
+    /**
+     * Generating photo route
+     *
+     * @method generatePhotoRoute
+     * @returns {string}
+     */
+    generatePhotoRoute(campaignId) {
+        return this.config.apiUrl + '/campaign/' + campaignId + '/photo'
+    }
+
+
 
 }
 

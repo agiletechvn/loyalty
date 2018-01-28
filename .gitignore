@@ -16,3 +16,5 @@ tools/deployment/deploy.retry
 /postgres_data/
 frontend/yarn-error.log
 /backend/app/uploads/
+/docker/docker-compose.local.yml
+/docker/local

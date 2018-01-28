@@ -52,16 +52,21 @@ Then, please execute following commands:
 ```
 vagrant up
 vagrant ssh
-cd ol/docker
-docker-compose up -d
-docker-compose exec open_loyalty_backend phing demo
+docker-compose -f docker/docker-compose.yml up -d
+docker-compose -f docker/docker-compose.yml exec php phing demo 
 ```
 
 
 That's all. Now you can go to admin panel [127.0.0.1:8182](http://127.0.0.1:8182).
 Default login is **admin** and password **open**. You can also go to customer panel [127.0.0.1:8183](http://127.0.0.1:8183).
 
+## Vagrant helpful commands
+
+- `vagrant provision --provision-with sync` sync current dir
+- `vagrant provision --provision-with build` rebuild docker base images
+
 ## Url access
+
 After starting Open Loyalty it's exposes services under following URLs:
 
  * http://localhost:8182 - the administration panel,
@@ -73,10 +78,7 @@ After starting Open Loyalty it's exposes services under following URLs:
 If you are developer and want to attach source code then:
 
 ```
-cd docker/base
-./build_dev.sh
-cd ..
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker-compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml up
 ```
 
 ## Url access for developer 
@@ -85,8 +87,8 @@ After starting Open Loyalty in developer mode it's exposes services under slight
  * http://localhost:8081/admin - the administration panel,
  * http://localhost:8081/client - the customer panel,
  * http://localhost:8081/pos - the merchant panel,
- * http://localhost:8181 - RESTful API port
- * http://localhost:8181/app_dev.php/doc - swagger-like API doc
+ * http://localhost - RESTful API port
+ * http://localhost/app_dev.php/doc - swagger-like API doc
 
 ## Generate JWT keys
 

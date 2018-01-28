@@ -1,3 +1,13 @@
+import Img1 from './../../img/ol_ban_1.jpg';
+import Img2 from './../../img/ol_ban_2.jpg';
+import Img3 from './../../img/ol_ban_3.jpg';
+import Img4 from './../../img/ol_ban_4.jpg';
+import Img5 from './../../img/ol_ban_5.jpg';
+import Img6 from './../../img/ol_ban_6.jpg';
+import Img7 from './../../img/ol_ban_7.jpg';
+import Img8 from './../../img/ol_ban_8.jpg';
+import Img9 from './../../img/ol_ban_9.jpg';
+import Img10 from './../../img/ol_ban_10.jpg';
 import CustomerDashboardController from './CustomerDashboardController';
 import InvitationService from './InvitationService';
 

@@ -31,3 +31,6 @@ services:
     volumes:
       - '../frontend/:/var/www/frontend'
       - './dev/web/config.js:/var/www/frontend/src/config.js'
+  db:
+    ports:
+      - "5432:5432"

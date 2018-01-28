@@ -85,6 +85,7 @@ export default class EditableMap {
 
     settings(data) {
         let res = _.clone(data);
+        delete res.logo;
 
         return res
     }

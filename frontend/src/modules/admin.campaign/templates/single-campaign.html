@@ -35,6 +35,15 @@
                         <td><span ng-bind="campaign.shortDescription || '---'"></span></td>
                     </tr>
                     <tr>
+                        <td><b>{{ "campaign.more_information_link"|translate }}:</b></td>
+                        <td>
+                            <a class="link" ng-if="campaign.moreInformationLink" ng-href="{{campaign.moreInformationLink}}" target="_blank">
+                                {{campaign.moreInformationLink}}
+                            </a>
+                            <span ng-if="!campaign.moreInformationLink">---</span>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><b>{{ "campaign.conditions_description"|translate }}:</b></td>
                         <td><span ng-bind="campaign.conditionsDescription || '---'"></span></td>
                     </tr>

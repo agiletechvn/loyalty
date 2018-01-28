@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d2567ad74215db498345537c133fab6a",
-    "content-hash": "98b847690629cd0ea4f60fe68f7ca6b0",
+    "hash": "e8f903c3006ab50f46767991ab13ae40",
+    "content-hash": "fa850159ebaf75e6ba708861dfa31c6d",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -246,16 +246,16 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "2.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
-                "reference": "579e46cb7dea1756cb4f2fd9e6c2311230b2e94e"
+                "reference": "257dd114f563f6733e52c6f199500547ce1019b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/579e46cb7dea1756cb4f2fd9e6c2311230b2e94e",
-                "reference": "579e46cb7dea1756cb4f2fd9e6c2311230b2e94e",
+                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/257dd114f563f6733e52c6f199500547ce1019b9",
+                "reference": "257dd114f563f6733e52c6f199500547ce1019b9",
                 "shasum": ""
             },
             "require": {
@@ -325,7 +325,7 @@
             "type": "project",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5.x-dev"
+                    "dev-master": "2.1.x-dev"
                 },
                 "symfony-app-dir": "app",
                 "symfony-bin-dir": "bin",
@@ -350,7 +350,7 @@
             "license": [
                 "proprietary"
             ],
-            "time": "2017-11-16 08:52:21"
+            "time": "2018-01-28 09:39:28"
         },
         {
             "name": "doctrine/annotations",
