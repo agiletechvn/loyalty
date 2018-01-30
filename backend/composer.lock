@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e8f903c3006ab50f46767991ab13ae40",
-    "content-hash": "fa850159ebaf75e6ba708861dfa31c6d",
+    "hash": "fd5a878d2009b0d79766393596e72c50",
+    "content-hash": "bf651082c4b8418d4d2d3843be235e7e",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -246,7 +246,7 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "dev-master",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
@@ -3970,20 +3970,21 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.2.2",
+            "version": "v3.2.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "358c59fd21f9db7fdb465d1e07fba822d9e18e9e"
+                "reference": "fc9f9470e81e6fb59bd826d8040b961f7ed30f94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/358c59fd21f9db7fdb465d1e07fba822d9e18e9e",
-                "reference": "358c59fd21f9db7fdb465d1e07fba822d9e18e9e",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/fc9f9470e81e6fb59bd826d8040b961f7ed30f94",
+                "reference": "fc9f9470e81e6fb59bd826d8040b961f7ed30f94",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.4",
+                "ext-xml": "*",
                 "php": ">=5.5.9",
                 "psr/cache": "~1.0",
                 "psr/log": "~1.0",
@@ -3992,11 +3993,12 @@
                 "symfony/polyfill-php56": "~1.0",
                 "symfony/polyfill-php70": "~1.0",
                 "symfony/polyfill-util": "~1.0",
-                "twig/twig": "~1.28|~2.0"
+                "twig/twig": "~1.34|~2.4"
             },
             "conflict": {
-                "phpdocumentor/reflection-docblock": "<3.0",
-                "phpdocumentor/type-resolver": "<0.2.0"
+                "phpdocumentor/reflection-docblock": "<3.0||>=3.2.0",
+                "phpdocumentor/type-resolver": "<0.2.0",
+                "phpunit/phpunit": "<4.8.35|<5.4.3,>=5.0"
             },
             "provide": {
                 "psr/cache-implementation": "1.0"
@@ -4062,6 +4064,7 @@
                 "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
                 "phpdocumentor/reflection-docblock": "^3.0",
                 "predis/predis": "~1.0",
+                "sensio/framework-extra-bundle": "^3.0.2",
                 "symfony/phpunit-bridge": "~3.2",
                 "symfony/polyfill-apcu": "~1.1",
                 "symfony/security-acl": "~2.8|~3.0"
@@ -4077,7 +4080,6 @@
                     "Symfony\\Bridge\\Doctrine\\": "src/Symfony/Bridge/Doctrine/",
                     "Symfony\\Bridge\\Monolog\\": "src/Symfony/Bridge/Monolog/",
                     "Symfony\\Bridge\\ProxyManager\\": "src/Symfony/Bridge/ProxyManager/",
-                    "Symfony\\Bridge\\Swiftmailer\\": "src/Symfony/Bridge/Swiftmailer/",
                     "Symfony\\Bridge\\Twig\\": "src/Symfony/Bridge/Twig/",
                     "Symfony\\Bundle\\": "src/Symfony/Bundle/",
                     "Symfony\\Component\\": "src/Symfony/Component/"
@@ -4108,38 +4110,43 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-01-12 21:36:55"
+            "time": "2017-11-16 18:00:05"
         },
         {
             "name": "twig/twig",
-            "version": "v1.31.0",
+            "version": "v2.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "ddc9e3e20ee9c0b6908f401ac8353635b750eca7"
+                "reference": "eddb97148ad779f27e670e1e3f19fb323aedafeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ddc9e3e20ee9c0b6908f401ac8353635b750eca7",
-                "reference": "ddc9e3e20ee9c0b6908f401ac8353635b750eca7",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/eddb97148ad779f27e670e1e3f19fb323aedafeb",
+                "reference": "eddb97148ad779f27e670e1e3f19fb323aedafeb",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.7"
+                "php": "^7.0",
+                "symfony/polyfill-mbstring": "~1.0"
             },
             "require-dev": {
+                "psr/container": "^1.0",
                 "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.2"
+                "symfony/phpunit-bridge": "~3.3@dev"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.31-dev"
+                    "dev-master": "2.4-dev"
                 }
             },
             "autoload": {
                 "psr-0": {
                     "Twig_": "lib/"
+                },
+                "psr-4": {
+                    "Twig\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4169,7 +4176,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-01-11 19:36:15"
+            "time": "2017-09-27 18:10:31"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -5630,7 +5637,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
