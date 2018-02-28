@@ -10,3 +10,5 @@
 * https://github.com/karolbzik
 * https://github.com/BlackWebWolf
 * https://github.com/filrak
+* https://github.com/mkucmus
+* https://github.com/divantekk

@@ -163,9 +163,9 @@ angular-jwt@0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/angular-jwt/-/angular-jwt-0.0.9.tgz#912587b520189d28d089446c7faaf30ef7534313"
 
-angular-legacy-sortablejs-maintained@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/angular-legacy-sortablejs-maintained/-/angular-legacy-sortablejs-maintained-0.5.2.tgz#f057e84530952ede19a99bc9fdeb3c430767a1fd"
+angular-legacy-sortablejs-maintained@^0.6.0:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/angular-legacy-sortablejs-maintained/-/angular-legacy-sortablejs-maintained-0.6.1.tgz#b2779f4c5ac4cb348bed7efcebbdf07147ae7a60"
 
 angular-loading-bar@^0.9.0:
   version "0.9.0"
@@ -3040,12 +3040,12 @@ forwarded@~0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
 
-foundation-sites@6.2.3:
-  version "6.2.3"
-  resolved "https://registry.yarnpkg.com/foundation-sites/-/foundation-sites-6.2.3.tgz#5fab6c24552c274361368758dd02df8336373e56"
+foundation-sites@6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/foundation-sites/-/foundation-sites-6.3.1.tgz#23853372deb9480c13b426499eaf0c8f90cdbe1d"
   dependencies:
-    jquery "^2.2.0"
-    what-input "^2.0.0"
+    jquery ">=2.2.0"
+    what-input "^4.0.3"
 
 foundation@^4.2.1-1:
   version "4.2.1"
@@ -4036,7 +4036,11 @@ jquery-datetimepicker@^2.5.4:
   version "3.1.13"
   resolved "https://registry.yarnpkg.com/jquery-mousewheel/-/jquery-mousewheel-3.1.13.tgz#06f0335f16e353a695e7206bf50503cb523a6ee5"
 
-jquery@2.2.4, "jquery@>= 1.7.2", jquery@>=1.7, jquery@>=2.2.0, jquery@^2.2.0:
+jquery@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.0.0.tgz#95a2a9541291a9f819e016f85ba247116d03e4ab"
+
+"jquery@>= 1.7.2", jquery@>=1.7, jquery@>=2.2.0:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
 
@@ -6839,9 +6843,9 @@ sort-keys@^1.0.0:
   dependencies:
     is-plain-obj "^1.0.0"
 
-sortablejs@^1.4.2:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.6.1.tgz#d120d103fbb9f60c7db27814a1384072e6c6e083"
+sortablejs@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.7.0.tgz#80a2b2370abd568e1cec8c271131ef30a904fa28"
 
 source-list-map@^0.1.7:
   version "0.1.8"
@@ -7899,9 +7903,9 @@ weinre@^2.0.0-pre-I0Z7U9OV:
     nopt "3.0.x"
     underscore "1.7.x"
 
-what-input@^2.0.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/what-input/-/what-input-2.1.1.tgz#86b6e0338d670a9fd936892b8f5115c4fe0d1d0b"
+what-input@^4.0.3:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/what-input/-/what-input-4.3.1.tgz#b8ea7554ba1d9171887c4c6addf28185fec3d31d"
 
 whatwg-encoding@^1.0.1:
   version "1.0.1"

@@ -159,27 +159,6 @@ export default class SettingsController {
             adminSettings: true,
             coverLoader: true
         };
-
-        // this.$scope.frontValidate = {
-        //     currency: '@assert:not_blank',
-        //     timezone: '@assert:not_blank',
-        //     language: '@assert:not_blank',
-        //     programName: '@assert:not_blank',
-        //     programUrl: '@assert:not_blank',
-        //     programConditionsUrl: '@assert:not_blank',
-        //     programFaqUrl: '@assert:not_blank',
-        //     programPointsSingular: '@assert:not_blank',
-        //     programPointsPlural: '@assert:not_blank',
-        //     helpEmailAddress: '@assert:not_blank',
-        //     allTimeActive: '@assert:or_field:pointsDaysActive',
-        //     pointsDaysActive: '@assert:or_field:allTimeActive',
-        //     tierAssignType: '@assert:not_blank',
-        //
-        // };
-        // this.$scope.externalValidation = {
-        //     priority: '@assert:not_blank',
-        //     field: '@assert:not_blank'
-        // }
     }
 
     /**
@@ -203,7 +182,7 @@ export default class SettingsController {
         this.SettingsService.deleteLogo()
             .then(
                 res => {
-                    self.$scope.campaignFilePath = false;
+                    self.$scope.logoFilePath = false;
                     let message = self.$filter('translate')('xhr.delete_settings_logo.success');
                     self.Flash.create('success', message);
                 }
@@ -261,7 +240,7 @@ export default class SettingsController {
                             .catch(
                                 err => {
                                     self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
-                                    let message = self.$filter('translate')('xhr.put_campaign.error');
+                                    let message = self.$filter('translate')('xhr.upload_settings_logo.error');
                                     self.Flash.create('danger', message);
                                     self.loaderStates.coverLoader = false;
                                 }

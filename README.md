@@ -41,6 +41,7 @@ Then use another command to setup database, Elasticsearch and load some demo dat
 docker-compose exec php phing setup
 ```
 
+Before you start using Open Loyalty you need to define hosts in your local environment. Add host openloyalty.localhost as 127.0.0.1 in your system configuration file (/etc/hosts).
 If you find any problems using docker (for example on Windows environments) please try our Vagrant recipe.
 
 ## Quick install with Vagrant
@@ -56,9 +57,8 @@ docker-compose -f docker/docker-compose.yml up -d
 docker-compose -f docker/docker-compose.yml exec php phing demo 
 ```
 
-
-That's all. Now you can go to admin panel [127.0.0.1:8182](http://127.0.0.1:8182).
-Default login is **admin** and password **open**. You can also go to customer panel [127.0.0.1:8183](http://127.0.0.1:8183).
+That's all. Now you can go to admin panel [openloyalty.localhost:8182](http://openloyalty.localhost:8182).
+Default login is **admin** and password **open**. You can also go to customer panel [openloyalty.localhost:8183](http://openloyalty.localhost:8183).
 
 ## Vagrant helpful commands
 
@@ -69,11 +69,11 @@ Default login is **admin** and password **open**. You can also go to customer pa
 
 After starting Open Loyalty it's exposes services under following URLs:
 
- * http://localhost:8182 - the administration panel,
- * http://localhost:8183 - the customer panel,
- * http://localhost:8184 - the merchant panel,
- * http://localhost:8181 - RESTful API port
- * http://localhost:8181/doc - swagger-like API doc
+ * http://openloyalty.localhost:8182 - the administration panel,
+ * http://openloyalty.localhost:8183 - the customer panel,
+ * http://openloyalty.localhost:8184 - the merchant panel,
+ * http://openloyalty.localhost:8181 - RESTful API port
+ * http://openloyalty.localhost:8181/doc - swagger-like API doc
 
 If you are developer and want to attach source code then:
 
@@ -81,14 +81,14 @@ If you are developer and want to attach source code then:
 docker-compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml up
 ```
 
-## Url access for developer 
+## Url access for developer
 After starting Open Loyalty in developer mode it's exposes services under slightly different URLs:
 
- * http://localhost:8081/admin - the administration panel,
- * http://localhost:8081/client - the customer panel,
- * http://localhost:8081/pos - the merchant panel,
- * http://localhost - RESTful API port
- * http://localhost/app_dev.php/doc - swagger-like API doc
+ * http://openloyalty.localhost:8081/admin - the administration panel,
+ * http://openloyalty.localhost:8081/client - the customer panel,
+ * http://openloyalty.localhost:8081/pos - the merchant panel,
+ * http://openloyalty.localhost - RESTful API port
+ * http://openloyalty.localhost/app_dev.php/doc - swagger-like API doc
 
 ## Generate JWT keys
 

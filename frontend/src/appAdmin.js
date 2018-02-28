@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 // import jquery
 import 'jquery';
-import 'foundation-sites/dist/foundation';
+import 'foundation-sites/dist/js/foundation';
 import 'jquery-datetimepicker';
 import 'chart.js/src/chart';
 import 'select2';
@@ -23,17 +23,13 @@ import 'angular-jwt/';
 import 'ui-select';
 import 'pickadate/lib/picker';
 import 'angular-flash-alert';
-window.Selectize = require('selectize');
 import 'angular-selectize2/dist/selectize';
 import 'angular-chart.js/angular-chart';
-window.JSONEditor = require('jsoneditor');
 import 'ng-jsoneditor';
-require ('brace/mode/json');
 import 'brace';
 import 'angular-animate';
 import 'angular-loading-bar';
 import 'ace-angular';
-
 // global styles
 import 'pickadate/lib/themes/classic.css';
 import 'pickadate/lib/themes/classic.date.css';
@@ -73,12 +69,15 @@ import SpinnerLoaderDirective from './component/global/spinnerLoader/SpinnerLoad
 import DebugController from './component/global/debug/DebugController';
 
 import Filters from './component/global/filters/Filters';
-
 // global scss
 import './style/main.scss';
-
 // global js
 import './scripts/main';
+
+window.Selectize = require('selectize');
+window.JSONEditor = require('jsoneditor');
+require ('brace/mode/json');
+
 
 // open loyalty modules
 require('./modules/admin.campaign/module.js');

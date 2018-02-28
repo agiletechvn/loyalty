@@ -3,6 +3,14 @@ FROM divante/open-loyalty-base-php-fpm AS base
 
 ENV SYMFONY_ENV="prod"
 
+RUN pecl install apcu
+RUN docker-php-ext-enable apcu
+
+RUN echo "opcache.validate_timestamps=0" >> /usr/local/etc/php/php.ini
+RUN echo "opcache.memory_consumption=256" >> /usr/local/etc/php/php.ini
+RUN echo "opcache.max_accelerated_files=20000" >> /usr/local/etc/php/php.ini
+RUN echo "realpath_cache_size=600" >> /usr/local/etc/php/php.ini
+
 RUN easy_install supervisor
 RUN easy_install supervisor-stdout
 COPY ./docker/prod/php/conf/supervisord/ /etc/supervisord/

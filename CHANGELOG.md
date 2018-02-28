@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 28-02-2018
+### Added
+- encryption parameter for swiftmailer
+- logo validation
+- added APCu cache layer for mappings and query building in Doctrine ORM
+- better concurrency support for writings
+- increased performance
+- added makefile for common used commands
+### Changed
+- upgraded jquery to 3.x version to fix potential vulnerabilities
+- upgraded Symfony framework to version 3.4 LTS
+- upgraded Broadway library to version 2.0.1 (it's a BC break)
+- changed README.md
+### Fixed
+- changing merchant data in AC
+- searching a client in POSC
+- rounding points in emails
+
+## [2.1.0] - 28-01-2018
+### Added
+- Added new customer account statuses (it's a BC break!)
+- Collect / spend points only when a customer has a defined status
+- Support GDPR
+- A new setting where you can change loyalty program logo
+- More information link field for a reward campaign
+- Display reward campaing's image in client cockpit
+### Fixed
+- Missing transactions in the POS cockpit
+- Remove transfer points in Admin Cockpit
+- Vagrant setup for Windows users
+- Fixes missing placeholders
+
 ## [2.0.0] - 2017-11-016
 ### Added
 - Kubernetes support

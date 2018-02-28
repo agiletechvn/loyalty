@@ -10,17 +10,18 @@
     <php>
         <ini name="error_reporting" value="-1" />
         <server name="KERNEL_DIR" value="app/" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
     </php>
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>tests</directory>
+            <directory>src</directory>
         </testsuite>
         <testsuite name="Security">
-            <directory>tests/OpenLoyalty/Bundle/*Bundle/Security</directory>
+            <directory>tests/OpenLoyalty/Bundle/*Bundle/Tests/Security</directory>
         </testsuite>
         <testsuite name="Domain">
-            <directory>tests/OpenLoyalty/Domain</directory>
+            <directory>src/OpenLoyalty/Component/*/Tests/Domain</directory>
         </testsuite>
     </testsuites>
 
