@@ -64,6 +64,7 @@ export default class EditableMap {
                 email: data.email,
                 firstName: data.firstName,
                 gender: data.gender,
+                labels: data.labels,
                 lastName: data.lastName,
                 phone: data.phone,
                 posId: data.posId,
@@ -73,7 +74,16 @@ export default class EditableMap {
                 agreement2: data.agreement2,
                 agreement3: data.agreement3
             };
-
+            if (res.labels) {
+                let labels = '';
+                for (let label in res.labels) {
+                    labels += res.labels[label].key + ':' + res.labels[label].value + ';';
+                }
+                if (labels.charAt(labels.length - 1) == ';') {
+                    labels = labels.substring(0, labels.length - 1)
+                }
+                res.labels = labels;
+            }
             if (!ignoreSellerId) {
                 res.sellerId = data.sellerId;
 
@@ -159,6 +169,22 @@ export default class EditableMap {
         }
 
         return data;
+    }
+
+    newCustomer(data) {
+        let res = _.clone(data);
+        if (res.labels) {
+            let labels = '';
+            for (let label in res.labels) {
+                labels += res.labels[label].key + ':' + res.labels[label].value + ';';
+            }
+            if (labels.charAt(labels.length - 1) == ';') {
+                labels = labels.substring(0, labels.length - 1)
+            }
+            res.labels = labels;
+        }
+
+        return _.pickBy(res);
     }
 
     newEarningRule(data, deleteType) {
@@ -424,6 +450,37 @@ export default class EditableMap {
                         delete criterium.posId;
                         break;
                     case 'bought_labels' :
+                        delete criterium.min;
+                        delete criterium.posIds;
+                        delete criterium.fromDate;
+                        delete criterium.toDate;
+                        delete criterium.max;
+                        delete criterium.makers;
+                        delete criterium.anniversaryType;
+                        delete criterium.days;
+                        delete criterium.skuIds;
+                        delete criterium.fromAmount;
+                        delete criterium.toAmount;
+                        delete criterium.percent;
+                        delete criterium.posId;
+                        break;
+                        break;
+                    case 'customer_with_labels_values' :
+                        delete criterium.min;
+                        delete criterium.posIds;
+                        delete criterium.fromDate;
+                        delete criterium.toDate;
+                        delete criterium.max;
+                        delete criterium.makers;
+                        delete criterium.anniversaryType;
+                        delete criterium.days;
+                        delete criterium.skuIds;
+                        delete criterium.fromAmount;
+                        delete criterium.toAmount;
+                        delete criterium.percent;
+                        delete criterium.posId;
+                        break;
+                    case 'customer_has_labels' :
                         delete criterium.min;
                         delete criterium.posIds;
                         delete criterium.fromDate;

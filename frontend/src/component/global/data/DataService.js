@@ -11,6 +11,7 @@ export default class DataService {
         this._availableReferralTypes = null;
         this.availableFrontendTranslations = null;
         this.availableCustomerStatuses = null;
+        this.availableAccountActivationMethods = null;
         this._availableEarningRuleLimitPeriods = null;
         this.availableCurrencies = [
             {
@@ -55,6 +56,7 @@ export default class DataService {
         let languages = self.Restangular.one('settings').one('choices').one('language').get();
         let availableFrontendTranslations = self.Restangular.one('settings').one('choices').one('availableFrontendTranslations').get();
         let availableCustomerStatuses = self.Restangular.one('settings').one('choices').one('availableCustomerStatuses').get();
+        let availableAccountActivationMethods = self.Restangular.one('settings').one('choices').one('availableAccountActivationMethods').get();
         let availableEarningRuleLimitPeriods = self.Restangular.one('settings').one('choices').one('earningRuleLimitPeriod').get();
         let timezones = self.Restangular.one('settings').one('choices').one('timezone').get();
         let countries = self.Restangular.one('settings').one('choices').one('country').get();
@@ -64,7 +66,7 @@ export default class DataService {
 
         let dfd = self.$q.defer();
 
-        self.$q.all([languages, timezones, countries, events, availableCustomerStatuses, availableEarningRuleLimitPeriods, referralEvents, referralTypes, availableCustomerStatuses])
+        self.$q.all([languages, timezones, countries, events, availableCustomerStatuses, availableEarningRuleLimitPeriods, referralEvents, referralTypes, availableCustomerStatuses, availableAccountActivationMethods])
             .then(
                 function (res) {
                     if (res[0].choices) {
@@ -215,6 +217,22 @@ export default class DataService {
 
                         self.availableCustomerStatuses = statuses;
                     }
+                    if (res[9].choices) {
+                        let methods = [];
+                        let index = 0;
+
+                        for (let i in res[9].choices) {
+                            methods.push({
+                                _id: index,
+                                name: res[9].choices[i],
+                                code: res[9].choices[i]
+                            });
+                            ++index;
+                        }
+
+                        self.availableAccountActivationMethods = methods;
+                    }
+
 
                     dfd.resolve()
                 },
@@ -280,6 +298,14 @@ export default class DataService {
 
     getAvailableCustomerStatuses() {
         return this.availableCustomerStatuses
+    }
+
+    setAvailableAccountActivationMethods(data) {
+        this.availableAccountActivationMethods = data;
+    }
+
+    getAvailableAccountActivationMethods() {
+        return this.availableAccountActivationMethods
     }
 
     getAvailableEarningRuleLimitPeriods() {

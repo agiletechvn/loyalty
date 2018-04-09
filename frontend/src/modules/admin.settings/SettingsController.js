@@ -14,6 +14,7 @@ export default class SettingsController {
         this.$scope.languages = this.DataService.getLanguages();
         this.$scope.availableFrontendTranslations = this.DataService.getAvailableFrontendTranslations();
         this.$scope.availableCustomerStatuses = this.DataService.getAvailableCustomerStatuses();
+        this.$scope.availableAccountActivationMethods = this.DataService.getAvailableAccountActivationMethods();
         this.$scope.timezones = this.DataService.getTimezones();
         this.$scope.countries = this.DataService.getCountries();
         this.$scope.currencies = this.DataService.getCurrencies();
@@ -77,6 +78,23 @@ export default class SettingsController {
                     self.$scope.refresh = true;
                 }
                 this.customerStatusesEarningValue = value;
+            }
+        };
+        this.accountActivationMethodsConfig = {
+            valueField: 'code',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField: 'name',
+            maxItems: 1,
+            onChange: function (value) {
+                if (!this.accountActivationMethodValue) {
+                    this.accountActivationMethodValue = value;
+                }
+                if (this.accountActivationMethodValue != value) {
+                    self.$scope.refresh = true;
+                }
+                this.accountActivationMethodValue = value;
             }
         };
         this.customerStatusesSpendingConfig = {

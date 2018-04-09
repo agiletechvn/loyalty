@@ -263,6 +263,33 @@
                 </fieldset>
 
                 <fieldset class="fieldset">
+                    <legend>{{"settings.account_activation"|translate}}</legend>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.account_activation_method" | translate }}<span class="required">*</span></label>
+                        </div>
+                        <div class="small-9 medium-10 columns"
+                             form-validation="validate.accountActivationMethod.errors">
+                            <selectize ng-model="settings.accountActivationMethod"
+                                       options="availableAccountActivationMethods"
+                                       config="SettingsCtrl.accountActivationMethodsConfig"
+                                       required
+                            ></selectize>
+                            <span class="prompt">{{ "settings.account_activation_method_prompt"|translate}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.smsapi_token" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.smsApiToken.errors">
+                            <input type="text" ng-model="settings.smsApiToken" required>
+                            <span class="prompt">{{ "settings.smsapi_token"|translate}}</span>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset">
                     <legend>{{"settings.identification_priority"|translate}}</legend>
                     <div class="collection"
                          ng-repeat="cip in settings.customersIdentificationPriority track by $index">

@@ -21,7 +21,9 @@ export default class SellerCustomerService {
     }
 
     postCustomer(newCustomer) {
-        return this.Restangular.one('seller').one('customer').one('register').customPOST({customer: newCustomer})
+        let self = this;
+
+        return this.Restangular.one('seller').one('customer').one('register').customPOST({customer: self.EditableMap.newCustomer(newCustomer)})
     }
 
     getLevels(params) {

@@ -80,6 +80,47 @@
                             <span class="prompt">{{ "customer.loyalty_card_number_prompt" | translate }}</span>
                         </div>
                     </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "customer.labels" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.labels.errors">
+                            <div class="collection"
+                                 ng-repeat="label in newCustomer.labels track by $index">
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>{{ "customer.key" | translate }} <span
+                                                class="required">*</span></label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns"
+                                         form-validation="validate.labels[$index].key.errors">
+                                        <input ng-model="newCustomer.labels[$index].key">
+                                        <span class="prompt">{{ "customer.label_key_prompt" | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>{{ "customer.value" | translate }} <span
+                                                class="required">*</span></label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns"
+                                         form-validation="validate.labels[$index].value.errors">
+                                        <input ng-model="newCustomer.labels[$index].value">
+                                        <span class="prompt">{{ "customer.label_value_prompt" | translate }}</span>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="remove-collection"
+                                        ng-click="CustomerCtrl.removeLabel($index, false)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <button type="button" class="button button-secondary tiny"
+                                    ng-click="CustomerCtrl.addLabel(false)">{{
+                                "customer.add_label" | translate }}
+                            </button>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "level.select_level"|translate }}</label>

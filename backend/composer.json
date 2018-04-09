@@ -49,7 +49,7 @@
         "broadway/event-store-dbal": "^0.2.0",
         "ramsey/uuid-doctrine": "1.4.3",
         "smsapi/php-client": "^1.8",
-        "divante-ltd/open-loyalty-framework": "^2.2.0"
+        "divante-ltd/open-loyalty-framework": "^2.3.0"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^3.0",

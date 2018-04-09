@@ -1,7 +1,7 @@
 export default class SellerCustomerController {
     constructor($scope, $state, $stateParams, SellerCustomerService, Flash, $filter, DataService, Validation, EditableMap, $q, ParamsMap, NgTableParams) {
         this.$scope = $scope;
-        this.$scope.newCustomer = {};
+        this.$scope.newCustomer = {labels: []};
         this.$scope.editableFields = {};
         this.$scope.newLevel = {};
         this.$scope.newPos = {};
@@ -473,6 +473,36 @@ export default class SellerCustomerController {
                     self.Flash.create('danger', message);
                 }
             )
+    }
+
+    addLabel(edit) {
+        if (edit) {
+            if (!(this.$scope.editableFields.labels instanceof Array)) {
+                this.$scope.editableFields.labels = [];
+            }
+            this.$scope.editableFields.labels.push({
+                key: '',
+                value: ''
+            })
+        } else {
+            this.$scope.newCustomer.labels.push({
+                key: '',
+                value: ''
+            })
+        }
+    }
+
+    removeLabel(index, edit) {
+        let self = this;
+        let customer;
+
+        if (!edit) {
+            customer = self.$scope.newCustomer;
+        } else {
+            customer = self.$scope.editableFields;
+        }
+
+        customer.labels = _.difference(customer.labels, [customer.labels[index]])
     }
 }
 

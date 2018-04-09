@@ -173,6 +173,10 @@
             <td><b>{{ "customer.country"|translate }}:</b></td>
             <td><span ng-bind="customer.address.country || '---'"></span></td>
         </tr>
+        <tr ng-if="customer.labels && customer.labels.length > 0">
+            <td><b>{{ "customer.labels"|translate }}:</b></td>
+            <td><div ng-repeat="label in customer.labels"><span ng-bind="label.key" style="font-weight: bold; color: black;"></span>:&nbsp;<span ng-bind="label.value"></span></div></td>
+        </tr>
         </tbody>
     </table>
 </modal>

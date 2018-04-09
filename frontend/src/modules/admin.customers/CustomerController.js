@@ -6,7 +6,7 @@ export default class CustomerController {
         this.$scope = $scope;
         this.TransferService = TransferService;
         this.$scope.dateNow = new Date();
-        this.$scope.newCustomer = {};
+        this.$scope.newCustomer = {labels: []};
         this.$scope.newLevel = {};
         this.$scope.newPos = {};
         this.$scope.showCompany = false;
@@ -451,7 +451,7 @@ export default class CustomerController {
         let frontValidation = self.Validation.frontValidation(newCustomer, validateFields);
 
         if (_.isEmpty(frontValidation)) {
-            self.CustomerService.postCustomer(newCustomer)
+            self.CustomerService.postCustomer(self.EditableMap.newCustomer(newCustomer))
                 .then(
                     res => {
                         self.$state.go('admin.customers-list');
@@ -537,7 +537,7 @@ export default class CustomerController {
     getAvailableLevels() {
         let self = this;
 
-        self.LevelService.getLevels()
+        self.LevelService.getLevels({perPage:-1})
             .then(
                 res => {
                     self.$scope.availableLevels = [];
@@ -729,6 +729,36 @@ export default class CustomerController {
                     self.loaderStates.assignLevel = false
                 }
             )
+    }
+
+    addLabel(edit) {
+        if (edit) {
+            if (!(this.$scope.editableFields.labels instanceof Array)) {
+                this.$scope.editableFields.labels = [];
+            }
+            this.$scope.editableFields.labels.push({
+                key: '',
+                value: ''
+            })
+        } else {
+            this.$scope.newCustomer.labels.push({
+                key: '',
+                value: ''
+            })
+        }
+    }
+
+    removeLabel(index, edit) {
+        let self = this;
+        let customer;
+
+        if (!edit) {
+            customer = self.$scope.newCustomer;
+        } else {
+            customer = self.$scope.editableFields;
+        }
+
+        customer.labels = _.difference(customer.labels, [customer.labels[index]])
     }
 
 }

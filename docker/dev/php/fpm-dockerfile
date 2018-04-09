@@ -5,6 +5,9 @@ RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 RUN usermod -u 1000 www-data
 
+RUN pecl install apcu
+RUN docker-php-ext-enable apcu
+
 COPY ./docker/dev/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 COPY --from=composer /usr/local/bin/composer /usr/local/bin/composer
 
@@ -28,4 +31,3 @@ ONBUILD RUN chown www-data:www-data /tmp/xdebug.log
 ENV SYMFONY_ENV="dev"
 
 CMD composer install && bin/console assets:install && chown -R www-data:www-data /var/www/openloyalty && php-fpm
-

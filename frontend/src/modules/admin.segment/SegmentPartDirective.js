@@ -39,6 +39,10 @@ export default class SegmentPartDirective {
                     name: $filter('translate')('segment.partials.bought_labels')
                 },
                 {
+                    code: 'customer_has_labels',
+                    name: $filter('translate')('segment.partials.customer_has_labels')
+                },
+                {
                     code: 'bought_makers',
                     name: $filter('translate')('segment.partials.bought_makers')
                 },
@@ -57,6 +61,10 @@ export default class SegmentPartDirective {
                 {
                     code: 'transaction_amount',
                     name: $filter('translate')('segment.partials.transaction_amount')
+                },
+                {
+                    code: 'customer_with_labels_values',
+                    name: $filter('translate')('segment.partials.customer_with_labels_values')
                 },
 
             ];
