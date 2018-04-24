@@ -1,3 +1,6 @@
+const USAGE_TYPE_USED = 'true';
+const USAGE_TYPE_DELIVERED = 'false';
+
 /**
  * Describes Admin CampaignController
  * @class CampaignController
@@ -20,9 +23,10 @@ export default class CampaignController {
      * @param {SegmentService} SegmentService
      * @param {Object} LevelService
      * @param {DataService} DataService
+     * @param {CustomerService} CustomerService
      * @method constructor
      */
-    constructor($scope, $state, $stateParams, AuthService, CampaignService, Flash, EditableMap, NgTableParams, ParamsMap, $q, Validation, $filter, SegmentService, LevelService, DataService) {
+    constructor($scope, $state, $stateParams, AuthService, CampaignService, Flash, EditableMap, NgTableParams, ParamsMap, $q, Validation, $filter, SegmentService, LevelService, DataService, CustomerService) {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             $state.go('admin-login')
         }
@@ -38,11 +42,13 @@ export default class CampaignController {
         this.EditableMap = EditableMap;
         this.ParamsMap = ParamsMap;
         this.Validation = Validation;
+        this.CustomerService = CustomerService
 
         this.Flash = Flash;
         this.NgTableParams = NgTableParams;
         this.$q = $q;
         this.$filter = $filter;
+        this._selectizeConfigs();
     }
 
     /**
@@ -55,7 +61,8 @@ export default class CampaignController {
             campaignList: true,
             campaignDetails: true,
             campaignCustomerList: true,
-            coverLoader: true
+            coverLoader: true,
+            redeemedCampaigns: true
         };
         this.campaignId = this.$stateParams.campaignId || null;
         this.$scope.campaignName = this.$stateParams.campaignName || false;
@@ -485,6 +492,97 @@ export default class CampaignController {
                 }
             );
     }
+
+    /**
+     * Creates NgTable instances for redeemed campaigns page
+     *
+     * @method getRedeemedCampaigns
+     */
+    getRedeemedCampaigns() {
+      let self = this;
+
+      self.redeemedCampaignsTableParams = new self.NgTableParams({
+        count: self.config.perPage,
+        sorting: {
+          purchasedAt: 'desc'
+        }
+      }, {
+        getData: function (params) {
+          let dfd = self.$q.defer();
+          self.loaderStates.redeemedCampaigns = true;
+          self.CampaignService.getRedeemedCampaignRewards(self.ParamsMap.params(params.url()))
+              .then(
+                res => {
+                  self.loaderStates.redeemedCampaigns = false;
+                  self.loaderStates.coverLoader = false;
+                  params.total(res.total);
+                  dfd.resolve(res)
+                },
+                () => {
+                  let message = self.$filter('translate')('xhr.get_redeemed_campaigns.error');
+                  self.loaderStates.redeemedCampaigns = false;
+                  self.loaderStates.coverLoader = false;
+                  self.Flash.create('danger', message);
+                  dfd.reject();
+                }
+              );
+
+          return dfd.promise;
+        }
+      });
+    }
+
+
+    /**
+     * Update usage of single campaign
+     *
+     * @method updateCampaignUsage
+     * @param {number} customerId
+     * @param {number} campaignId
+     * @param {string} code
+     * @param {Boolean} used
+     */
+    updateCampaignUsage(customerId, campaignId, code, used){
+      let self = this;
+      self.CustomerService.postUsage(customerId, campaignId, code, used).then(
+        () => {
+          self.redeemedCampaignsTableParams.reload();
+        },
+        () => {
+          let message = self.$filter('translate')('xhr.pos_coupon_usage.error');
+          self.Flash.create('danger', message);
+
+        }
+      )
+    }
+
+    _selectizeConfigs() {
+      let self = this;
+
+      this.campaignsUsageSelectOptions = [{
+          value: '',
+          label: self.$filter('translate')('campaign.usage_types.both')
+        },
+        {
+          value: USAGE_TYPE_DELIVERED,
+          label: self.$filter('translate')('campaign.usage_types.' + USAGE_TYPE_DELIVERED)
+        },
+        {
+          value: USAGE_TYPE_USED,
+          label: self.$filter('translate')('campaign.usage_types.' + USAGE_TYPE_USED)
+        }
+      ];
+
+      this.campaignUsageSelectConfig = {
+        valueField: 'value',
+        labelField: 'label',
+        create: false,
+        sortField: 'label',
+        searchField: 'label',
+        maxItems: 1,
+        allowEmptyOption: true
+      };
+    }
 }
 
-CampaignController.$inject = ['$scope', '$state', '$stateParams', 'AuthService', 'CampaignService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'Validation', '$filter', 'SegmentService', 'LevelService', 'DataService'];
+CampaignController.$inject = ['$scope', '$state', '$stateParams', 'AuthService', 'CampaignService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'Validation', '$filter', 'SegmentService', 'LevelService', 'DataService', 'CustomerService'];

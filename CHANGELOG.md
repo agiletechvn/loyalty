@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 23-04-2018
+### Added
+- added missing translations
+- added translatable program name in the title bar in browser
+- added list of redeemed rewards
+- added matching transaction with a customer using phone number
+- added new SMS gateway WorldText
+- added possibility to log in using phone number
+- added settings to change activation method (e-mail or sms)
+- added endpoint to match transactions by a customer
+### Fixed
+- fixed minor bugs with customer activation using SMS
+- fixed searching customers (/api/customer)
+
 ## [2.3.1] - 12-04-2018
 ### Added
 - added [API documentation](http://open-loyalty.readthedocs.io/en/latest/)

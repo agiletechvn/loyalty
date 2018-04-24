@@ -149,6 +149,12 @@
                                     style="margin-bottom:5px;">
                                 <i class="fa fa-remove" aria-hidden="true"></i>
                             </button>
+                            <button ng-if="row.status && row.status.type === 'new'" type="button" class="button button-septenary tiny"  ng-click="SellerCustomerCtrl.resendActivationCode(row.customerId)"
+                                    style="margin-bottom:5px;"
+                                    title="{{ 'customer.resend_activation_code'|translate }}"
+                            >
+                                <i class="fa fa-send" aria-hidden="true"></i>
+                            </button>
                         </td>
                     </tr>
 

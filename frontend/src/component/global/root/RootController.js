@@ -20,6 +20,7 @@ export default class RootController {
         this.stateClasses = this._stateClasses();
         this.logo = this.DataService.getConfig().apiUrl + '/settings/logo';
 
+        this.activationMethod = null;
 
         this.$rootScope.$on('$includeContentLoaded', () => {
             $(document).foundation();
@@ -32,6 +33,7 @@ export default class RootController {
         this.$rootScope.$on('$stateChangeSuccess', () => {
             let excludedStates = [
                 'customer.panel.registration',
+                'customer.panel.registration_activate_sms',
                 'customer.panel.registration_confirm',
                 'customer.panel.registration_from_invitation',
                 'customer.panel.registration_success'
@@ -81,6 +83,12 @@ export default class RootController {
             }
 
         }, 1000);
+    }
+
+    setupActivationMethod() {
+        this.DataService.getActivationMethod().then((method) => {
+            this.activationMethod = method;
+        });
     }
 
     _allTrue(obj) {
@@ -139,6 +147,7 @@ export default class RootController {
             this.$state.current.name !== 'seller-login' &&
             this.$state.current.name !== 'customer.panel.registration_success' &&
             this.$state.current.name !== 'customer.panel.registration' &&
+            this.$state.current.name !== 'customer.panel.registration_activate_sms' &&
             this.$state.current.name !== 'customer.panel.registration_from_invitation';
     }
 
@@ -160,6 +169,18 @@ export default class RootController {
 
     getLogo() {
         return this.logo;
+    }
+
+    getAvtivationMethod() {
+        return this.activationMethod;
+    }
+
+    isActivationByEmail() {
+        return this.activationMethod === 'email';
+    }
+
+    isActivationBySms() {
+        return this.activationMethod === 'sms';
     }
 
     isAdminPanel() {
@@ -184,6 +205,7 @@ export default class RootController {
             'customer.panel.registration_confirm',
             'customer.panel.registration_success',
             'customer.panel.registration',
+            'customer.panel.registration_activate_sms',
             'customer.panel.registration_from_invitation'
         ];
 

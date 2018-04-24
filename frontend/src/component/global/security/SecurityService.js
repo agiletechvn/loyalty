@@ -8,6 +8,10 @@ export default class SecurityService {
         return this.Restangular.one('password').one('reset').one('request').customPOST({username:username})
     }
 
+    postCustomerPasswordRequest(username) {
+        return this.Restangular.one('customer').one('password').one('reset').one('request').customPOST({username:username})
+    }
+
     postPasswordReset(password, token) {
         return this.Restangular.one('password').one('reset').customPOST({reset:{plainPassword:password}, token: token})
     }

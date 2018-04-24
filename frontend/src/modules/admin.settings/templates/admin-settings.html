@@ -38,19 +38,6 @@
                             <span class="prompt">{{ "settings.timezone_prompt"|translate}}</span>
                         </div>
                     </div>
-                    <!--<div class="row">-->
-                    <!--<div class="small-3 medium-2 columns">-->
-                    <!--<label>{{ "settings.lang" | translate }}<span class="required">*</span></label>-->
-                    <!--</div>-->
-                    <!--<div class="small-9 medium-10 columns"  form-validation="validate.language.errors">-->
-                    <!--<selectize ng-model="settings.language"-->
-                    <!--options="languages"-->
-                    <!--config="SettingsCtrl.languageConfig"-->
-                    <!--required-->
-                    <!--&gt;</selectize>-->
-                    <!--<span class="prompt">{{ "settings.lang_prompt"|translate}}</span>-->
-                    <!--</div>-->
-                    <!--</div>-->
                     <div class="row">
                         <div class="small-3 medium-2 columns">
                             <label>{{ "settings.lang" | translate }}<span class="required">*</span></label>
@@ -278,13 +265,22 @@
                             <span class="prompt">{{ "settings.account_activation_method_prompt"|translate}}</span>
                         </div>
                     </div>
-                    <div class="row">
+
+                    <div class="row" ng-repeat="config in smsGatewayConfig" ng-show="settings.accountActivationMethod == 'sms'">
                         <div class="small-3 medium-2 columns">
-                            <label>{{ "settings.smsapi_token" | translate }}</label>
+                            <label>{{ "settings."+config.name | translate }}<span ng-if="settings.accountActivationMethod == 'sms'" class="required">*</span></label>
                         </div>
-                        <div class="small-9 medium-10 columns" form-validation="validate.smsApiToken.errors">
-                            <input type="text" ng-model="settings.smsApiToken" required>
-                            <span class="prompt">{{ "settings.smsapi_token"|translate}}</span>
+                        <div class="small-9 medium-10 columns" form-validation="validate[config.name].errors" ng-if="config.type == 'text'">
+                            <input type="text" ng-model="settings[config.name]" ng-required="settings.accountActivationMethod == 'sms'">
+                            <span class="prompt">{{ "settings."+config.name|translate}}</span>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate[config.name].errors" ng-if="config.type == 'bool'">
+                            <input type="checkbox" ng-model="settings[config.name]" ng-required="settings.accountActivationMethod == 'sms'">
+                            <span class="prompt">{{ "settings."+config.name|translate}}</span>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate[config.name].errors" ng-if="config.type == 'integer'">
+                            <input type="number" ng-model="settings[config.name]" ng-required="settings.accountActivationMethod == 'sms'">
+                            <span class="prompt">{{ "settings."+config.name|translate}}</span>
                         </div>
                     </div>
                 </fieldset>

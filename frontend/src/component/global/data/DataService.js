@@ -12,6 +12,8 @@ export default class DataService {
         this.availableFrontendTranslations = null;
         this.availableCustomerStatuses = null;
         this.availableAccountActivationMethods = null;
+        this.smsGatewayConfig = null;
+        this.activationMethod = null;
         this._availableEarningRuleLimitPeriods = null;
         this.availableCurrencies = [
             {
@@ -50,6 +52,26 @@ export default class DataService {
         return this.config;
     }
 
+    getActivationMethod() {
+        let dfd = this.$q.defer();
+
+        if (this.activationMethod) {
+            dfd.resolve(this.activationMethod);
+
+            return;
+        }
+        let activationMethod = this.Restangular.one('settings').one('activation-method').get();
+        activationMethod.then((res) => {
+            if (res.method) {
+                dfd.resolve(res.method);
+            } else {
+                dfd.resolve('email');
+            }
+        })
+
+        return dfd.promise;
+    }
+
     getAvailableData() {
         let self = this;
 
@@ -57,6 +79,7 @@ export default class DataService {
         let availableFrontendTranslations = self.Restangular.one('settings').one('choices').one('availableFrontendTranslations').get();
         let availableCustomerStatuses = self.Restangular.one('settings').one('choices').one('availableCustomerStatuses').get();
         let availableAccountActivationMethods = self.Restangular.one('settings').one('choices').one('availableAccountActivationMethods').get();
+        let smsGatewatConfig = self.Restangular.one('settings').one('choices').one('smsGatewayConfig').get();
         let availableEarningRuleLimitPeriods = self.Restangular.one('settings').one('choices').one('earningRuleLimitPeriod').get();
         let timezones = self.Restangular.one('settings').one('choices').one('timezone').get();
         let countries = self.Restangular.one('settings').one('choices').one('country').get();
@@ -66,7 +89,7 @@ export default class DataService {
 
         let dfd = self.$q.defer();
 
-        self.$q.all([languages, timezones, countries, events, availableCustomerStatuses, availableEarningRuleLimitPeriods, referralEvents, referralTypes, availableCustomerStatuses, availableAccountActivationMethods])
+        self.$q.all([languages, timezones, countries, events, availableCustomerStatuses, availableEarningRuleLimitPeriods, referralEvents, referralTypes, availableCustomerStatuses, availableAccountActivationMethods, smsGatewatConfig])
             .then(
                 function (res) {
                     if (res[0].choices) {
@@ -232,7 +255,18 @@ export default class DataService {
 
                         self.availableAccountActivationMethods = methods;
                     }
+                    if (res[10].fields) {
+                        let methods = [];
 
+                        for (let i in res[10].fields) {
+                            methods.push({
+                                name: i,
+                                type: res[10].fields[i]
+                            });
+                        }
+
+                        self.smsGatewayConfig = methods;
+                    }
 
                     dfd.resolve()
                 },
@@ -307,6 +341,13 @@ export default class DataService {
     getAvailableAccountActivationMethods() {
         return this.availableAccountActivationMethods
     }
+    setSmsGatewayConfig(data) {
+        this.smsGatewayConfig = data;
+    }
+
+    getSmsGatewayConfig() {
+        return this.smsGatewayConfig;
+    }
 
     getAvailableEarningRuleLimitPeriods() {
         return this._availableEarningRuleLimitPeriods;
@@ -330,6 +371,10 @@ export default class DataService {
 
     setAvailableReferralTypes(value) {
         this._availableReferralTypes = value;
+    }
+
+    setActivationMethod(value) {
+        this.activationMethod = value;
     }
 }
 

@@ -7,7 +7,7 @@
 <div style="clear:both;"></div>
 
 <form novalidate
-      ng-init="CustomerCtrl.getCustomerData(); CustomerCtrl.getAvailablePos();CustomerCtrl.getAvailableLevels();CustomerCtrl.getAvailableSellers();"
+      ng-init="CustomerCtrl.getCustomerData(); CustomerCtrl.getAvailablePos();CustomerCtrl.getAvailableLevels();CustomerCtrl.getAvailableSellers();RootCtrl.setupActivationMethod();"
       ng-submit="CustomerCtrl.editCustomer(editableFields)">
     <div class="box-content">
 
@@ -58,19 +58,19 @@
                     </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
-                            <label>{{ "customer.email" | translate }}<span class="required">*</span></label>
+                            <label>{{ "customer.email" | translate }}<span class="required" ng-if="RootCtrl.isActivationByEmail()">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.email.errors">
-                            <input type="email" ng-model="editableFields.email" required>
+                            <input type="email" ng-model="editableFields.email" ng-required="RootCtrl.isActivationByEmail()">
                             <span class="prompt">{{ "customer.email_prompt" | translate }}</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
-                            <label>{{ "customer.phone" | translate }}</label>
+                            <label>{{ "customer.phone" | translate }}<span class="required" ng-if="RootCtrl.isActivationBySms()">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.phone.errors">
-                            <input type="text" ng-model="editableFields.phone">
+                            <input type="text" ng-model="editableFields.phone" ng-required="RootCtrl.isActivationBySms()">
                             <span class="prompt">{{ "customer.phone_prompt" | translate }}</span>
                         </div>
                     </div>

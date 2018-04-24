@@ -26,7 +26,6 @@ export default class CustomerController {
             firstName: '@assert:not_blank',
             lastName: '@assert:not_blank',
             agreement1: '@assert:not_blank',
-            email: '@assert:not_blank'
         };
         this.levels = null;
         this.posList = null;

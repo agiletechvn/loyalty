@@ -189,6 +189,20 @@ export default class CampaignService {
             .getList(params);
     }
 
+    /**
+     * Calls for redeemed campaign rewards
+     *
+     * @method getRedeemedCampaignRewards
+     * @param {Object} params
+     * @returns {Promise}
+     */
+    getRedeemedCampaignRewards(params = {}) {
+        return this.Restangular
+            .one('campaign')
+            .all('bought')
+            .getList(params);
+    }
+
 }
 
 CampaignService.$inject = ['Restangular', 'EditableMap'];

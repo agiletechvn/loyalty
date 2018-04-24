@@ -37,6 +37,25 @@ export default class SecurityController {
         }
     }
 
+    requestCustomerPassword() {
+        let self = this;
+        if (self.$scope.username) {
+            self.SecurityService.postCustomerPasswordRequest(self.$scope.username)
+                .then(
+                    res => {
+                        self.$scope.showSuccess = true;
+                        self.$scope.showError = false;
+                        self.$scope.successMsg = self.$filter('translate')('xhr.post_password_request.success');
+                    },
+                    res => {
+                        self.$scope.showSuccess = false;
+                        self.$scope.showError = true;
+                        self.$scope.errorMsg = self.$filter('translate')('xhr.post_password_request.error');
+                    }
+                )
+        }
+    }
+
     resetPassword() {
         let self = this;
         self.SecurityService.postPasswordReset(self.$scope.password, self.token)
@@ -64,19 +83,13 @@ export default class SecurityController {
 
     backToLogin() {
         let self = this;
-
-        switch(self.$state.current.name) {
-            case 'forgot-password-request-seller' || 'forgot-password-reset-seller':
-                self.$state.go('seller-login');
-                break;
-            case 'forgot-password-request-customer' || 'forgot-password-reset-customer':
-                self.$state.go('customer-login');
-                break;
-            default:
-                self.$state.go('admin-login');
-                break;
+        if (self.$state.current.name === 'forgot-password-request-seller' || self.$state.current.name === 'forgot-password-reset-seller') {
+            self.$state.go('seller-login');
+        } else if (self.$state.current.name === 'forgot-password-request-customer' || self.$state.current.name === 'forgot-password-reset-customer') {
+            self.$state.go('customer-login');
+        } else {
+            self.$state.go('admin-login');
         }
-
     }
 }
 

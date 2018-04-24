@@ -62,18 +62,18 @@
                         </div>
                         <div class="row">
                             <div class="small-4 columns">
-                                <label>{{ "customer_security.registration.email" | translate }} <span class="required">*</span></label>
+                                <label>{{ "customer_security.registration.email" | translate }} <span ng-if="CustomerRegistrationCtrl.isActivationByEmail()" class="required">*</span></label>
                             </div>
                             <div class="small-8 columns" form-validation="validate.email.errors">
-                                <input type="email" ng-model="newCustomer.email" required>
+                                <input type="email" ng-model="newCustomer.email" ng-required="CustomerRegistrationCtrl.isActivationByEmail()">
                             </div>
                         </div>
                         <div class="row">
                             <div class="small-4 columns">
-                                <label>{{ "customer_security.registration.phone" | translate }} <span class="required">*</span></label>
+                                <label>{{ "customer_security.registration.phone" | translate }} <span ng-if="CustomerRegistrationCtrl.isActivationBySms()" class="required">*</span></label>
                             </div>
                             <div class="small-8 columns" form-validation="validate.phone.errors">
-                                <input type="text" ng-model="newCustomer.phone">
+                                <input type="text" ng-model="newCustomer.phone" ng-required="CustomerRegistrationCtrl.isActivationBySms()">
                             </div>
                         </div>
                         <!--<div class="row">-->

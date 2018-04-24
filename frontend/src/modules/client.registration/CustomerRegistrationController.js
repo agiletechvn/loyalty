@@ -11,7 +11,12 @@ export default class CustomerRegistrationController {
         this.Validation = Validation;
         this.$stateParams = $stateParams;
         this.invitationToken = $stateParams.invitationToken;
-
+        this.activationMethod = null;
+        this.$scope.code = {};
+        DataService.getActivationMethod().then((method) => {
+            this.activationMethod = method;
+        });
+        this.showResendModal = false;
         this.$scope.addressValidation = {
             street: '@assert:not_blank',
             address1: '@assert:not_blank',
@@ -27,8 +32,6 @@ export default class CustomerRegistrationController {
             firstName: '@assert:not_blank',
             lastName: '@assert:not_blank',
             agreement1: '@assert:not_blank',
-            email: '@assert:not_blank',
-            phone: '@assert:not_blank',
             plainPassword: '@assert:not_blank|equal_with:plainPassword2',
             plainPassword2: '@assert:not_blank|equal_with:plainPassword'
         };
@@ -40,7 +43,13 @@ export default class CustomerRegistrationController {
             maxItems: 1,
         };
     }
+    isActivationBySms() {
+        return this.activationMethod === 'sms';
+    }
 
+    isActivationByEmail() {
+        return this.activationMethod === 'email';
+    }
     activate() {
         let token = this.$stateParams.token;
         let self = this;
@@ -58,6 +67,48 @@ export default class CustomerRegistrationController {
             },
             res => {
                 self.$state.go('customer-login');
+                let message = self.$filter('translate')('xhr.post_registration_customer_activate.error');
+                self.Flash.create('danger', message);
+            }
+        )
+    }
+    resendActivationCode(code) {
+        let self = this;
+        if (!self.isActivationBySms()) {
+            this.showResendModal = false;
+            this.$scope.code.phone = '';
+
+            return;
+        }
+        this.CustomerRegistrationService.resendActivationCode(code.phone).then(
+            res => {
+                let message = self.$filter('translate')('xhr.post_resend_customer_code.success');
+                self.Flash.create('success', message);
+                this.showResendModal = false;
+                this.$scope.code.phone = '';
+            },
+            () => {
+                let message = self.$filter('translate')('xhr.post_resend_customer_code.error');
+                self.Flash.create('danger', message);
+            }
+        )
+    }
+    activateSms(code) {
+        let token = code.value;
+        let self = this;
+
+        if (!token) {
+            self.$state.go('customer-login');
+        }
+
+        this.CustomerRegistrationService.postActivateSms(token).then(
+            res => {
+                self.$state.go('customer-login');
+                let message = self.$filter('translate')('xhr.post_registration_customer_activate.success');
+                self.Flash.create('success', message);
+
+            },
+            res => {
                 let message = self.$filter('translate')('xhr.post_registration_customer_activate.error');
                 self.Flash.create('danger', message);
             }
@@ -85,10 +136,13 @@ export default class CustomerRegistrationController {
             self.CustomerRegistrationService.postCustomer(newCustomer, this.invitationToken)
                 .then(
                     res => {
-                        self.$state.go('customer.panel.registration_success');
                         let message = self.$filter('translate')('xhr.post_registration_customer.success');
                         self.Flash.create('success', message);
-
+                        if (self.isActivationBySms()) {
+                            self.$state.go('customer.panel.registration_activate_sms');
+                        } else {
+                            self.$state.go('customer.panel.registration_success');
+                        }
                     },
                     res => {
                         self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);

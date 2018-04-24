@@ -92,6 +92,14 @@ export default class SellerCustomerService {
     deactivateCustomer(customerId) {
         return this.Restangular.one('seller').one('customer', customerId).one('deactivate').customPOST();
     }
+
+    activateCustomer(customerId, token) {
+        return this.Restangular.one('customer').one('activate-sms', token).customPOST();
+    }
+
+    resendActivationCode(customerId) {
+        return this.Restangular.one('seller').one('customer', customerId).one('send-sms-code').customPOST();
+    }
 }
 
 SellerCustomerService.$inject = ['Restangular', 'EditableMap'];

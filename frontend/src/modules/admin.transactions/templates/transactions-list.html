@@ -182,14 +182,16 @@
         <fieldset class="fieldset default">
             <div class="row">
                 <div class="columns medium-3">
-                    <label>{{ "transaction.customer_email"|translate }}</label>
+                    <label>{{ "transaction.customer_email_or_phone"|translate }}</label>
                     <spinner-loader loading="clientSearch"></spinner-loader>
                 </div>
-                <div class="columns medium-9" form-validation="linkedValidate.customerId.errors">
+                <div class="columns medium-6" form-validation="linkedValidate.customerId.errors">
                     <selectize options="TransactionCtrl.customersToLink" config="TransactionCtrl.customersConfig"
                                ng-model="linked.customerId" required>
                     </selectize>
-                    <span class="prompt">{{ "transaction.customer_email_prompt"|translate }}</span>
+                </div>
+                <div class="columns medium-3">
+                    <span class="prompt">{{ "transaction.customer_email_or_phone_prompt"|translate }}</span>
                 </div>
             </div>
             <div class="row">
@@ -197,10 +199,12 @@
                     <label>{{ "transaction.transaction_document_number"|translate }}</label>
                     <spinner-loader loading="documentSearch"></spinner-loader>
                 </div>
-                <div class="columns medium-9" form-validation="linkedValidate.transactionDocumentNumber.errors">
+                <div class="columns medium-6" form-validation="linkedValidate.transactionDocumentNumber.errors">
                     <selectize options="TransactionCtrl.transactionsToLink" config="TransactionCtrl.transactionConfig"
                                ng-model="linked.transactionDocumentNumber" required>
                     </selectize>
+                </div>
+                <div class="columns medium-3">
                     <span class="prompt">{{ "transaction.transaction_document_number_prompt"|translate }}</span>
                 </div>
             </div>

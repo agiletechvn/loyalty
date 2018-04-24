@@ -50,20 +50,20 @@
                             </div>
                             <div class="row">
                                 <div class="medium-3 small-3 columns">
-                                    <label>{{ "registration.email" | translate }} <span
+                                    <label>{{ "registration.email" | translate }} <span ng-if="SellerCustomerCtrl.isActivationByEmail()"
                                             class="required">*</span></label>
                                 </div>
                                 <div class="medium-9 small-9 columns" form-validation="validate.email.errors">
-                                    <input type="email" ng-model="newCustomer.email" required>
+                                    <input type="email" ng-model="newCustomer.email" ng-required="SellerCustomerCtrl.isActivationByEmail()">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="medium-3 small-3 columns">
-                                    <label>{{ "registration.phone" | translate }} <span
+                                    <label>{{ "registration.phone" | translate }} <span ng-if="SellerCustomerCtrl.isActivationBySms()"
                                             class="required">*</span></label>
                                 </div>
                                 <div class="medium-9 small-9 columns" form-validation="validate.phone.errors">
-                                    <input type="text" ng-model="newCustomer.phone">
+                                    <input type="text" ng-model="newCustomer.phone" ng-required="SellerCustomerCtrl.isActivationBySms()">
                                 </div>
                             </div>
                             <div class="row">

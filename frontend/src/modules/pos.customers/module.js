@@ -47,6 +47,26 @@ angular.module(MODULE_NAME, [])
                     }
                 },
             })
+            .state('seller.panel.customer-registration.activation', {
+                url: "/customer-registration/activation/:customerId",
+                views: {
+                    'extendTop@': {
+                        templateUrl: 'templates/seller-customer-registration-extend-top.html',
+                        controller: 'SellerCustomerController',
+                        controllerAs: 'SellerCustomerCtrl'
+                    },
+                    'main@': {
+                        templateUrl: require('./templates/seller-customer-registration-activation.html'),
+                        controller: 'SellerCustomerController',
+                        controllerAs: 'SellerCustomerCtrl'
+                    },
+                    'extendBottom@': {
+                        templateUrl: 'templates/seller-customer-registration-extend-bottom.html',
+                        controller: 'SellerCustomerController',
+                        controllerAs: 'SellerCustomerCtrl'
+                    }
+                },
+            })
             .state('seller.panel.edit-customer', {
                 url: "/customer-edit/:customerId",
                 views: {

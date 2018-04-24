@@ -106,6 +106,26 @@ angular.module(MODULE_NAME, [])
                     }
                 }
             })
+          .state('admin.redeemed-rewards', {
+              url: "/redeemed-campaigns",
+              views: {
+                'extendTop@': {
+                  templateUrl: 'templates/redeemed-campaigns-extend-top.html',
+                  controller: 'CampaignController',
+                  controllerAs: 'CampaignCtrl'
+                },
+                'main@': {
+                  templateUrl: require('./templates/redeemed-campaigns.html'),
+                  controller: 'CampaignController',
+                  controllerAs: 'CampaignCtrl'
+                },
+                'extendBottom@': {
+                  templateUrl: 'templates/redeemed-campaigns-extend-bottom.html',
+                  controller: 'CampaignController',
+                  controllerAs: 'CampaignCtrl'
+                }
+              }
+          })
 
     })
     .run(($templateCache, $http) => {
@@ -127,6 +147,9 @@ angular.module(MODULE_NAME, [])
 
         $templateCache.put('templates/single-campaign-extend-top.html', '');
         $templateCache.put('templates/single-campaign-extend-bottom.html', '');
+
+        $templateCache.put('templates/redeemed-campaigns-extend-top.html', '');
+        $templateCache.put('templates/redeemed-campaigns-extend-bottom.html', '');
 
         $http.get(`templates/add-campaign.html`)
             .then(
@@ -159,6 +182,14 @@ angular.module(MODULE_NAME, [])
                 }
             )
             .catch(catchErrorTemplate);
+
+        $http.get(`templates/redeemed-campaigns.html`)
+           .then(
+             response => {
+               $templateCache.put('templates/redeemed-campaigns.html', response.data);
+             }
+           )
+           .catch(catchErrorTemplate);
     })
     .controller('CampaignController', CampaignController)
     .service('CampaignService', CampaignService);

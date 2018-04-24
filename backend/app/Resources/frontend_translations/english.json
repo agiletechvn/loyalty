@@ -1,11 +1,13 @@
 {
   "global": {
+    "translations_list": "Translations",
     "configuration": "Configuration",
     "users": "Users",
     "cancel": "Cancel",
     "save": "Save",
     "yes": "Yes",
     "no": "No",
+    "program_name": "Open Loyalty",
     "admin_footer": "2016 Open Loyalty",
     "true": "True",
     "false": "False",
@@ -31,7 +33,9 @@
     "all_time_active": "Is all time active",
     "level": "Level",
     "segment": "Segment",
+    "start_typing_a_number": "enter transaction document number",
     "start_typing_an_email": "enter email to search",
+    "start_typing_an_email_or_phone": "enter email or phone to search",
     "loading": "loading",
     "home": "Home",
     "upload": "Upload",
@@ -86,6 +90,7 @@
     "campaigns": "Reward campaigns",
     "all_campaigns": "All reward campaigns",
     "add_campaign": "Add reward campaign",
+    "redeemed_campaigns": "Redeemed rewards",
     "support": "Support",
     "guide": "Guide",
     "retention_matrix": "Retention matrix",
@@ -166,6 +171,7 @@
     "heading": "Dashboard"
   },
   "customer": {
+    "resend_activation_code": "Resend activation code",
     "referred": {
       "referred_registered": "Number of conversions",
       "referred_total": "Number of referrals",
@@ -618,6 +624,7 @@
         "customer_transactions": "customer transactions",
         "customer_rewards": "customer rewards",
         "customer_registration": "customer registration",
+        "customer_registration_activation": "customer activation",
         "customer_campaigns": "customer campaigns",
         "find_transaction": "find transaction",
         "transactions": "transactions",
@@ -691,9 +698,11 @@
     "maker": "Brand",
     "link_modal": "Match customer with transaction",
     "customer_email": "E-mail",
+    "customer_email_or_phone": "E-mail or phone",
     "customer_id": "Customer ID",
     "transaction_document_number": "Document number",
     "customer_email_prompt": "Find customer by e-mail",
+    "customer_email_or_phone_prompt": "Find customer by e-mail or phone",
     "transaction_document_number_prompt": "Find transaction by document number",
     "customer_id_prompt": "Put customer unique ID",
     "link": "Match with customer",
@@ -767,7 +776,12 @@
     "returns": "Returns",
     "returns_prompt": "Enable returns",
     "count_points_immediately": "Count points immediately",
-    "all_time_active": "All time active"
+    "all_time_active": "All time active",
+    "smsAccountId": "Account id",
+    "account_activation_method": "Account activation method",
+    "account_activation_method_prompt": "",
+    "smsApiKey": "Api key",
+    "smsApiToken": "SmsApi token"
   },
   "segment": {
     "add": "Add segment",
@@ -935,7 +949,18 @@
     "used_by_user": "Used by customers",
     "coupon_used": "Used by customers",
     "all_time": "All time",
-    "photo": "Campaign photo"
+    "photo": "Campaign photo",
+    "redeemed_heading": "Reedemed rewards",
+    "redeemed_list": "Reedemed rewards list",
+    "reward_redeem_date": "Date and time",
+    "customer_email":"Customer e-mail",
+    "customer_phone": "Phone",
+    "reward_name": "Reward",
+    "reward_type": "Type",
+    "delivered": "Delivered/used",
+    "usage_types.both": "Both",
+    "usage_types.true": "Used",
+    "usage_types.false": "Delivered"
   },
   "registration": {
     "basic_info": "Basic Informations",
@@ -995,6 +1020,10 @@
     "delete_settings_logo": {
       "success": "Logo has been deleted",
       "error": "Logo has not been deleted"
+    },
+    "post_resend_customer_code": {
+      "error": "Cannot resend activation code. Make sure that phone number is correct or wait for few minutes and try again.",
+      "success": "Code was sent to your phone"
     },
     "upload_settings_logo": {
       "success": "Logo has been saved"
@@ -1056,6 +1085,10 @@
     },
     "post_customer": {
       "success": "You successfully added customer.",
+      "error": "An error occurred"
+    },
+    "post_deactivate_customer": {
+      "success": "You successfully deactivated customer",
       "error": "An error occurred"
     },
     "post_registration_customer": {
@@ -1259,6 +1292,9 @@
     "delete_campaign_image": {
       "success": "Image deleted",
       "error": "An error occurred"
+    },
+    "get_redeemed_campaigns": {
+      "error": "An error occurred"
     }
   },
   "front_error": {
@@ -1344,6 +1380,10 @@
     "agreement3_prompt": "",
     "lc_number": "Loyalty Card Number"
   },
+  "registration_activation": {
+    "basic_info": "Account activation",
+    "code": "Activation code"
+  },
   "customer_security": {
     "request_heading": "Forgot password?",
     "request_description": "Enter your login, we will send you recovery password",
@@ -1354,6 +1394,12 @@
     "new_password": "New password",
     "change_password": "Change password",
     "back_to_login": "Back to login page",
+    "registration_activation": {
+      "title": "Account activation",
+      "code": "Activation code",
+      "resend_code": "Resend code",
+      "phone": "Phone number"
+    },
     "login": {
       "remember_me": "Keep me logged in",
       "copyrights": "2016 Open Loyalty",
@@ -1494,6 +1540,7 @@
     "owner_data": {
       "text": "Lorem ipsum dolor sit amet"
     },
+    "ok": "OK",
     "configuration": "Configuration",
     "users": "Users",
     "cancel": "Cancel",
@@ -1561,121 +1608,123 @@
       }
     }
   },
-  "customer_earning_rules": {
-    "custom_event": "Custom event",
-    "points": "Each {{pointsValue}}{{currency}} = 1 point",
-    "product_purchase": "Additional points for purchase of {{sku}}",
-    "title": "How to earn points?",
-    "table": {
-      "name": "How?",
-      "type": "Type",
-      "description": "Description",
-      "points": "Points",
-      "start_at": "Start at",
-      "end_at": "End at"
-    }
-  },
-  "customer_nav": {
-    "logo1": "Loyalty",
-    "logo2": "Program",
-    "copyrights": "",
-    "home": "Home",
-    "my_rewards": "My rewards",
-    "earning_points": "My points",
-    "my_transactions": "My transactions",
-    "match_with_ecommerce": "Match with eCommerce",
-    "my_profile": "My profile"
-  },
-  "customer_campaign": {
-    "more_information": {
-      "button": "Click here for more info"
+    "customer_earning_rules": {
+      "custom_event": "Custom event",
+      "points": "Each {{pointsValue}}{{currency}} = 1 point",
+      "product_purchase": "Additional points for purchase of {{sku}}",
+      "title": "How to earn points?",
+      "table": {
+        "name": "How?",
+        "type": "Type",
+        "description": "Description",
+        "points": "Points",
+        "start_at": "Start at",
+        "end_at": "End at"
+      }
     },
-    "coupon_used": "This coupon has been used",
-    "not_enough_points": "Not enough points",
-    "will_be_active_dates": "This reward campaign will be active from {{from}} to {{to}}",
-    "will_be_active_all_time": "This campaign will be active all time",
-    "will_be_active_soon": "Not active yet",
-    "list": "My rewards",
-    "bought_list": "My redeemed rewards",
-    "points": "Points",
-    "redeem": "Redeem reward",
-    "footer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget tincidunt est. Sed fringilla dapibus venenatis.",
-    "no_rewards": "There are no available rewards",
-    "no_bought_rewards": "There are no redeemed rewards",
-    "all_time_Active": "All time active",
-    "see_bought": "See rewards you have already redeemed",
-    "reward_congratulations": "Congratulations!",
-    "reward_ready": "Your reward is ready to receive.",
-    "reward_code": "CODE OF REWARD",
-    "active_points": "Redeem new rewards, you can use <b>{{points}}</b> active points",
-    "reward_footer": "Instruction for reward, lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget tincidunt est. Sed fringilla dapibus venenatis.",
-    "no_desc": "Reward description is not set",
-    "no_name": "No name of reward campaign",
-    "used_confirmation": "Confirm reward usage",
-    "used_confirmation_description": "Please confirm reward usage",
-    "singleCoupon_prompt": "To redeem customers will be able to use the same coupon"
-  },
-  "customer_transaction": {
-    "customer_loyalty_card_number": "Loyalty card number",
-    "customer_phone_number": "Phone number",
-    "empty_transactions": "There is no transactions to display",
-    "list": "Transactions list",
-    "id": "Transaction ID",
-    "document_number": "Document number",
-    "document_type": "Document type",
-    "revised_document": "Revised document",
-    "purchase_date": "Purchase date",
-    "purchase_place": "POS",
-    "actions": "Actions",
-    "details": "Transaction details",
-    "customer_name": "Customer name",
-    "phone": "Phone",
-    "email": "E-mail",
-    "loyaltyCardNumber": "Loyalty card number",
-    "city": "City",
-    "state": "State",
-    "street": "Street",
-    "building_name": "Building name",
-    "unit_name": "Flat/Unit name",
-    "postal_code": "Postal code",
-    "country": "Country",
-    "item_details": "Item details",
-    "name": "Name",
-    "quantity": "Quantity",
-    "sku": "SKU",
-    "category": "Category",
-    "gross": "Gross value",
-    "labels": "Labels",
-    "maker": "Brand",
-    "link_modal": "Match customer with transaction",
-    "customer_email": "E-mail",
-    "customer_id": "Customer ID",
-    "transaction_document_number": "Document number",
-    "customer_email_prompt": "Find customer by e-mail",
-    "transaction_document_number_prompt": "Find transaction by document number",
-    "customer_id_prompt": "Put customer unique ID",
-    "link": "Match with customer",
-    "heading": "Transactions",
-    "transaction_id": "Transaction id",
-    "points_earned": "Points earned",
-    "pos_name": "POS name",
-    "sum": "SUM",
-    "amount": "Amount",
-    "document_types": {
-      "return": "Return",
-      "sell": "Sell",
-      "both": "Both"
-    }
-  },
-  "Your password must be at least 8 characters long.": "Your password must be at least 8 characters long",
-  "Your password must include both upper and lower case letters.": "Your password must include both upper and lower case letters",
-  "Your password must include at least one number.": "Your password must include at least one number",
-  "Your password must contain at least one special character.": "Your password must contain at least one special character",
-  "Your password must include at least one letter.": "Your password must include at least one letter",
-  "Ta wartość nie powinna być pusta.": "This value should not be empty",
-  "Plik nie mógł zostać odnaleziony.": "File could not be found",
-  "Ten plik nie jest obrazem.": "This file is not image",
-  "customer with such phone already exists": "Customer with such phone already exists",
-  "customer with such loyalty card number already exists": "Customer with such loyalty card number already exists",
-  "Bad credentials": "Bad credentials"
-}
+    "customer_nav": {
+      "logo1": "Loyalty",
+      "logo2": "Program",
+      "copyrights": "",
+      "home": "Home",
+      "my_rewards": "My rewards",
+      "earning_points": "My points",
+      "my_transactions": "My transactions",
+      "match_with_ecommerce": "Match with eCommerce",
+      "my_profile": "My profile"
+    },
+    "customer_campaign": {
+      "more_information": {
+        "button": "Click here for more info"
+      },
+      "coupon_used": "This coupon has been used",
+      "not_enough_points": "Not enough points",
+      "will_be_active_dates": "This reward campaign will be active from {{from}} to {{to}}",
+      "will_be_active_all_time": "This campaign will be active all time",
+      "will_be_active_soon": "Not active yet",
+      "list": "My rewards",
+      "bought_list": "My redeemed rewards",
+      "points": "Points",
+      "redeem": "Redeem reward",
+      "footer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget tincidunt est. Sed fringilla dapibus venenatis.",
+      "no_rewards": "There are no available rewards",
+      "no_bought_rewards": "There are no redeemed rewards",
+      "all_time_Active": "All time active",
+      "see_bought": "See rewards you have already redeemed",
+      "reward_congratulations": "Congratulations!",
+      "reward_ready": "Your reward is ready to receive.",
+      "reward_code": "CODE OF REWARD",
+      "active_points": "Redeem new rewards, you can use <b>{{points}}</b> active points",
+      "reward_footer": "Instruction for reward, lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget tincidunt est. Sed fringilla dapibus venenatis.",
+      "no_desc": "Reward description is not set",
+      "no_name": "No name of reward campaign",
+      "used_confirmation": "Confirm reward usage",
+      "used_confirmation_description": "Please confirm reward usage",
+      "singleCoupon_prompt": "To redeem customers will be able to use the same coupon",
+      "reward_not_available": "This reward is not available",
+      "reward_ended": "Probably this campaign ended"
+    },
+    "customer_transaction": {
+      "customer_loyalty_card_number": "Loyalty card number",
+      "customer_phone_number": "Phone number",
+      "empty_transactions": "There is no transactions to display",
+      "list": "Transactions list",
+      "id": "Transaction ID",
+      "document_number": "Document number",
+      "document_type": "Document type",
+      "revised_document": "Revised document",
+      "purchase_date": "Purchase date",
+      "purchase_place": "POS",
+      "actions": "Actions",
+      "details": "Transaction details",
+      "customer_name": "Customer name",
+      "phone": "Phone",
+      "email": "E-mail",
+      "loyaltyCardNumber": "Loyalty card number",
+      "city": "City",
+      "state": "State",
+      "street": "Street",
+      "building_name": "Building name",
+      "unit_name": "Flat/Unit name",
+      "postal_code": "Postal code",
+      "country": "Country",
+      "item_details": "Item details",
+      "name": "Name",
+      "quantity": "Quantity",
+      "sku": "SKU",
+      "category": "Category",
+      "gross": "Gross value",
+      "labels": "Labels",
+      "maker": "Brand",
+      "link_modal": "Match customer with transaction",
+      "customer_email": "E-mail",
+      "customer_id": "Customer ID",
+      "transaction_document_number": "Document number",
+      "customer_email_prompt": "Find customer by e-mail",
+      "transaction_document_number_prompt": "Find transaction by document number",
+      "customer_id_prompt": "Put customer unique ID",
+      "link": "Match with customer",
+      "heading": "Transactions",
+      "transaction_id": "Transaction id",
+      "points_earned": "Points earned",
+      "pos_name": "POS name",
+      "sum": "SUM",
+      "amount": "Amount",
+      "document_types": {
+        "return": "Return",
+        "sell": "Sell",
+        "both": "Both"
+      }
+    },
+    "Your password must be at least 8 characters long.": "Your password must be at least 8 characters long",
+    "Your password must include both upper and lower case letters.": "Your password must include both upper and lower case letters",
+    "Your password must include at least one number.": "Your password must include at least one number",
+    "Your password must contain at least one special character.": "Your password must contain at least one special character",
+    "Your password must include at least one letter.": "Your password must include at least one letter",
+    "Ta wartość nie powinna być pusta.": "This value should not be empty",
+    "Plik nie mógł zostać odnaleziony.": "File could not be found",
+    "Ten plik nie jest obrazem.": "This file is not image",
+    "customer with such phone already exists": "Customer with such phone already exists",
+    "customer with such loyalty card number already exists": "Customer with such loyalty card number already exists",
+    "Bad credentials": "Bad credentials"
+  }

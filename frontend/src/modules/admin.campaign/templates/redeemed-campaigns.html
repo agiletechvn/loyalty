@@ -1,0 +1,45 @@
+<box-loader loading="CampaignCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="500"></box-loader>
+
+<div class="heading" ng-init="CampaignCtrl.getRedeemedCampaigns()">
+  <h1>{{ "campaign.redeemed_heading" | translate }}</h1>
+</div>
+<div style="clear:both;"></div>
+
+<div class="client-list box" ng-hide="CampaignCtrl.loaderStates.coverLoader">
+  <div class="box-title">
+    <h1 class="text-left"><i class="fa fa-exchange" aria-hidden="true"></i>{{ "campaign.redeemed_list" | translate }}
+    </h1>
+  </div>
+  <div class="box-content with-minimal-height">
+    <box-loader loading="CampaignCtrl.loaderStates.redeemedCampaigns"></box-loader>
+    <table ng-table="CampaignCtrl.redeemedCampaignsTableParams" class="default"
+           template-pagination="templatePagination.html">
+      <tr ng-repeat="row in $data">
+        <td data-title="'campaign.reward_redeem_date'|translate" sortable="'purchasedAt'">
+          <span ng-bind="row.purchasedAt|date : 'yyyy-MM-dd HH:mm'"></span>
+        </td>
+        <td data-title="'campaign.customer_email'|translate">
+          <span ng-bind="row.customerEmail"></span>
+        </td>
+        <td data-title="'campaign.customer_phone'|translate">
+          <span ng-bind="row.customerPhone"></span>
+        </td>
+        <td data-title="'campaign.reward_name'|translate">
+          <span>{{row.campaignName + ' (' + row.coupon.code + ')'}}</span>
+        </td>
+        <td data-title="'campaign.reward_type'|translate">
+          <span>{{'campaign.'+row.campaignType|translate}}</span>
+        </td>
+        <td data-title="'campaign.delivered'|translate" filter="{used: 'campaignsUsageSelectOptions'}">
+          <checkbox ng-model="row.used"
+                    ng-click="CampaignCtrl.updateCampaignUsage(row.customerId, row.campaignId, row.coupon.code, row.used)"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<script type="text/ng-template" id="ng-table/filters/campaignsUsageSelectOptions.html">
+  <selectize ng-disabled="$filterRow.disabled" options="CampaignCtrl.campaignsUsageSelectOptions"
+             config="CampaignCtrl.campaignUsageSelectConfig" ng-model="params.filter()[name]">
+  </selectize>
+</script>

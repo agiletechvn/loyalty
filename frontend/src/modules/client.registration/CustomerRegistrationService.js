@@ -16,6 +16,16 @@ export default class CustomerRegistrationService {
     postActivate(token) {
         return this.Restangular.one('customer').one('activate').one(token).customPOST({})
     }
+
+    postActivateSms(token) {
+        return this.Restangular.one('customer').one('activate-sms').one(token).customPOST({})
+    }
+
+    resendActivationCode(phone) {
+        return this.Restangular.one('customer').one('customer-phone').one('send-sms-code').customPOST({
+            phone: phone
+        });
+    }
 }
 
 CustomerRegistrationService.$inject = ['Restangular', 'EditableMap'];

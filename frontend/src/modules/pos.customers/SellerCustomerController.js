@@ -10,10 +10,15 @@ export default class SellerCustomerController {
         this.$state = $state;
         this.SellerCustomerService = SellerCustomerService;
         this.Flash = Flash;
+        this.$scope.token = {};
         this.$filter = $filter;
         this.country = DataService.getCountries();
         this.EditableMap = EditableMap;
         this.Validation = Validation;
+        this.activationMethod = null;
+        DataService.getActivationMethod().then((method) => {
+            this.activationMethod = method;
+        });
         this.$scope.addressValidation = {
             street: '@assert:not_blank',
             address1: '@assert:not_blank',
@@ -29,8 +34,6 @@ export default class SellerCustomerController {
             firstName: '@assert:not_blank',
             lastName: '@assert:not_blank',
             agreement1: '@assert:not_blank',
-            email: '@assert:not_blank',
-            phone: '@assert:not_blank'
         };
         this.customerId = $stateParams.customerId || null;
         this.countryConfig = {
@@ -91,6 +94,42 @@ export default class SellerCustomerController {
             }, true)
         }
     }
+    resendActivationCode(id) {
+        let self = this;
+        if (!self.isActivationBySms()) {
+            return;
+        }
+        this.SellerCustomerService.resendActivationCode(id).then(
+            res => {
+                self.$state.go('seller.panel.customer-registration.activation', {customerId: id})
+            },
+            () => {
+                let message = self.$filter('translate')('xhr.post_activate_customer.error');
+                self.Flash.create('danger', message);
+            }
+        )
+    }
+    activateCustomer(token) {
+        let self = this;
+        this.SellerCustomerService.activateCustomer(this.customerId, token.value).then(
+            res => {
+                let message = self.$filter('translate')('xhr.post_activate_customer.success');
+                self.Flash.create('success', message);
+                self.$state.go('seller.panel.dashboard')
+            },
+            () => {
+                let message = self.$filter('translate')('xhr.post_activate_customer.error');
+                self.Flash.create('danger', message);
+            }
+        )
+    }
+    isActivationBySms() {
+        return this.activationMethod === 'sms';
+    }
+
+    isActivationByEmail() {
+        return this.activationMethod === 'email';
+    }
     deactivateCustomer(customerId) {
         let self = this;
 
@@ -131,7 +170,11 @@ export default class SellerCustomerController {
                     res => {
                         let message = self.$filter('translate')('xhr.post_registration_customer.success');
                         self.Flash.create('success', message);
-                        self.$state.go('seller.panel.dashboard')
+                        if (self.isActivationBySms()) {
+                            self.$state.go('seller.panel.customer-registration.activation', {customerId: res.customerId})
+                        } else {
+                            self.$state.go('seller.panel.dashboard')
+                        }
                     },
                     res => {
                         self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);

@@ -15,6 +15,7 @@ export default class SettingsController {
         this.$scope.availableFrontendTranslations = this.DataService.getAvailableFrontendTranslations();
         this.$scope.availableCustomerStatuses = this.DataService.getAvailableCustomerStatuses();
         this.$scope.availableAccountActivationMethods = this.DataService.getAvailableAccountActivationMethods();
+        this.$scope.smsGatewayConfig = this.DataService.getSmsGatewayConfig();
         this.$scope.timezones = this.DataService.getTimezones();
         this.$scope.countries = this.DataService.getCountries();
         this.$scope.currencies = this.DataService.getCurrencies();
@@ -148,6 +149,10 @@ export default class SettingsController {
             {
                 name: 'email',
                 value: 'email'
+            },
+            {
+                name: 'phone',
+                value: 'phone'
             }
         ];
         this.tiers = [
@@ -248,7 +253,23 @@ export default class SettingsController {
 
     editSettings(settings) {
         let self = this;
+        if (settings.accountActivationMethod === 'sms') {
+            let errors = 0;
+            for (let i = 0; i < self.$scope.smsGatewayConfig.length; i += 1) {
+                if (!settings[self.$scope.smsGatewayConfig[i].name]) {
+                    self.$scope.validate[self.$scope.smsGatewayConfig[i].name] = { errors: [self.$filter('translate')('front_error.not_blank')]};
+                    errors += 1;
+                } else {
+                    self.$scope.validate[self.$scope.smsGatewayConfig[i].name] = {};
+                }
+            }
+            if (errors === self.$scope.smsGatewayConfig.length && errors > 0) {
+                let message = self.$filter('translate')('xhr.put_settings.error');
+                self.Flash.create('danger', message);
 
+                return;
+            }
+        }
         self.SettingsService.postSettings(settings)
             .then(
                 res => {
@@ -284,11 +305,6 @@ export default class SettingsController {
                     self.Flash.create('danger', message);
                 }
             );
-        // } else {
-        //     let message = self.$filter('translate')('xhr.put_settings.error');
-        //     self.Flash.create('danger', message);
-        //     self.$scope.validate = frontValidation;
-        // }
     }
 
     removeIdentificationPriority(index) {

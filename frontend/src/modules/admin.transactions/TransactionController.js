@@ -78,7 +78,8 @@ export default class TransactionController {
                         let message = self.$filter('translate')('xhr.post_transaction_assign.success');
                         self.Flash.create('success', message);
                         self.$scope.linkTransactionModal = false;
-                        self.loaderStates.addTransaction = false; 
+                        self.loaderStates.addTransaction = false;
+                        self.tableParams.reload();
                     },
                     res => {
                         let message = self.$filter('translate')('xhr.post_transaction_assign.error');
@@ -128,12 +129,19 @@ export default class TransactionController {
 
         this.customersConfig = {
             valueField: 'customerId',
-            labelField: 'email',
+            render: {
+                option: (item, escape) => {
+                    return '<div>'+escape(item.email)+' ('+escape(item.phone)+')</div>';
+                },
+                item: (item, escape) => {
+                    return '<div>'+escape(item.email)+' ('+escape(item.phone)+')</div>';
+                }
+            },
             create: false,
             sortField: 'email',
             maxItems: 1,
-            searchField: 'email',
-            placeholder: this.$filter('translate')('global.start_typing_an_email'),
+            searchField: ['phone', 'email'],
+            placeholder: this.$filter('translate')('global.start_typing_an_email_or_phone'),
             onChange: () => {
                 self.$scope.clientSearch = 0;
             },
@@ -143,7 +151,7 @@ export default class TransactionController {
                 self.$scope.clientSearch = 1;
 
                 self.CustomerService.getCustomers(self.ParamsMap.params({
-                        'filter[email]': query,
+                        'filter[emailOrPhone]': query,
                         'filter[silenceQuery]': true
                     }))
                     .then(
