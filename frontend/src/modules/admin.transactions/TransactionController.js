@@ -131,10 +131,10 @@ export default class TransactionController {
             valueField: 'customerId',
             render: {
                 option: (item, escape) => {
-                    return '<div>'+escape(item.email)+' ('+escape(item.phone)+')</div>';
+                    return '<div>'+(item.email ? escape(item.email) : '')+' ('+escape(item.phone)+')</div>';
                 },
                 item: (item, escape) => {
-                    return '<div>'+escape(item.email)+' ('+escape(item.phone)+')</div>';
+                    return '<div>'+(item.email ? escape(item.email) : '')+' ('+escape(item.phone)+')</div>';
                 }
             },
             create: false,

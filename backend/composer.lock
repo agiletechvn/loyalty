@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e48a93c54374dd5d42024f4a42d8db99",
-    "content-hash": "6e386bd5906e918522f3467f40c835fd",
+    "hash": "cc3478c27bd3d598d5d18bfca4c6b347",
+    "content-hash": "291826b517fe3b7d6be49026437e5629",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -465,16 +465,16 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
-                "reference": "4f6e5f653d76530dce6a22b25164c9c60d2dc21a"
+                "reference": "edb8c236a0e6c70381f10eea251c32ff57a40292"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/4f6e5f653d76530dce6a22b25164c9c60d2dc21a",
-                "reference": "4f6e5f653d76530dce6a22b25164c9c60d2dc21a",
+                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/edb8c236a0e6c70381f10eea251c32ff57a40292",
+                "reference": "edb8c236a0e6c70381f10eea251c32ff57a40292",
                 "shasum": ""
             },
             "require": {
@@ -577,7 +577,7 @@
             "license": [
                 "proprietary"
             ],
-            "time": "2018-04-24 06:11:01"
+            "time": "2018-04-25 17:54:39"
         },
         {
             "name": "doctrine/annotations",

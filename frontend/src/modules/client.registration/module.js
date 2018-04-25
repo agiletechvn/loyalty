@@ -146,6 +146,26 @@ angular.module(MODULE_NAME, [])
                     }
                 }
             })
+            .state('forgot-password-reset-sms-customer', {
+                url: "/password/reset",
+                views: {
+                    'extendTop@': {
+                        templateUrl: 'templates/customer-password-reset-extend-top.html',
+                        controller: 'SecurityController',
+                        controllerAs: 'SecurityCtrl'
+                    },
+                    'main@': {
+                        templateUrl: require('./templates/customer-password-reset-sms.html'),
+                        controller: 'SecurityController',
+                        controllerAs: 'SecurityCtrl'
+                    },
+                    'extendBottom@': {
+                        templateUrl: 'templates/customer-password-reset-extend-bottom.html',
+                        controller: 'SecurityController',
+                        controllerAs: 'SecurityCtrl'
+                    }
+                }
+            })
     })
     .run(($templateCache, $http) => {
         let catchErrorTemplate = () => {

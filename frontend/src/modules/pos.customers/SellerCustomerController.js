@@ -101,6 +101,8 @@ export default class SellerCustomerController {
         }
         this.SellerCustomerService.resendActivationCode(id).then(
             res => {
+                let message = self.$filter('translate')('xhr.post_resend_activation_code.success');
+                self.Flash.create('success', message);
                 self.$state.go('seller.panel.customer-registration.activation', {customerId: id})
             },
             () => {

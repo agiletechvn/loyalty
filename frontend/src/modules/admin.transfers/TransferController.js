@@ -39,12 +39,19 @@ export default class TransferController {
         let self = this;
         this.customerConfig = {
             valueField: 'customerId',
-            labelField: 'email',
+            render: {
+                option: (item, escape) => {
+                    return '<div>'+(item.email ? escape(item.email) : '')+' ('+escape(item.phone)+')</div>';
+                },
+                item: (item, escape) => {
+                    return '<div>'+(item.email ? escape(item.email) : '')+' ('+escape(item.phone)+')</div>';
+                }
+            },
             create: false,
             sortField: 'email',
             maxItems: 1,
-            searchField: 'email',
-            placeholder: this.$filter('translate')('global.start_typing_an_email'),
+            searchField: ['phone', 'email'],
+            placeholder: this.$filter('translate')('global.start_typing_an_email_or_phone'),
             onChange: value => {
                 self.$scope.clientSearch = 0;
             },
@@ -54,7 +61,7 @@ export default class TransferController {
                 self.$scope.clientSearch = 1;
 
                 CustomerService.getCustomers(ParamsMap.params({
-                    'filter[email]': query,
+                    'filter[emailOrPhone]': query,
                     'filter[silenceQuery]': true
                 }))
                     .then(
