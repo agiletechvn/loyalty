@@ -5,6 +5,7 @@ export default class SettingsService {
         this.EditableMap = EditableMap;
         this.settings = null;
         this._logoFileError = {};
+        this._smallLogoFileError = {};
     }
 
     /**
@@ -74,6 +75,44 @@ export default class SettingsService {
     }
 
     /**
+     * Calls for post hero image
+     *
+     * @method postHeroImage
+     * @param {Object} data
+     * @returns {Promise}
+     */
+    postHeroImage(data) {
+        let fd = new FormData();
+
+        fd.append('photo[file]', data);
+
+        return this.Restangular
+            .one('settings')
+            .one('hero-image')
+            .withHttpConfig({transformRequest: angular.identity})
+            .customPOST(fd, '', undefined, {'Content-Type': undefined});
+    }
+
+    /**
+     * Calls for post small logo
+     *
+     * @method postSmallLogo
+     * @param {Object} data
+     * @returns {Promise}
+     */
+    postSmallLogo(data) {
+        let fd = new FormData();
+
+        fd.append('photo[file]', data);
+
+        return this.Restangular
+            .one('settings')
+            .one('small-logo')
+            .withHttpConfig({transformRequest: angular.identity})
+            .customPOST(fd, '', undefined, {'Content-Type': undefined});
+    }
+
+    /**
      * Calls for logo
      *
      * @method getLogo
@@ -87,6 +126,34 @@ export default class SettingsService {
     }
 
     /**
+     * Calls for small logo
+     *
+     * @method getSmallLogo
+     * @returns {Promise}
+     */
+    getSmallLogo() {
+        return this.Restangular
+            .one('settings')
+            .one('small-logo')
+            .get()
+    }
+
+
+
+    /**
+     * Calls for hero image
+     *
+     * @method getHeroImage
+     * @returns {Promise}
+     */
+    getHeroImage() {
+        return this.Restangular
+            .one('settings')
+            .one('hero-image')
+            .get()
+    }
+
+    /**
      * Calls to remove logo
      *
      * @method deleteLogo
@@ -96,6 +163,32 @@ export default class SettingsService {
         return this.Restangular
             .one('settings')
             .one('logo')
+            .remove()
+    }
+
+    /**
+     * Calls to remove small logo
+     *
+     * @method deleteSmallLogo
+     * @returns {Promise}
+     */
+    deleteSmallLogo() {
+        return this.Restangular
+            .one('settings')
+            .one('small-logo')
+            .remove()
+    }
+
+    /**
+     * Calls to remove small logo
+     *
+     * @method deleteSmallLogo
+     * @returns {Promise}
+     */
+    deleteHeroImage() {
+        return this.Restangular
+            .one('settings')
+            .one('hero-image')
             .remove()
     }
 

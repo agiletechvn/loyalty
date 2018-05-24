@@ -91,6 +91,40 @@ export default class TransactionController {
         }
     }
 
+    importTransaction(file) {
+        let self = this;
+
+        if (file) {
+            self.loaderStates.importTransaction = true;
+            self.TransactionService.postImportTransaction(file)
+                .then(
+                    res => {
+                        if (res.totalProcessed == 0) {
+                            let message = self.$filter('translate')('xhr.import.no_data');
+                            self.Flash.create('warning', message);
+                        } else if (res.totalFailed == 0 && res.totalProcessed > 0) {
+                            let message = self.$filter('translate')('xhr.import.success', {processed: res.totalProcessed});
+                            self.Flash.create('success', message);
+                        } else {
+                            let message = self.$filter('translate')('xhr.import.warning',
+                                {processed: res.totalProcessed, success: res.totalSuccess, failed: res.totalFailed}
+                            );
+                            self.Flash.create('warning', message);
+                        }
+
+                        self.$scope.importTransactionModal = false;
+                        self.loaderStates.importTransaction = false;
+                        self.tableParams.reload();
+                },
+                    res => {
+                        let message = self.$filter('translate')('xhr.import.error');
+                        self.Flash.create('danger', message);
+                        self.loaderStates.importTransaction = false;
+                    }
+                );
+        }
+    }
+
     _selectizeConfigs() {
         let self = this;
 

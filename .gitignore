@@ -18,3 +18,4 @@ frontend/yarn-error.log
 /docker/docker-compose.local.yml
 /docker/dev/php/fpm-dockerfile.local
 /docker/local
+/backend/app/var/import/*

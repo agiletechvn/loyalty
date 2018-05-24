@@ -16,6 +16,7 @@ export default class LevelController {
         this.Validation = Validation;
         this.$filter = $filter;
         this.config = DataService.getConfig();
+        this.$scope.fileValidate = {};
         this.active = [
             {
                 name: this.$filter('translate')('global.active'),
@@ -129,7 +130,20 @@ export default class LevelController {
                         self.Flash.create('danger', message);
                         self.loaderStates.coverLoader = false;
                     }
+                );
+
+            self.LevelService.getLevelImage(self.levelId)
+                .then(
+                    res => {
+                        self.$scope.levelImagePath = true;
+                    }
                 )
+                .catch(
+                    err => {
+                        self.$scope.levelImagePath = false;
+                    }
+                );
+
         } else {
             self.$state.go('admin.levels-list');
             let message = self.$filter('translate')('xhr.get_single_level.no_id');
@@ -161,9 +175,35 @@ export default class LevelController {
         self.LevelService.postLevel(newLevel)
             .then(
                 res => {
-                    self.$state.go('admin.levels-list');
-                    let message = self.$filter('translate')('xhr.post_single_level.success');
-                    self.Flash.create('success', message);
+                    if (self.$scope.levelImage) {
+                        self.$scope.fileValidate = {};
+
+                        self.LevelService.postLevelImage(res.id, self.$scope.levelImage)
+                            .then(
+                                res2 => {
+                                    self.$state.go('admin.levels-list', {levelId: self.levelId});
+                                    let message = self.$filter('translate')('xhr.post_single_level.success');
+                                    self.Flash.create('success', message);
+                                }
+                            )
+                            .catch(
+                                err => {
+                                    self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
+                                    self.LevelService.storedFileError = self.$scope.fileValidate;
+
+                                    let message = self.$filter('translate')('xhr.post_single_level.warning');
+                                    self.Flash.create('warning', message);
+
+                                    self.$state.go('admin.edit-level', {levelId: res.id});
+                                }
+                            );
+
+                    } else {
+
+                        self.$state.go('admin.levels-list');
+                        let message = self.$filter('translate')('xhr.post_single_level.success');
+                        self.Flash.create('success', message);
+                    }
                 },
                 res => {
                     self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
@@ -179,9 +219,35 @@ export default class LevelController {
         self.LevelService.putLevel(editedLevel)
             .then(
                 res => {
-                    let message = self.$filter('translate')('xhr.put_single_level.success');
-                    self.Flash.create('success', message);
-                    self.$state.go('admin.levels-list');
+
+                    if (self.$scope.levelImage) {
+                        self.$scope.fileValidate = {};
+
+                        self.LevelService.postLevelImage(self.levelId, self.$scope.levelImage)
+                            .then(
+                                res2 => {
+                                    self.$state.go('admin.levels-list', {levelId: self.levelId});
+                                    let message = self.$filter('translate')('xhr.put_single_level.success');
+                                    self.Flash.create('success', message);
+                                }
+                            )
+                            .catch(
+                                err => {
+                                    self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
+                                    self.LevelService.storedFileError = self.$scope.fileValidate;
+
+                                    let message = self.$filter('translate')('xhr.put_single_level.warning');
+                                    self.Flash.create('warning', message);
+
+                                    self.$state.go('admin.edit-level', {levelId: self.levelId});
+                                }
+                            );
+
+                    } else {
+                        let message = self.$filter('translate')('xhr.put_single_level.success');
+                        self.Flash.create('success', message);
+                        self.$state.go('admin.levels-list');
+                    }
                 },
                 res => {
                     self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
@@ -236,7 +302,41 @@ export default class LevelController {
                     self.Flash.create('danger', message);
                 }
             )
+    }
 
+    /**
+     * Deletes photo
+     *
+     * @method deletePhoto
+     */
+    deletePhoto() {
+        let self = this;
+
+        this.LevelService.deleteLevelImage(this.levelId)
+            .then(
+                res => {
+                    self.$scope.levelImagePath = false;
+                    let message = self.$filter('translate')('xhr.delete_level_image.success');
+                    self.Flash.create('success', message);
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.delete_level_image.error');
+                    self.Flash.create('danger', message);
+                }
+            )
+    }
+
+    /**
+     * Generating photo route
+     *
+     * @method generatePhotoRoute
+     * @returns {string}
+     */
+    generatePhotoRoute() {
+        return this.config.apiUrl + '/level/' + this.levelId + '/photo'
     }
 }
 

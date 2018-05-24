@@ -39,7 +39,7 @@ export default class CustomerCampaignController {
                     self.$scope.translateValues = {
                         "levelName": res.levelName,
                         "level": res.level,
-                        "points": res.points,
+                        "points": self.$filter('roundPoints')(res.points),
                         "pointsToNextLevel": res.pointsToNextLevel,
                         "transactionsAmountToNextLevelWithoutDeliveryCosts": res.transactionsAmountToNextLevelWithoutDeliveryCosts + res.currency,
                         "transactionsAmountToNextLevel": res.transactionsAmountToNextLevel + res.currency,

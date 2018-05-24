@@ -61,4 +61,13 @@ export default class Filters {
             return input;
         };
     }
+
+    static RoundPoints() {
+        return function (value) {
+            if (angular.isUndefined(value)) {
+                return 0;
+            }
+            return Math.ceil(value*100)/100;
+        }
+    }
 }

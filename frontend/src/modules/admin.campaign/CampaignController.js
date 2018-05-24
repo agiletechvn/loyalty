@@ -114,6 +114,10 @@ export default class CampaignController {
             {
                 name: this.$filter('translate')('campaign.value_code'),
                 type: 'value code'
+            },
+            {
+                name: this.$filter('translate')('campaign.cashback'),
+                type: 'cashback'
             }
         ];
         this.egCoupon = ['Example_coupon'];

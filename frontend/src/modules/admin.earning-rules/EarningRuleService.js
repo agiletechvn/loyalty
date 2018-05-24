@@ -28,6 +28,54 @@ export default class EarningRuleService {
         return this.Restangular.one('earningRule').one(ruleId).one('activate').customPOST({active: state})
     }
 
+    /**
+     * Calls for post image to earning rule
+     *
+     * @method postEarningRuleImage
+     * @param {Integer} earningRule
+     * @param {Object} data
+     * @returns {Promise}
+     */
+    postEarningRuleImage(earningRule, data) {
+        let fd = new FormData();
+
+        fd.append('photo[file]', data);
+
+        return this.Restangular
+            .one('earningRule', earningRule)
+            .one('photo')
+            .withHttpConfig({transformRequest: angular.identity})
+            .customPOST(fd, '', undefined, {'Content-Type': undefined});
+    }
+
+    /**
+     * Calls for earning rule image
+     *
+     * @method getEarningRuleImage
+     * @param {Integer} earningRule
+     * @returns {Promise}
+     */
+    getEarningRuleImage(earningRule) {
+        return this.Restangular
+            .one('earningRule', earningRule)
+            .one('photo')
+            .get()
+    }
+
+    /**
+     * Calls to remove earning rule photo
+     *
+     * @method deleteEarningRuleImage
+     * @param {Integer} earningRule
+     * @returns {Promise}
+     */
+    deleteEarningRuleImage(earningRule) {
+        return this.Restangular
+            .one('earningRule', earningRule)
+            .one('photo')
+            .remove()
+    }
+
 }
 
 EarningRuleService.$inject = ['Restangular', 'EditableMap'];

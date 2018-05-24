@@ -192,6 +192,18 @@
                         </button>
                     </div>
                 </fieldset>
+                <fieldset class="fieldset">
+                    <legend>{{ "level.photo" | translate }}</legend>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "level.photo" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns"
+                             form-validation="fileValidate.file.errors">
+                                <input type="file" file-model="$parent.$parent.levelImage" style="padding:9px">
+                        </div>
+                    </div>
+                </fieldset>
             </div>
         </div>
     </div>

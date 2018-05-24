@@ -179,6 +179,15 @@
                                 </span>
                         </td>
                     </tr>
+                    <tr ng-if="customer.manuallyAssignedLevelId">
+                        <td><b>{{ "level.assigned_manually"|translate }}:</b></td>
+                        <td>
+                            <a class="tiny button button-septenary-colorized" style="margin-bottom:3px"
+                               ng-click="CustomerCtrl.removeManuallyLevel(customer.id, false)">
+                                {{ "global.unlink"|translate }}
+                            </a>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -203,7 +212,7 @@
                 <table class="simple" ng-if="customer.posId">
                     <tbody>
                     <tr>
-                        <td><b>{{ "pos.name"|translate }}:</b></td>
+                        <td><b>{{ "pos.name"|translate }}:status</b></td>
                         <td><span ng-bind="assignedPos.name"></span></td>
                     </tr>
                     <tr>
@@ -236,7 +245,7 @@
                     </tr>
                     <tr>
                         <td><b>{{ "seller.email"|translate }}:</b></td>
-                        <td><span ng-bind="assignedSeller.email"></span></td>
+                        <td><span ng-bind="assignedSeller.statusemail"></span></td>
                     </tr>
                     </tbody>
                 </table>
@@ -257,15 +266,15 @@
                             <tbody>
                             <tr>
                                 <td><b>{{ "customer.loyalty.active_points"|translate }}:</b></td>
-                                <td><span ng-bind="status.points"></span></td>
+                                <td><span ng-bind="status.points|roundPoints"></span></td>
                             </tr>
                             <tr>
                                 <td><b>{{ "customer.loyalty.used_points"|translate }}:</b></td>
-                                <td><span ng-bind="status.usedPoints"></span></td>
+                                <td><span ng-bind="status.usedPoints|roundPoints"></span></td>
                             </tr>
                             <tr>
                                 <td><b>{{ "customer.loyalty.expired_points"|translate }}:</b></td>
-                                <td><span ng-bind="status.expiredPoints"></span></td>
+                                <td><span ng-bind="status.expiredPoints|roundPoints"></span></td>
                             </tr>
                             </tbody>
                         </table>
@@ -339,7 +348,7 @@
                                     <span style="text-transform: uppercase" ng-bind="row.currency"></span>
                                 </td>
                                 <td data-title="'transaction.points_earned'|translate">
-                                    <span ng-bind="row.pointsEarned"></span>
+                                    <span ng-bind="row.pointsEarned|roundPoints"></span>
                                 </td>
                                 <td data-title="'transaction.actions'|translate">
                                     <button type="button" class="button  button-quinary tiny"
@@ -374,7 +383,7 @@
                                     <span ng-bind="row.type"></span>
                                 </td>
                                 <td data-title="'transfer.value'|translate">
-                                    <span ng-bind="row.value"></span>
+                                    <span ng-bind="row.value|roundPoints"></span>
                                 </td>
                                 <td data-title="'transfer.created_at'|translate" sortable="'createdAt'">
                                     <span ng-bind="row.createdAt|date : 'yyyy-MM-dd HH:mm'"></span>
@@ -410,7 +419,7 @@
                                     <span ng-bind="row.active"></span>
                                 </td>
                                 <td data-title="'campaign.cost_in_points'|translate">
-                                    <span ng-bind="row.costInPoints"></span>
+                                    <span ng-bind="row.costInPoints|roundPoints"></span>
                                 </td>
                                 <td data-title="'campaign.limit'|translate">
                                     <span ng-bind="row.unlimited ? ('global.unlimited'|translate) : row.limit"></span>
@@ -450,17 +459,19 @@
                                     <span ng-bind="row.campaign.name"></span>
                                 </td>
                                 <td data-title="'campaign.cost_in_points'|translate">
-                                    <span ng-bind="row.costInPoints"></span>
+                                    <span ng-bind="row.costInPoints|roundPoints"></span>
                                 </td>
                                 <td data-title="'campaign.purchase_at'|translate">
                                     <span ng-bind="row.purchaseAt|date : 'yyyy-MM-dd HH:mm'"></span>
                                 </td>
                                 <td data-title="'campaign.coupon'|translate">
-                                    <span ng-bind="row.coupon.code"></span>
+                                    <span ng-bind="row.coupon.code" ng-if="row.campaign.reward != 'cashback'"></span>
+                                    <span ng-if="row.campaign.reward == 'cashback'">---</span>
                                 </td>
                                 <td data-title="'campaign.coupon_used'|translate">
-                                    <checkbox ng-model="row.used"
+                                    <checkbox ng-model="row.used" ng-if="row.campaign.reward != 'cashback'"
                                               ng-click="CustomerCtrl.updateCouponUsage(customer.id, row.campaignId.campaignId, row.coupon.code, row.used)"/>
+                                    <span ng-if="row.campaign.reward == 'cashback'">---</span>
                                 </td>
                             </tr>
                             <tr ng-if="!$data.length">

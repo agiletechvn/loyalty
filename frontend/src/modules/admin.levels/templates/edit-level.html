@@ -194,6 +194,30 @@
                             </button>
                         </div>
                     </fieldset>
+
+                    <fieldset class="fieldset">
+                        <legend>{{ "level.photo" | translate }}</legend>
+                        <div class="row">
+                            <div class="medium-2 small-3 columns">
+                                <label>{{ "level.photo" | translate }}</label>
+                            </div>
+                            <div class="medium-10 small-9 columns"
+                                 form-validation="fileValidate.file.errors">
+                                <div ng-show="!levelImagePath">
+                                    <input type="file" file-model="$parent.$parent.levelImage" style="padding:9px">
+                                </div>
+                                <div ng-show="levelImagePath" class="levelFileWrapper">
+                                    <img ng-src="{{LevelCtrl.generatePhotoRoute()}}" style="display: inline-block;"/>
+                                    <button class="button button-septenary-colorized text-uppercase"
+                                            style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
+                                            type="button"
+                                            ng-click="LevelCtrl.deletePhoto()">
+                                        {{ "global.remove" | translate }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
         </div>

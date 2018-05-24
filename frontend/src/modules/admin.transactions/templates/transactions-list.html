@@ -5,6 +5,9 @@
         <button class="medium button button-septenary-colorized" ng-click="linkTransactionModal=true">
             {{ "transaction.link" | translate }}
         </button>
+        <button class="medium button button-septenary-colorized" ng-click="importTransactionModal=true">
+            {{ "transaction.import" | translate }}
+        </button>
     </div>
 </div>
 <div style="clear:both"></div>
@@ -216,6 +219,32 @@
                     </button>
                     <div class="spinner-loader-wrapper">
                         <spinner-loader loading="TransactionCtrl.loaderStates.addTransaction" class="inline"
+                                        delay="5"></spinner-loader>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>
+<modal show='importTransactionModal' modalId="importTransactionModal" modal-title="'transaction.import_title' | translate">
+    <form novalidate ng-submit="TransactionCtrl.importTransaction(file)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="columns medium-6">
+                    <label>{{ "transaction.import_xml_field" | translate }} </label>
+                </div>
+                <div class="columns medium-6">
+                    <div ng-model="file" xml-upload></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit"
+                            ng-disabled="TransactionCtrl.loaderStates.importTransaction">
+                        {{ "global.import" | translate }}
+                    </button>
+                    <div class="spinner-loader-wrapper">
+                        <spinner-loader loading="TransactionCtrl.loaderStates.importTransaction" class="inline"
                                         delay="5"></spinner-loader>
                     </div>
                 </div>

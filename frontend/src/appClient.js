@@ -42,6 +42,7 @@ import ModalDirective from './component/global/modal/ModalDirective';
 import DatepickerDirective from './component/global/datepicker/DatepickerDirective';
 import FormValidationDirective from './component/global/validation/FormValidationDirective';
 import CsvUploadDirective from './component/global/csv/CsvUploadDirective';
+import XmlUploadDirective from './component/global/import/XmlUploadDirective';
 import SecurityController from './component/global/security/SecurityController';
 import SecurityService from './component/global/security/SecurityService';
 import DataService from './component/global/data/DataService';
@@ -219,7 +220,7 @@ angular.module('OpenLoyalty', [
         $rootScope.pendingRequests = _.isNumber($rootScope.pendingRequests) ? $rootScope.pendingRequests : 0;
         Restangular.setErrorInterceptor(function (response) {
             $rootScope.pendingRequests -= 1;
-            if (response.data.message && response.data.message === 'Bad credentials') {
+            if (typeof response.data === 'object' && response.data && response.data.message && response.data.message === 'Bad credentials') {
                 return true;
             }
             if (response.status === 401) {
@@ -247,11 +248,13 @@ angular.module('OpenLoyalty', [
     .filter('percent', () => new Filters.Percent())
     .filter('propsFilter', () => new Filters.PropsFilter())
     .filter('isEmpty', () => new Filters.IsEmptyFilter())
+    .filter('roundPoints', () => new Filters.RoundPoints())
 
     .directive('modal', () => new ModalDirective())
     .directive('datepicker', () => new DatepickerDirective())
     .directive('formValidation', () => new FormValidationDirective())
     .directive('csvUpload', () => new CsvUploadDirective())
+    .directive('xmlUpload', () => new XmlUploadDirective())
     .directive('checkbox', () => new CheckboxDirective())
     .directive('staticPage', () => new StaticPagesDirective())
     .directive('boxLoader', BoxLoaderDirective.create)

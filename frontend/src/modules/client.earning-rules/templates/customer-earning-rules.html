@@ -20,7 +20,12 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="rule in rules">
-                                    <td>{{ rule.name }}</td>
+                                    <td>
+                                         <span>
+                                            <img ng-if="rule.earningRuleImagePath" ng-src="{{CustomerEarningRulesCtrl.generatePhotoRoute(rule.earningRuleId)}}" alt="" />
+                                        </span>
+                                        {{ rule.name }}
+                                    </td>
                                     <td>
                                         <span style="text-transform: uppercase" ng-show="rule.type == 'points'" translate="customer_earning_rules.points" translate-values="{'currency': currency, 'pointsValue': rule.pointValue}">
                                         </span>

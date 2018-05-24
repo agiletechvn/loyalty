@@ -212,6 +212,46 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.small_logo" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns"
+                             form-validation="smallLogoValidate.small_logo.errors">
+                            <div ng-show="!smallLogoFilePath">
+                                <input type="file" file-model="$parent.$parent.smallLogoFile" style="padding:9px">
+                            </div>
+                            <div ng-show="smallLogoFilePath" class="campainFileWrapper">
+                                <img ng-src="{{SettingsCtrl.generateSmallLogoRoute()}}" style="display: inline-block; background-color: #ccc;"/>
+                                <button class="button button-septenary-colorized text-uppercase"
+                                        style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
+                                        type="button"
+                                        ng-click="SettingsCtrl.deleteSmallLogo()">
+                                    {{ "global.remove" | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.hero_image" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns"
+                             form-validation="heroImageValidate.hero_image.errors">
+                            <div ng-show="!heroImageFilePath">
+                                <input type="file" file-model="$parent.$parent.heroImageFile" style="padding:9px">
+                            </div>
+                            <div ng-show="heroImageFilePath" class="campainFileWrapper">
+                                <img ng-src="{{SettingsCtrl.generateHeroImageRoute()}}" style="display: inline-block; background-color: #ccc;"/>
+                                <button class="button button-septenary-colorized text-uppercase"
+                                        style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
+                                        type="button"
+                                        ng-click="SettingsCtrl.deleteHeroImage()">
+                                    {{ "global.remove" | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </fieldset>
                 <fieldset class="fieldset">
                     <legend>{{"settings.statuses"|translate}}</legend>
@@ -324,6 +364,28 @@
                                 ng-click="SettingsCtrl.addIdentificationPriority()"
                                 type="button">{{ "segment.add_identification_priority" | translate }}
                         </button>
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset">
+                    <legend>{{"settings.webhooks"|translate}}</legend>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.webhooks" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.webhooks.errors">
+                            <checkbox ng-model="settings.webhooks"></checkbox>
+                            <span class="prompt">{{ "settings.enable_webhooks"|translate}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.uri_webhooks" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.uriWebhooks.errors">
+                            <input type="text" ng-model="settings.uriWebhooks">
+                            <span class="prompt">{{ "settings.uri_webhooks_prompt"|translate}}</span>
+                        </div>
                     </div>
                 </fieldset>
             </div>

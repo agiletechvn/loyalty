@@ -73,6 +73,7 @@ export default class CustomerService {
     deactivateCustomer(customerId) {
         return this.Restangular.one('admin').one('customer', customerId).one('deactivate').customPOST();
     }
+
     activateCustomer(customerId) {
         return this.Restangular.one('admin').one('customer', customerId).one('activate').customPOST();
     }
@@ -80,6 +81,11 @@ export default class CustomerService {
     postUsage(customerId, campaignId, code, usage) {
         return this.Restangular.one('admin').one('customer').one(customerId).one('campaign').one(campaignId).one('coupon').one(code).customPOST({used: usage});
     }
+
+    removeManuallyLevel(customerId) {
+        return this.Restangular.one('customer', customerId).one('remove-manually-level').customPOST();
+    }
+
 }
 
 CustomerService.$inject = ['Restangular', 'EditableMap'];

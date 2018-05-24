@@ -195,6 +195,26 @@ export default class SettingsController {
     }
 
     /**
+     * Generating logo route
+     *
+     * @method generateLogoRoute
+     * @returns {string}
+     */
+    generateSmallLogoRoute() {
+        return this.DataService.getConfig().apiUrl + '/settings/small-logo';
+    }
+
+    /**
+     * Generating logo route
+     *
+     * @method generateLogoRoute
+     * @returns {string}
+     */
+    generateHeroImageRoute() {
+        return this.DataService.getConfig().apiUrl + '/settings/hero-image';
+    }
+
+    /**
      * Deletes logo
      *
      * @method deleteLogo
@@ -216,6 +236,57 @@ export default class SettingsController {
                     let message = self.$filter('translate')('xhr.delete_settings_logo.error');
                     self.Flash.create('danger', message);
                 }
+            )
+    }
+
+    /**
+     * Deletes small logo
+     *
+     * @method deleteSmallLogo
+     */
+    deleteSmallLogo() {
+        let self = this;
+
+        this.SettingsService.deleteSmallLogo()
+            .then(
+                res => {
+                    self.$scope.smallLogoFilePath = false;
+                    let message = self.$filter('translate')('xhr.delete_settings_small_logo.success');
+                    self.Flash.create('success', message);
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.delete_settings_small_logo.error');
+                    self.Flash.create('danger', message);
+                }
+            )
+    }
+
+
+    /**
+     * Deletes hero image
+     *
+     * @method deleteHeroImage
+     */
+    deleteHeroImage() {
+        let self = this;
+
+        this.SettingsService.deleteHeroImage()
+            .then(
+                res => {
+                    self.$scope.heroImageFilePath = false;
+                    let message = self.$filter('translate')('xhr.delete_settings_hero_image.success');
+                    self.Flash.create('success', message);
+                }
+            )
+            .catch(
+                    err => {
+                        self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                        let message = self.$filter('translate')('xhr.delete_settings_hero_image.error');
+                        self.Flash.create('danger', message);
+                    }
             )
     }
 
@@ -249,6 +320,29 @@ export default class SettingsController {
                     self.$scope.logoFilePath = false;
                 }
             );
+        self.SettingsService.getSmallLogo()
+            .then(
+                res => {
+                    self.$scope.smallLogoFilePath = true;
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.smallLogoFilePath = false;
+                }
+            );
+
+        self.SettingsService.getHeroImage()
+            .then(
+                res => {
+                    self.$scope.heroImageFilePath = true;
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.heroImageFilePath = false;
+                }
+            );
     }
 
     editSettings(settings) {
@@ -273,31 +367,70 @@ export default class SettingsController {
         self.SettingsService.postSettings(settings)
             .then(
                 res => {
+                    let postChain = [1];
+
                     if (self.$scope.logoFile) {
                         self.$scope.fileValidate = {};
-                        self.SettingsService.postLogo(self.$scope.logoFile)
-                            .catch(
-                                err => {
-                                    self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
-                                    let message = self.$filter('translate')('xhr.upload_settings_logo.error');
-                                    self.Flash.create('danger', message);
-                                    self.loaderStates.coverLoader = false;
-                                }
-                            );
+                        postChain.push(
+                            self.SettingsService.postLogo(self.$scope.logoFile)
+                                .catch(
+                                    err => {
+                                        self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
+                                        let message = self.$filter('translate')('xhr.upload_settings_logo.error');
+                                        self.Flash.create('danger', message);
+                                        self.loaderStates.coverLoader = false;
+                                    }
+                                )
+                        );
                         self.$scope.refresh = true;
                     }
 
-                    let message = self.$filter('translate')('xhr.put_settings.success');
-                    self.Flash.create('success', message);
-                    self.$scope.validate = {};
-                    self.$scope.settings = res.settings;
-                    self.TranslationService.removeStoredTranslations();
-                    self.$translate.refresh();
-                    self.$scope.settingsOld = angular.copy(self.$scope.settings);
 
-                    if (self.$scope.refresh) {
-                        window.location.reload(true);
+                    if (self.$scope.smallLogoFile) {
+                        self.$scope.smallLogoValidate = {};
+                        postChain.push(
+                        self.SettingsService.postSmallLogo(self.$scope.smallLogoFile)
+                            .catch(
+                                err => {
+                                    self.$scope.smallLogoValidate = self.Validation.mapSymfonyValidation(err.data);
+                                    let message = self.$filter('translate')('xhr.upload_settings_small_logo.error');
+                                    self.Flash.create('danger', message);
+                                    self.loaderStates.coverLoader = false;
+                                }
+                            )
+                        );
+                        self.$scope.refresh = true;
                     }
+
+                    if (self.$scope.heroImageFile) {
+                        self.$scope.heroImageValidate = {};
+                        postChain.push(
+                        self.SettingsService.postHeroImage(self.$scope.heroImageFile)
+                            .catch(
+                                err => {
+                                    self.$scope.heroImageValidate = self.Validation.mapSymfonyValidation(err.data);
+                                    let message = self.$filter('translate')('xhr.upload_settings_hero_image.error');
+                                    self.Flash.create('danger', message);
+                                    self.loaderStates.coverLoader = false;
+                                }
+                            )
+                        );
+                        self.$scope.refresh = true;
+                    }
+
+                    Promise.all(postChain).then(function(values) {
+                        let message = self.$filter('translate')('xhr.put_settings.success');
+                        self.Flash.create('success', message);
+                        self.$scope.validate = {};
+                        self.$scope.settings = res.settings;
+                        self.TranslationService.removeStoredTranslations();
+                        self.$translate.refresh();
+                        self.$scope.settingsOld = angular.copy(self.$scope.settings);
+
+                        if (self.$scope.refresh) {
+                            window.location.reload(true);
+                        }
+                    });
                 },
                 (res) => {
                     self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);

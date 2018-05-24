@@ -42,7 +42,7 @@
                     <span>{{'campaign.'+row.reward|translate}}</span>
                 </td>
                 <td data-title="'campaign.cost_in_points'|translate" sortable="'costInPoints'">
-                    <span ng-bind="row.costInPoints"></span>
+                    <span ng-bind="row.costInPoints|roundPoints"></span>
                 </td>
                 <td data-title="'campaign.limit'|translate" sortable="'limit'">
                     <span ng-bind="row.limit" ng-if="!row.unlimited"></span>
@@ -56,7 +56,8 @@
                     <span ng-bind="row.usersWhoUsedThisCampaignCount"></span>
                 </td>
                 <td data-title="'campaign.coupons_count'|translate">
-                    <span ng-bind="row.coupons.length"></span>
+                    <span ng-bind="row.coupons.length"  ng-if="row.reward != 'cashback'"></span>
+                    <span ng-bind="'---'"  ng-if="row.reward == 'cashback'"></span>
                 </td>
                 <td data-title="'campaign.active_from'|translate" sortable="'campaignActivity.activeFrom'">
                     <span ng-if="row.campaignActivity.allTimeActive">{{'global.all_time_active'|translate}}</span>
@@ -69,12 +70,13 @@
                           ng-bind="row.campaignActivity.activeTo|date:'yyyy-MM-dd HH:mm'"></span>
                 </td>
                 <td data-title="'campaign.customers'|translate" style="min-width: 150px;">
-                    <span ng-bind="row.visibleForCustomersCount"></span>
+                    <span ng-bind="row.visibleForCustomersCount" ng-if="row.reward != 'cashback'"></span>
 
-                    <button class="button button-primary tiny pull-right"
+                    <button class="button button-primary tiny pull-right"  ng-if="row.reward != 'cashback'"
                             ui-sref="admin.campaign-customers({campaignId: row.campaignId, campaignName: row.name})">
                         {{ "campaign.show_customers"|translate }}
                     </button>
+                    <span  ng-if="row.reward == 'cashback'">---</span>
                 </td>
                 <td data-title="'campaign.actions'|translate">
                     <button type="button" class="button  button-secondary tiny"

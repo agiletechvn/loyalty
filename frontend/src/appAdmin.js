@@ -49,6 +49,7 @@ import CheckboxDirective from './component/global/checkbox/CheckboxDirective';
 import DatepickerDirective from './component/global/datepicker/DatepickerDirective';
 import FormValidationDirective from './component/global/validation/FormValidationDirective';
 import CsvUploadDirective from './component/global/csv/CsvUploadDirective';
+import XmlUploadDirective from './component/global/import/XmlUploadDirective';
 import SecurityController from './component/global/security/SecurityController';
 import SecurityService from './component/global/security/SecurityService';
 
@@ -259,14 +260,14 @@ angular.module('OpenLoyalty', [
         }
     })
 
-    .run(['Restangular', '$state', 'AuthService', '$rootScope', '$templateCache', function (Restangular, $state, AuthService, $rootScope, $templateCache) {
+    .run(['Restangular', '$state', 'AuthService', '$rootScope', '$templateCache', function (Restangular, $state, AuthService, $rootScope, $templateCache, Flash) {
         $rootScope.pendingRequests = _.isNumber($rootScope.pendingRequests) ? $rootScope.pendingRequests : 0;
         Restangular.setErrorInterceptor(function (response) {
-            //console.log('ErrorInterceptor', response);
             $rootScope.pendingRequests -= 1;
-            if (response.data.message && response.data.message === 'Bad credentials') {
+            if (typeof response.data === 'object' && response.data && response.data.hasOwnProperty('message') && response.data.message && response.data.message === 'Bad credentials') {
                 return true;
             }
+
             if (response.status === 401) {
                 AuthService.logout();
                 return false;
@@ -274,22 +275,18 @@ angular.module('OpenLoyalty', [
             return true;
         });
         Restangular.addResponseInterceptor(res => {
-            //console.log('ResponseInterceptor', res, res.reqParams);
             if ($rootScope.pendingRequests > 0) {
                 $rootScope.pendingRequests -= 1;
             }
-            //console.log('pending request', $rootScope.pendingRequests)
 
             return res;
         });
         Restangular.addFullRequestInterceptor((element, operation, what, url, headers, params) => {
             //filter[silenceQuery]: true
-            //console.log('requestInterceptor', element, operation, what, url, headers, params);
             console.log('pendingRequest', $rootScope.pendingRequests)
             if (!params.silenceQuery) {
                 $rootScope.pendingRequests += 1;
             }
-            //console.log('pending request', $rootScope.pendingRequests)
 
             return element;
         });
@@ -302,11 +299,13 @@ angular.module('OpenLoyalty', [
     .filter('percent', () => new Filters.Percent())
     .filter('propsFilter', () => new Filters.PropsFilter())
     .filter('isEmpty', () => new Filters.IsEmptyFilter())
+    .filter('roundPoints', () => new Filters.RoundPoints())
 
     .directive('modal', () => new ModalDirective())
     .directive('datepicker', () => new DatepickerDirective())
     .directive('formValidation', () => new FormValidationDirective())
     .directive('csvUpload', () => new CsvUploadDirective())
+    .directive('xmlUpload', () => new XmlUploadDirective())
     .directive('checkbox', () => new CheckboxDirective())
     .directive('staticPage', () => new StaticPagesDirective())
     .directive('fileModel', FileModelDirective.create)

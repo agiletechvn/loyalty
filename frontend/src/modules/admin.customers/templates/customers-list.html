@@ -58,6 +58,15 @@
                     filter="{daysFromLastTransaction: 'number'}">
                     <span ng-bind="row.lastTransactionDate ? (dateNow| amDifference : row.lastTransactionDate : 'days') : ('global.not_set' | translate)"></span>
                 </td>
+                <td data-title="'customer.current_level'|translate" sortable="'level.name'">
+                    <span style="text-transform:uppercase" ng-bind="row.level.name"></span>
+                </td>
+
+                <td data-title="'level.assigned_manually'|translate" filter="{manuallyAssignedLevel: 'bool'}"
+                    sortable="'manuallyAssignedLevelId'">
+                    <span ng-if="!row.manuallyAssignedLevelId" ng-bind="'global.no'|translate"></span>
+                    <span ng-if="row.manuallyAssignedLevelId" ng-bind="'global.yes'|translate"></span>
+                </td>
                 <td data-title="'customer.actions'|translate">
                     <button type="button" class="button  button-secondary tiny"
                             ui-sref="admin.edit-customer({customerId: row.id})">
@@ -74,6 +83,11 @@
                     <button ng-if="!row.active" type="button" class="button button-septenary tiny"
                             ng-click="customers[$index].showActivateModal=true">
                         <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                    <button ng-if="row.manuallyAssignedLevelId" type="button"
+                            class="tiny button button-septenary-colorized"
+                            ng-click="CustomerCtrl.removeManuallyLevel(row.id, true)">
+                        <i class="fa fa-unlink" aria-hidden="true"></i>
                     </button>
                 </td>
             </tr>

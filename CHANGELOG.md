@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 25-05-2018
+### Added
+- added property hasPhoto to indicate a model has photo in campaigns, earning points rules and levels
+- added photo to Levels
+- added photo to Earning Points Rules
+- added uploading transactions from XML file
+- added new Reward Campaign "CashBack"
+- added a new property "Prize value" to the Reward Campaigns
+- added a new property "Tax" to the Reward Campaigns
+- added a new settings "Small logo"
+- added uploading points transfers from XML file
+- added a new sorting filter "manuallyAssignedLevel" to the customer list
+- added a method to unassign a customer from assigned manually level /api/customer/{customer}/remove-manually-level
+### Changed
+- upgraded minimum version of PHP from 7.0 to 7.1
+- changed campaignId object to string in response from /api/customer/campaign/bought
+- property "pointsEarned" is now always available in the /api/transaction response
+
 ## [2.4.0] - 23-04-2018
 ### Added
 - added missing translations

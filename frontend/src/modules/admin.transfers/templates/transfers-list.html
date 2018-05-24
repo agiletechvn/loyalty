@@ -6,6 +6,9 @@
         <button class="medium button button-septenary-colorized" ng-click="TransferCtrl.openTransferModal()">
             {{ "transfer.add_transfer" | translate }}
         </button>
+        <button class="medium button button-septenary-colorized" ng-click="TransferCtrl.openImportModal()">
+            {{ "transfer.import" | translate }}
+        </button>
         <!--<button class="medium button button-septenary-colorized" ng-click="TransferCtrl.openSpendPointsModal()">-->
         <!--{{ "transfer.spend_points" | translate }}-->
         <!--</button>-->
@@ -42,7 +45,7 @@
                     <span ng-bind="row.type"></span>
                 </td>
                 <td data-title="'transfer.value'|translate">
-                    <span ng-bind="row.value"></span>
+                    <span ng-bind="row.value|roundPoints"></span>
                 </td>
                 <td data-title="'transfer.comment'|translate">
                     <span ng-bind="row.comment"></span>
@@ -140,6 +143,34 @@
                     </button>
                     <div class="spinner-loader-wrapper">
                         <spinner-loader loading="TransferCtrl.loaderStates.addTransfer" class="inline"
+                                        delay="5"></spinner-loader>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>
+
+<modal show='showTransferImportModal' modalId="transferImportModal"
+       modal-title="'transfer.import_title' | translate">
+    <form novalidate ng-submit="TransferCtrl.importTransfer(file)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="columns medium-6">
+                    <label>{{ "transfer.import_xml_field" | translate }} </label>
+                </div>
+                <div class="columns medium-6">
+                    <div ng-model="file" xml-upload></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit"
+                            ng-disabled="TransferCtrl.loaderStates.importTransfer">
+                        {{ "global.import" | translate }}
+                    </button>
+                    <div class="spinner-loader-wrapper">
+                        <spinner-loader loading="TransferCtrl.loaderStates.importTransfer" class="inline"
                                         delay="5"></spinner-loader>
                     </div>
                 </div>

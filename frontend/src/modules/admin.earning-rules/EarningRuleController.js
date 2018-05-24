@@ -24,6 +24,7 @@ export default class EarningRuleController {
         this.Validation = Validation;
         this.$filter = $filter;
         this.$scope.egSkus = ['SKU123'];
+        this.$scope.fileValidate = this.EarningRuleService.storedFileError;
         this.config = DataService.getConfig();
         this.segments = null;
         this.levels = null;
@@ -252,7 +253,20 @@ export default class EarningRuleController {
                         self.Flash.create('danger', message);
                         self.loaderStates.earningRuleDetails = false;
                     }
-                )
+                );
+
+            self.EarningRuleService.getEarningRuleImage(self.earningRuleId)
+                .then(
+                    res => {
+                    self.$scope.earningRuleImagePath = true;
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.earningRuleImagePath = false;
+                }
+            );
+
         } else {
             self.$state.go('admin.earning-rule-list');
             let message = self.$filter('translate')('xhr.get_earning_rule.no_id');
@@ -263,20 +277,48 @@ export default class EarningRuleController {
 
     editEarningRule(editedEarningRule) {
         let self = this;
-        self.loaderStates.earningRuleDetails = true;
         self.EarningRuleService.putEarningRule(self.earningRuleId, self.EditableMap.newEarningRule(editedEarningRule, true))
             .then(
-                res => {
-                    let message = self.$filter('translate')('xhr.put_earning_rule.success');
-                    self.Flash.create('success', message);
-                    self.$state.go('admin.earning-rule-list');
-                    self.loaderStates.earningRuleDetails = false;
-                },
-                res => {
-                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                success => {
+                    if (self.$scope.earningRulePhoto) {
+                        self.$scope.fileValidate = {};
+
+                        self.EarningRuleService.postEarningRuleImage(self.earningRuleId, self.$scope.earningRulePhoto)
+                            .then(
+                                success => {
+                                    self.EarningRuleService.storedFileError = {};
+                                    let message = self.$filter('translate')('xhr.put_earning_rule.success');
+                                    self.Flash.create('success', message);
+                                    self.loaderStates.coverLoader = false;
+                                    self.$state.go('admin.earning-rule-list');
+                                }
+                            )
+                            .catch(
+                                err => {
+                                    if (err.data) {
+                                        self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
+                                    }
+
+                                    let message = self.$filter('translate')('xhr.put_earning_rule.error');
+                                    self.Flash.create('danger', message);
+                                    self.loaderStates.coverLoader = false;
+                                    self.$state.go('admin.edit-earning-rule', {earningRuleId: self.earningRuleId});
+                                }
+                        );
+
+                    } else {
+                        let message = self.$filter('translate')('xhr.put_earning_rule.success');
+                        self.Flash.create('success', message);
+                        self.$state.go('admin.earning-rule-list');
+                    }
+                }
+            ).catch(
+                err => {
+                    self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
                     let message = self.$filter('translate')('xhr.put_earning_rule.error');
                     self.Flash.create('danger', message);
                     self.loaderStates.earningRuleDetails = false;
+                    self.$state.go('admin.edit-earning-rule', {earningRuleId: self.earningRuleId});
                 }
             )
     }
@@ -287,10 +329,38 @@ export default class EarningRuleController {
         self.EarningRuleService.postEarningRule(self.EditableMap.newEarningRule(newEarningRule))
             .then(
                 res => {
-                    let message = self.$filter('translate')('xhr.post_earning_rule.success');
-                    self.Flash.create('success', message);
-                    self.loaderStates.earningRuleDetails = false;
-                    self.$state.go('admin.earning-rule-list')
+                    if (self.$scope.earningRulePhoto) {
+                        self.$scope.fileValidate = {};
+
+                        self.EarningRuleService.postEarningRuleImage(res.earningRuleId, self.$scope.earningRulePhoto)
+                            .then(
+                                success => {
+                                    self.EarningRuleService.storedFileError = {};
+                                    let message = self.$filter('translate')('xhr.post_earning_rule.success');
+                                    self.Flash.create('success', message);
+                                    self.loaderStates.coverLoader = false;
+                                    self.$state.go('admin.earning-rule-list');
+                                }
+                            )
+                            .catch(
+                                err => {
+                                    if (err.data) {
+                                        self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
+                                    }
+
+                                    let message = self.$filter('translate')('xhr.post_earning_rule.warning');
+                                    self.Flash.create('danger', message);
+                                    self.loaderStates.coverLoader = false;
+                                    self.$state.go('admin.edit-earning-rule', {earningRuleId: res.earningRuleId});
+                                }
+                            );
+
+                    } else {
+                        let message = self.$filter('translate')('xhr.post_earning_rule.success');
+                        self.Flash.create('success', message);
+                        self.loaderStates.earningRuleDetails = false;
+                        self.$state.go('admin.earning-rule-list')
+                    }
                 },
                 res => {
                     self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
@@ -369,6 +439,41 @@ export default class EarningRuleController {
                 }
             )
 
+    }
+
+    /**
+     * Generating photo route
+     *
+     * @method generatePhotoRoute
+     * @returns {string}
+     */
+    generatePhotoRoute() {
+        return this.DataService.getConfig().apiUrl + '/earningRule/' + this.earningRuleId + '/photo'
+    }
+
+    /**
+     * Deletes photo
+     *
+     * @method deletePhoto
+     */
+    deletePhoto() {
+        let self = this;
+
+        this.EarningRuleService.deleteEarningRuleImage(this.earningRuleId)
+            .then(
+                res => {
+                    self.$scope.earningRuleImagePath = false;
+                        let message = self.$filter('translate')('xhr.delete_earning_rule_image.success');
+                        self.Flash.create('success', message);
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.delete_earning_rule_image.error');
+                    self.Flash.create('danger', message);
+                }
+            )
     }
 }
 

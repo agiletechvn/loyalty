@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e6f898e6b2c66bd0a224b9890c117ec8",
-    "content-hash": "29fda559e9c2c86345590bcd18ddef48",
+    "hash": "f022d16363bf521c5b97b2ffecf96bb3",
+    "content-hash": "3fd09772b1483f1c5f93af0a171085be",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -465,16 +465,16 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "2.4.3",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
-                "reference": "ae8d4197703141bfa3d2c6d5f26d3749e65b8597"
+                "reference": "2d790bacf4074ebf56e2f4b8e3a4bbc0b3632651"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/ae8d4197703141bfa3d2c6d5f26d3749e65b8597",
-                "reference": "ae8d4197703141bfa3d2c6d5f26d3749e65b8597",
+                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/2d790bacf4074ebf56e2f4b8e3a4bbc0b3632651",
+                "reference": "2d790bacf4074ebf56e2f4b8e3a4bbc0b3632651",
                 "shasum": ""
             },
             "require": {
@@ -500,8 +500,9 @@
                 "nelmio/api-doc-bundle": "^2.13",
                 "nelmio/cors-bundle": "^1.4",
                 "ocramius/proxy-manager": "^1.0",
-                "php": ">=7.0",
+                "php": ">=7.1",
                 "pixers/salesmanago-api": "1.1.1",
+                "prewk/xml-string-streamer": "^0.11.0",
                 "ramsey/uuid-doctrine": "1.4.3",
                 "sensio/distribution-bundle": "^5.0",
                 "sensio/framework-extra-bundle": "^3.0.2",
@@ -512,38 +513,6 @@
                 "symfony/swiftmailer-bundle": "^2.3",
                 "symfony/symfony": "3.4.*"
             },
-            "replace": {
-                "divante-ltd/open-loyalty-account": "self.version",
-                "divante-ltd/open-loyalty-analytics-bundle": "self.version",
-                "divante-ltd/open-loyalty-audit": "self.version",
-                "divante-ltd/open-loyalty-audit-bundle": "self.version",
-                "divante-ltd/open-loyalty-campaign": "self.version",
-                "divante-ltd/open-loyalty-campaign-bundle": "self.version",
-                "divante-ltd/open-loyalty-core": "self.version",
-                "divante-ltd/open-loyalty-core-bundle": "self.version",
-                "divante-ltd/open-loyalty-customer": "self.version",
-                "divante-ltd/open-loyalty-demo-bundle": "self.version",
-                "divante-ltd/open-loyalty-earning-rule": "self.version",
-                "divante-ltd/open-loyalty-earning-rule-bundle": "self.version",
-                "divante-ltd/open-loyalty-email": "self.version",
-                "divante-ltd/open-loyalty-email-bundle": "self.version",
-                "divante-ltd/open-loyalty-email-settings-bundle": "self.version",
-                "divante-ltd/open-loyalty-level": "self.version",
-                "divante-ltd/open-loyalty-level-bundle": "self.version",
-                "divante-ltd/open-loyalty-pagination-bundle": "self.version",
-                "divante-ltd/open-loyalty-plugin-bundle": "self.version",
-                "divante-ltd/open-loyalty-points-bundle": "self.version",
-                "divante-ltd/open-loyalty-pos": "self.version",
-                "divante-ltd/open-loyalty-pos-bundle": "self.version",
-                "divante-ltd/open-loyalty-segment": "self.version",
-                "divante-ltd/open-loyalty-segment-bundle": "self.version",
-                "divante-ltd/open-loyalty-seller": "self.version",
-                "divante-ltd/open-loyalty-settings-bundle": "self.version",
-                "divante-ltd/open-loyalty-transaction": "self.version",
-                "divante-ltd/open-loyalty-transaction-bundle": "self.version",
-                "divante-ltd/open-loyalty-user-bundle": "self.version",
-                "divante-ltd/open-loyalty-utility-bundle": "self.version"
-            },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.10",
                 "phpunit/phpunit": "^5.7",
@@ -552,7 +521,7 @@
             "type": "project",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5.x-dev"
+                    "dev-master": "2.6.x-dev"
                 },
                 "symfony-app-dir": "app",
                 "symfony-bin-dir": "bin",
@@ -577,7 +546,7 @@
             "license": [
                 "proprietary"
             ],
-            "time": "2018-04-27 11:30:13"
+            "time": "2018-05-24 11:14:47"
         },
         {
             "name": "doctrine/annotations",
@@ -3455,6 +3424,48 @@
             ],
             "description": "SalesManago API",
             "time": "2016-08-02 10:10:44"
+        },
+        {
+            "name": "prewk/xml-string-streamer",
+            "version": "0.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/prewk/xml-string-streamer.git",
+                "reference": "5c167c835b07d44d4d9412febe031a09a69dafbd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/prewk/xml-string-streamer/zipball/5c167c835b07d44d4d9412febe031a09a69dafbd",
+                "reference": "5c167c835b07d44d4d9412febe031a09a69dafbd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.8.0",
+                "phpunit/phpunit": "^4.8 || ^5.7.21",
+                "prewk/xml-faker": "^0.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Prewk\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "prewk",
+                    "email": "oskar.thornblad@gmail.com"
+                }
+            ],
+            "description": "Stream large XML files with low memory consumption",
+            "homepage": "https://github.com/prewk/xml-string-streamer",
+            "time": "2017-10-03 21:15:29"
         },
         {
             "name": "psr/cache",

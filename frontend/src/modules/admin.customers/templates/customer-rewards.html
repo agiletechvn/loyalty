@@ -18,7 +18,7 @@
                     <span ng-bind="row.campaign.name"></span>
                 </td>
                 <td data-title="'campaign.cost_in_points'|translate" sortable="'costInPoints'">
-                    <span ng-bind="row.costInPoints"></span>
+                    <span ng-bind="row.costInPoints|roundPoints"></span>
                 </td>
                 <td data-title="'campaign.purchase_at'|translate">
                     <span ng-bind="row.purchaseAt|date : 'yyyy-MM-dd HH:mm'"></span>

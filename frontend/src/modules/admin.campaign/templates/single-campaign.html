@@ -47,9 +47,25 @@
                         <td><b>{{ "campaign.conditions_description"|translate }}:</b></td>
                         <td><span ng-bind="campaign.conditionsDescription || '---'"></span></td>
                     </tr>
-                    <tr>
+                    <tr ng-if="campaign.reward && campaign.reward != 'cashback'">
                         <td><b>{{ "campaign.cost_in_points"|translate }}:</b></td>
                         <td><span ng-bind="campaign.costInPoints || '---'"></span></td>
+                    </tr>
+                    <tr ng-if="campaign.reward && campaign.reward == 'cashback'">
+                        <td><b>{{ "campaign.point_value"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.pointValue || '---'"></span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ "campaign.reward_value"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.rewardValue || '---'"></span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ "campaign.tax"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.tax || '---'"></span><span ng-if="campaign.tax">%</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ "campaign.tax_price_value"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.taxPriceValue || '---'"></span></td>
                     </tr>
                     <tr>
                         <td><b>{{ "campaign.active"|translate }}:</b></td>
@@ -74,43 +90,43 @@
                             </label>
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-if="campaign.reward && campaign.reward != 'cashback'">
                         <td><b>{{ "campaign.limit"|translate }}:</b></td>
                         <td>
                             <span ng-bind="campaign.limit" ng-if="!campaign.unlimited"></span>
                             <span ng-if="campaign.unlimited">{{"global.unlimited"|translate}}</span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-if="campaign.reward && campaign.reward != 'cashback'">
                         <td><b>{{ "campaign.limit_per_user"|translate }}:</b></td>
                         <td>
                             <span ng-bind="campaign.limitPerUser" ng-if="!campaign.unlimited"></span>
                             <span ng-if="campaign.unlimited">{{"global.unlimited"|translate}}</span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-if="campaign.reward && campaign.reward != 'cashback'">
                         <td><b>{{ "campaign.coupons"|translate }}:</b></td>
                         <td><label class="label label-default" ng-repeat="c in campaign.coupons track by $index">
                             {{c}}</label>
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-if="campaign.reward && campaign.reward != 'cashback'">
                         <td><b>{{ "campaign.usage_instruction"|translate }}:</b></td>
                         <td>
                             <span ng-bind="campaign.usageInstruction || '---'"></span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-if="campaign.reward && campaign.reward != 'cashback'">
                         <td><b>{{ "campaign.all_time_visible"|translate }}:</b></td>
                         <td><span ng-bind="campaign.campaignVisibility.allTimeVisible"></span></td>
                     </tr>
-                    <tr ng-if="!campaign.campaignVisibility.allTimeVisible">
+                    <tr ng-if="campaign.reward && campaign.reward != 'cashback' && !campaign.campaignVisibility.allTimeVisible">
                         <td><b>{{ "campaign.visible_from"|translate }}:</b></td>
                         <td><span
                                 ng-bind="campaign.campaignVisibility.visibleFrom|date : 'yyyy-MM-dd HH:mm'"></span>
                         </td>
                     </tr>
-                    <tr ng-if="!campaign.campaignVisibility.allTimeVisible">
+                    <tr ng-if="campaign.reward && campaign.reward != 'cashback' && !campaign.campaignVisibility.allTimeVisible">
                         <td><b>{{ "campaign.visible_to"|translate }}:</b></td>
                         <td><span ng-bind="campaign.campaignVisibility.visibleTo|date : 'yyyy-MM-dd HH:mm'"></span>
                         </td>
@@ -131,7 +147,7 @@
                         <td><span ng-bind="campaign.campaignActivity.activeTo|date : 'yyyy-MM-dd HH:mm'"></span>
                         </td>
                     </tr>
-                    <tr ng-if="campaignFilePath">
+                    <tr ng-if="campaign.reward && campaign.reward != 'cashback' && campaignFilePath">
                         <td><b>{{ "campaign.photo" | translate }}:</b></td>
                         <td><img ng-src="{{CampaignCtrl.generatePhotoRoute()}}" style="width:300px"/></td>
                     </tr>

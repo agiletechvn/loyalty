@@ -20,6 +20,20 @@ export default class TransferService {
         return this.Restangular.one('points').one('transfer', transferId).one('cancel').post();
     }
 
+    postImportTransfer(file) {
+        var formData = new FormData();
+        formData.append('file[file]', file);
+
+        return this.Restangular
+            .one('points')
+            .one('transfer')
+            .one('import')
+            .withHttpConfig({
+                transformRequest: angular.identity,
+                timeout: 0
+            })
+            .customPOST(formData, '', undefined, {'Content-Type': undefined})
+    }
 }
 
 TransferService.$inject = ['Restangular', 'EditableMap'];

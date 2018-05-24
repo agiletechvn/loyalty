@@ -711,6 +711,16 @@ export default class EditableMap {
         if (campaign.will_be_active_to) {
             delete campaign.will_be_active_to;
         }
+        if (campaign.reward == 'cashback') {
+            delete campaign.costInPoints;
+            delete campaign.campaignVisibility;
+            delete campaign.limit;
+            delete campaign.limitPerUser;
+            delete campaign.coupons;
+            delete campaign.singleCoupon;
+            delete campaign.unlimited;
+        }
+
         delete campaign.couponsCsv;
         delete campaign.id;
         delete campaign.segmentNames;
@@ -719,6 +729,7 @@ export default class EditableMap {
         delete campaign.usageLeftForCustomer;
         delete campaign.usersWhoUsedThisCampaignCount;
         delete campaign.visibleForCustomersCount;
+        delete campaign.hasPhoto;
 
         return campaign;
     }

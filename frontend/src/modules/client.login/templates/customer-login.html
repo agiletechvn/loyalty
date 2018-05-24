@@ -46,10 +46,12 @@
                             <b>{{ "customer_security.login.log_in"|translate }}</b>
                         </button>
                         <div class="forgot text-center">
-                            <a ng-show="RootCtrl.activationMethod == 'email'" href="#" ui-sref="forgot-password-request-customer">
+                            <a href="#" ui-sref="forgot-password-request-customer">
                                 {{ "customer_security.login.forgot"|translate }}
                             </a>
-                            <a ng-show="RootCtrl.activationMethod == 'sms'" href="#" ui-sref="customer.panel.registration_activate_sms">
+                        </div>
+                        <div class="forgot text-center">
+                            <a href="#" ui-sref="customer.panel.registration_activate_sms">
                                 {{ "customer_security.registration_activation.activate_or_resend_code"|translate }}
                             </a>
                         </div>

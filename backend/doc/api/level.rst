@@ -64,7 +64,8 @@ Exemplary Response
           "reward": {
           "name": "test reward",
           "value": 0.14,
-          "code": "abc"
+          "code": "abc",
+          "hasPhoto": false
         },
       "specialRewards": [],
       "customersCount": 4
@@ -75,6 +76,7 @@ Exemplary Response
           "description": "example level",
           "active": true,
           "conditionValue": 20,
+          "hasPhoto": false,
           "reward": {
             "name": "test reward",
             "value": 0.15,
@@ -509,6 +511,7 @@ Exemplary Response
 		  "description": "example level",
 		  "active": true,
 		  "conditionValue": 200,
+          "hasPhoto": false,
 		  "reward": {
 			"name": "test reward",
 			"value": 0.2,
@@ -544,6 +547,7 @@ Exemplary Response
 		  "description": "example level",
 		  "active": true,
 		  "conditionValue": 20,
+          "hasPhoto": false,
 		  "reward": {
 			"name": "test reward",
 			"value": 0.15,
@@ -607,6 +611,7 @@ Exemplary Response
 	  "description": "example level",
 	  "active": true,
 	  "conditionValue": 200,
+      "hasPhoto": false,
 	  "reward": {
 		"name": "test reward",
 		"value": 0.2,
@@ -636,3 +641,182 @@ Exemplary Response
 	  ],
 	  "customersCount": 1
 	}
+
+Get level's photo
+--------------------
+
+To get level's photo you will need to cal the ``/api/level/<level>/photo`` endpoint with the ``GET`` method.
+
+Definition
+^^^^^^^^^^
+
+.. code-block:: text
+
+    GET /api/level/<level>/photo
+
++---------------+----------------+--------------------------------------+
+| Parameter     | Parameter type | Description                          |
++===============+================+======================================+
+| Authorization | header         | Token received during authentication |
++---------------+----------------+--------------------------------------+
+| <level>       | query          | level ID                             |
++---------------+----------------+--------------------------------------+
+
+Example
+^^^^^^^
+
+To get level's photo ``level = 00096cf-32a3-43bd-9034-4df343e5fd94`` use the below method:
+
+.. code-block:: bash
+
+    curl http://localhost:8181/api/level/00096cf-32a3-43bd-9034-4df343e5fd94/photo \
+        -X "GET" \
+        -H "Accept: application/json" \
+        -H "Content-type: application/x-www-form-urlencoded" \
+        -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6..."
+
+.. note::
+
+    The *eyJhbGciOiJSUzI1NiIsInR5cCI6...* authorization token is an exemplary value.
+    Your value can be different. Read more about :doc:`Authorization in the </authorization>`.
+
+.. note::
+
+    The *level = 00096cf-32a3-43bd-9034-4df343e5fd94* id is an exemplary value. Your value can be different.
+    Check in the list of all levels if you are not sure which id should be used.
+
+Exemplary Response
+^^^^^^^^^^^^^^^^^^
+
+.. code-block:: text
+
+    STATUS: 200 OK
+
+.. note::
+
+    In the response you will get raw file content with a proper ``Content-Type`` header, for example:
+    ``Content-Type: image/jpeg``.
+
+Exemplary Response
+^^^^^^^^^^^^^^^^^^
+
+The level may not have photo at all and you will receive a below response.
+
+.. code-block:: text
+
+    STATUS: 404 Not Found
+
+.. code-block:: json
+
+    {
+      "error": {
+        "code": 404,
+        "message": "Not Found"
+      }
+    }
+
+Remove level's photo
+-----------------------
+
+To remove level's photo you will need to cal the ``/api/level/<level>/photo`` endpoint with the ``DELETE`` method.
+
+Definition
+^^^^^^^^^^
+
+.. code-block:: text
+
+    DELETE /api/level/<level>/photo
+
++---------------+----------------+--------------------------------------+
+| Parameter     | Parameter type | Description                          |
++===============+================+======================================+
+| Authorization | header         | Token received during authentication |
++---------------+----------------+--------------------------------------+
+| <level>       | query          | level ID                             |
++---------------+----------------+--------------------------------------+
+
+Example
+^^^^^^^
+
+To remove level's photo ``level = 00096cf-32a3-43bd-9034-4df343e5fd94`` use the below method:
+
+.. code-block:: bash
+
+    curl http://localhost:8181/api/level/00096cf-32a3-43bd-9034-4df343e5fd94/photo \
+        -X "DELETE" \
+        -H "Accept: application/json" \
+        -H "Content-type: application/x-www-form-urlencoded" \
+        -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6..."
+
+.. note::
+
+    The *eyJhbGciOiJSUzI1NiIsInR5cCI6...* authorization token is an exemplary value.
+    Your value can be different. Read more about :doc:`Authorization in the </authorization>`.
+
+.. note::
+
+    The *level = 00096cf-32a3-43bd-9034-4df343e5fd94* id is an exemplary value. Your value can be different.
+    Check in the list of all levels if you are not sure which id should be used.
+
+Exemplary Response
+^^^^^^^^^^^^^^^^^^
+
+.. code-block:: text
+
+    STATUS: 200 OK
+
+Add a photo to the level
+---------------------------
+
+To add a photo to the level you will need to cal the ``/api/level/<level>/photo`` endpoint with the ``POST`` method.
+
+Definition
+^^^^^^^^^^
+
+.. code-block:: text
+
+    POST /api/level/<level>/photo
+
++---------------+----------------+--------------------------------------+
+| Parameter     | Parameter type | Description                          |
++===============+================+======================================+
+| Authorization | header         | Token received during authentication |
++---------------+----------------+--------------------------------------+
+| <level>       | query          | level ID                             |
++---------------+----------------+--------------------------------------+
+| photo[file]   | request        | Absolute path to the photo           |
++---------------+----------------+--------------------------------------+
+
+Example
+^^^^^^^
+
+To get level's photo ``level = 00096cf-32a3-43bd-9034-4df343e5fd94`` use the below method:
+
+.. code-block:: bash
+
+    curl http://localhost:8181/api/level/00096cf-32a3-43bd-9034-4df343e5fd94/photo \
+        -X "POST" \
+        -H "Accept: application/json" \
+        -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6..." \
+        -d "photo[file]=C:\fakepath\Photo.png"
+
+.. note::
+
+    The *eyJhbGciOiJSUzI1NiIsInR5cCI6...* authorization token is an exemplary value.
+    Your value can be different. Read more about :doc:`Authorization in the </authorization>`.
+
+.. note::
+
+    The *level = 00096cf-32a3-43bd-9034-4df343e5fd94* id is an exemplary value. Your value can be different.
+    Check in the list of all levels if you are not sure which id should be used.
+
+.. note::
+
+    The *photo[file]=C:\fakepath\Photo.png* is an exemplary value. Your value can be different.
+
+Exemplary Response
+^^^^^^^^^^^^^^^^^^
+
+.. code-block:: text
+
+    STATUS: 200 OK

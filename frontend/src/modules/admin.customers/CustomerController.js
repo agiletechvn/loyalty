@@ -390,21 +390,6 @@ export default class CustomerController {
                         }
                     ),
 
-                self.CustomerService.getCustomer(self.customerId)
-                    .then(
-                        res => {
-                            self.$scope.customer = res;
-                            self.$scope.editableFields = self.EditableMap.humanizeCustomer(res);
-                            self.$scope.showAddress = !(_.isEmpty(self.$scope.editableFields.address));
-                            self.$scope.showCompany = !(_.isEmpty(self.$scope.editableFields.company));
-                            self.loaderStates.customerDetails = false;
-                        },
-                        () => {
-                            let message = self.$filter('translate')('xhr.get_customer.error');
-                            self.Flash.create('danger', message);
-                            self.loaderStates.customerDetails = false;
-                        }
-                    ),
                 self.CustomerService.getCustomerStatus(self.customerId)
                     .then(
                         res => {
@@ -760,5 +745,25 @@ export default class CustomerController {
         customer.labels = _.difference(customer.labels, [customer.labels[index]])
     }
 
+    removeManuallyLevel(customerId, fromList) {
+        let self = this;
+
+        self.CustomerService.removeManuallyLevel(customerId)
+            .then(
+                res => {
+                        let message = self.$filter('translate')('xhr.post_remove_customer_manually_level.success');
+                    self.Flash.create('success', message);
+                    if (fromList) {
+                        self.getData();
+                    } else {
+                        self.getCustomerData();
+                    }
+                },
+                    () => {
+                        let message = self.$filter('translate')('xhr.post_remove_customer_manually_level.error');
+                        self.Flash.create('danger', message);
+                    }
+                )
+    }
 }
 CustomerController.$inject = ['$scope', '$state', '$stateParams', 'AuthService', 'CustomerService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'LevelService', 'Validation', '$filter', 'DataService', 'PosService', 'TransferService', 'SellerService'];

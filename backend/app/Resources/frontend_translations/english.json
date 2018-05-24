@@ -7,6 +7,7 @@
     "save": "Save",
     "yes": "Yes",
     "no": "No",
+    "unlink": "Unlink",
     "program_name": "Open Loyalty",
     "admin_footer": "2016 Open Loyalty",
     "true": "True",
@@ -39,7 +40,8 @@
     "loading": "loading",
     "home": "Home",
     "upload": "Upload",
-    "remove": "Remove"
+    "remove": "Remove",
+    "import": "Import"
   },
   "users": {
     "heading": "Users",
@@ -300,6 +302,7 @@
     "no_segments": "Customer not assigned to any segment",
     "no_pos": "Customer is not assigned to any POS",
     "all_profile_details": "Show all profile details",
+    "remove_manually_level_title": "Remove level assigned manually",
     "campaign": {
       "coupon_used": "This coupon has been used",
       "not_enough_points": "Not enough points",
@@ -391,7 +394,9 @@
     "add_special_reward": "Add special reward",
     "users_in_level": "Customers in level",
     "assign_pos": "Assign POS",
-    "min_order": "Min order value"
+    "min_order": "Min order value",
+    "photo": "Level photo",
+    "assigned_manually": "Assigned manually"
   },
   "earning_rule": {
     "reward": "Reward",
@@ -425,6 +430,7 @@
     "list": "Earning points rules list",
     "basic_info": "Basic Informations",
     "limit_info": "Usage limit",
+    "photo": "Earning rule photo",
     "limit": {
       "active": "Usage limit active",
       "active_prompt": "",
@@ -663,7 +669,10 @@
     "select_customer": "Select customer",
     "points_to_add": "Points to add/spend",
     "points_to_spend": "Points to spend",
-    "actions": "Actions"
+    "actions": "Actions",
+    "import": "Import",
+    "import_title": "Import points transfers",
+    "import_xml_field": "XML file"
   },
   "transaction": {
     "customer_loyalty_card_number": "Loyalty card number",
@@ -706,6 +715,9 @@
     "transaction_document_number_prompt": "Find transaction by document number",
     "customer_id_prompt": "Put customer unique ID",
     "link": "Match with customer",
+    "import": "Import",
+    "import_title": "Import transactions",
+    "import_xml_field": "XML file",
     "heading": "Transactions",
     "transaction_id": "Transaction id",
     "points_earned": "Points earned",
@@ -721,6 +733,8 @@
   "settings": {
     "logo": "Logo",
     "program_logo": "Program logo",
+    "small_logo": "Small logo",
+    "hero_image": "Hero image",
     "title": "Settings",
     "currency": "Currency",
     "heading": "Settings",
@@ -781,7 +795,11 @@
     "account_activation_method": "Account activation method",
     "account_activation_method_prompt": "",
     "smsApiKey": "Api key",
-    "smsApiToken": "SmsApi token"
+    "smsApiToken": "SmsApi token",
+    "webhooks": "Webhooks",
+    "enable_webhooks": "Enable webhooks",
+    "uri_webhooks": "URI",
+    "uri_webhooks_prompt": "e.g. https://example.com/webhook.php"
   },
   "segment": {
     "add": "Add segment",
@@ -877,6 +895,9 @@
     "add": "Add reward campaign",
     "edit": "Edit reward campaign",
     "edit_heading": "Edit reward campaign",
+    "point_value": "Point value",
+    "point_value_prompt": "Each point will be exchanged for provided value (in current currency)",
+    "cashback": "Cashback",
     "heading": "Reward campaigns",
     "add_heading": "Add reward campaign",
     "type_info": "Campaign type",
@@ -889,6 +910,12 @@
     "active": "Active",
     "inactive": "Inactive",
     "cost_in_points": "Cost in points",
+    "reward_value": "Reward value",
+    "reward_value_prompt": "Value of reward",
+    "tax_price_value": "Tax value",
+    "tax_price_value_prompt": "Value of tax for reward",
+    "tax": "Tax",
+    "tax_prompt": "Percentage Value of tax for reward",
     "limit": "Limit",
     "discount_code": "Discount code",
     "value_code": "Value code",
@@ -1017,9 +1044,23 @@
     "heading": "Admin profile"
   },
   "xhr": {
+    "import": {
+      "success": "All items has been imported successfully (Processed {{ processed }})",
+      "warning": "Items has been imported with some errors (Processed {{ processed }}, Success {{ success }}, Failed  {{ failed }})",
+      "error": "Import process failed",
+      "no_data": "There are no records to process"
+    },
     "delete_settings_logo": {
       "success": "Logo has been deleted",
       "error": "Logo has not been deleted"
+    },
+    "delete_settings_small_logo": {
+      "success": "Small logo has been deleted",
+      "error": "Small logo has not been deleted"
+    },
+    "delete_settings_hero_image": {
+      "success": "Hero image has been deleted",
+      "error": "Hero image has not been deleted"
     },
     "post_resend_customer_code": {
       "error": "Cannot resend activation code. Make sure that phone number is correct or wait for few minutes and try again.",
@@ -1029,7 +1070,16 @@
       "success": "Code was sent to customer phone"
     },
     "upload_settings_logo": {
-      "success": "Logo has been saved"
+      "success": "Logo has been saved",
+      "error": "Logo hasn't been saved"
+    },
+    "upload_settings_small_logo": {
+      "success": "Small logo has been saved",
+      "error": "Small logo hasn't been saved"
+    },
+    "upload_settings_hero_image": {
+      "success": "Hero image has been saved",
+      "error": "Hero image hasn't been saved"
     },
     "customer_search": {
       "success": "Success",
@@ -1125,11 +1175,13 @@
     },
     "put_earning_rule": {
       "success": "You successfully edited earning points rule.",
-      "error": "An error occurred"
+      "error": "An error occurred",
+      "warning": "Couldn't uploaded earning points rule's image"
     },
     "post_earning_rule": {
       "success": "Earning points rule added",
-      "error": "An error occurred"
+      "error": "An error occurred",
+      "warning": "Earning rule added without photo"
     },
     "get_levels_list": {
       "error": "Cannot get levels list"
@@ -1140,10 +1192,16 @@
     },
     "post_single_level": {
       "success": "You successfully added level.",
-      "error": "An error occurred"
+      "error": "An error occurred",
+      "warning": "Level added without photo"
     },
     "put_single_level": {
       "success": "You successfully edited level.",
+      "error": "An error occurred",
+      "warning": "Level edited without photo"
+    },
+    "delete_level_image": {
+      "success": "Image deleted",
       "error": "An error occurred"
     },
     "get_segments": {
@@ -1297,6 +1355,14 @@
       "error": "An error occurred"
     },
     "get_redeemed_campaigns": {
+      "error": "An error occurred"
+    },
+    "delete_earning_rule_image": {
+      "success": "Image deleted",
+      "error": "An error occurred"
+    },
+    "post_remove_customer_manually_level": {
+      "success": "Manually level has been removed",
       "error": "An error occurred"
     }
   },

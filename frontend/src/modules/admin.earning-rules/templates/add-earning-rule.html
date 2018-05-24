@@ -338,6 +338,29 @@
                         </div>
                     </div>
                 </fieldset>
+                <fieldset class="fieldset">
+                    <legend>{{ "earning_rule.photo" | translate }}</legend>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.photo" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns"
+                             form-validation="fileValidate.file.errors">
+                            <div ng-show="!earningRuleImagePath">
+                                <input type="file" file-model="$parent.$parent.earningRulePhoto" style="padding:9px">
+                            </div>
+                            <div ng-show="earningRuleImagePath" class="earningRuleFileWrapper">
+                                <img ng-src="{{EarningRuleCtrl.generatePhotoRoute()}}" style="display: inline-block;"/>
+                                <button class="button button-septenary-colorized text-uppercase"
+                                        style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
+                                        type="button"
+                                        ng-click="EarningRuleCtrl.deletePhoto()">
+                                    {{ "global.remove" | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
         </div>
     </div>

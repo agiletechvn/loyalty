@@ -15,15 +15,15 @@
                         <tbody>
                         <tr>
                             <td style="width: 270px;max-width: 50%;"><b>{{ 'customer_status.active_points' | translate }}:</b></td>
-                            <td>{{ status.points }}</td>
+                            <td>{{ status.points | roundPoints }}</td>
                         </tr>
                         <tr>
                             <td><b>{{ 'customer_status.used_points' | translate }}:</b></td>
-                            <td>{{ status.usedPoints }}</td>
+                            <td>{{ status.usedPoints | roundPoints}}</td>
                         </tr>
                         <tr>
                             <td><b>{{ 'customer_status.expired_points' | translate }}:</b></td>
-                            <td>{{ status.expiredPoints }}</td>
+                            <td>{{ status.expiredPoints | roundPoints }}</td>
                         </tr>
                         <tr>
                             <td><b>{{ 'customer_status.transactions_amount' | translate }}:</b></td>
@@ -72,7 +72,7 @@
                                 <span ng-bind="row.type"></span>
                             </td>
                             <td data-title="'customer_transfer.value'|translate">
-                                <span ng-bind="row.value"></span>
+                                <span ng-bind="row.value | roundPoints"></span>
                             </td>
                             <td data-title="'customer_transfer.created_at'|translate" sortable="'createdAt'">
                                 <span ng-bind="row.createdAt|date : 'yyyy-MM-dd HH:mm'"></span>
