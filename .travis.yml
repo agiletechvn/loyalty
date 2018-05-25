@@ -23,15 +23,15 @@ script:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin ;
-    docker build -t divante/open-loyalty:latest -f ./docker/prod/web/app-dockerfile .;
-    docker build -t divante/open-loyalty-web:latest -f ./docker/prod/php/fpm-dockerfile .;
-    docker push divante/open-loyalty:latest;
+    docker build -t divante/open-loyalty-web:latest -f ./docker/prod/web/app-dockerfile .;
+    docker build -t divante/open-loyalty-fpm:latest -f ./docker/prod/php/fpm-dockerfile .;
     docker push divante/open-loyalty-web:latest;
+    docker push divante/open-loyalty-fpm:latest;
     fi
   - if [ -n "$TRAVIS_TAG" ]; then
     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin ;
-    docker build -t divante/open-loyalty:$TRAVIS_TAG -f ./docker/prod/web/app-dockerfile .;
-    docker build -t divante/open-loyalty-web:$TRAVIS_TAG -f ./docker/prod/php/fpm-dockerfile .;
-    docker push divante/open-loyalty:$TRAVIS_TAG;
+    docker build -t divante/open-loyalty-web:$TRAVIS_TAG -f ./docker/prod/web/app-dockerfile .;
+    docker build -t divante/open-loyalty-fpm:$TRAVIS_TAG -f ./docker/prod/php/fpm-dockerfile .;
     docker push divante/open-loyalty-web:$TRAVIS_TAG;
+    docker push divante/open-loyalty-fpm:$TRAVIS_TAG;
     fi
