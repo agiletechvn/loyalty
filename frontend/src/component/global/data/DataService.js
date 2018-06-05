@@ -89,7 +89,7 @@ export default class DataService {
 
         let dfd = self.$q.defer();
 
-        self.$q.all([languages, timezones, countries, events, availableCustomerStatuses, availableEarningRuleLimitPeriods, referralEvents, referralTypes, availableCustomerStatuses, availableAccountActivationMethods, smsGatewatConfig])
+        self.$q.all([languages, timezones, countries, events, availableCustomerStatuses, availableEarningRuleLimitPeriods, referralEvents, referralTypes, availableCustomerStatuses, availableAccountActivationMethods, smsGatewatConfig, availableFrontendTranslations])
             .then(
                 function (res) {
                     if (res[0].choices) {
@@ -266,6 +266,22 @@ export default class DataService {
                         }
 
                         self.smsGatewayConfig = methods;
+                    }
+
+                    if (res[11].choices) { // extract available translations list from availableFrontendTranslations response
+                        let methods = [];
+                        let index = 0;
+
+                        for (let i in res[11].choices) {
+                            methods.push({
+                                _id: index,
+                                name: res[11].choices[i].name,
+                                code: res[11].choices[i].key
+                            });
+                            ++index;
+                        }
+
+                        self.availableFrontendTranslations = methods;
                     }
 
                     dfd.resolve()

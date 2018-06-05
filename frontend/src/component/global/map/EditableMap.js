@@ -348,6 +348,10 @@ export default class EditableMap {
             data.target = 'segment'
         }
 
+        if (data.levels && data.segments && !data.levels.length && !data.segments.length) {
+            data.target = 'level';
+        }
+
         data.excludedLabels = _.pickBy(data.excludedLabels);
         if (data.excludedSKUs) {
             data.excludedSKUs = data.excludedSKUs.filter(function (e) {

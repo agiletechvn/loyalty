@@ -314,7 +314,7 @@ export default class EarningRuleController {
                 }
             ).catch(
                 err => {
-                    self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(err.data);
                     let message = self.$filter('translate')('xhr.put_earning_rule.error');
                     self.Flash.create('danger', message);
                     self.loaderStates.earningRuleDetails = false;

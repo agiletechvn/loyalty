@@ -79,8 +79,28 @@ security:
             methods: ["GET"]
             stateless: true
             anonymous: true
+        earning_rule_photo:
+            pattern:  ^/api/earningRule/([a-zA-Z\-0-9]+)/photo
+            methods: ["GET"]
+            stateless: true
+            anonymous: true
+        level_photo:
+            pattern:  ^/api/level/([a-zA-Z\-0-9]+)/photo
+            methods: ["GET"]
+            stateless: true
+            anonymous: true
         settings_logo:
             pattern:  ^/api/settings/logo
+            methods: ["GET"]
+            stateless: true
+            anonymous: true
+        settings_small_logo:
+            pattern:  ^/api/settings/small-logo
+            methods: ["GET"]
+            stateless: true
+            anonymous: true
+        settings_hero_image:
+            pattern:  ^/api/settings/hero-image
             methods: ["GET"]
             stateless: true
             anonymous: true

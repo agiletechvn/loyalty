@@ -86,6 +86,20 @@ export default class CustomerService {
         return this.Restangular.one('customer', customerId).one('remove-manually-level').customPOST();
     }
 
+    postImportCustomers(file) {
+        var formData = new FormData();
+        formData.append('file[file]', file);
+
+        return this.Restangular
+            .one('admin')
+            .one('customer')
+            .one('import')
+            .withHttpConfig({
+                transformRequest: angular.identity,
+                timeout: 0
+            })
+            .customPOST(formData, '', undefined, {'Content-Type': undefined})
+    }
 }
 
 CustomerService.$inject = ['Restangular', 'EditableMap'];

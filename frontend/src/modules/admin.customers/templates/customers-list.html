@@ -6,6 +6,9 @@
         <button class="medium button button-septenary-colorized" ui-sref="admin.add-customer">
             {{ "customer.add" | translate }}
         </button>
+        <button class="medium button button-septenary-colorized" ng-click="importCustomerModal=true">
+            {{ "customer.import" | translate }}
+        </button>
     </div>
 </div>
 <div style="clear:both;"></div>
@@ -62,7 +65,7 @@
                     <span style="text-transform:uppercase" ng-bind="row.level.name"></span>
                 </td>
 
-                <td data-title="'level.assigned_manually'|translate" filter="{manuallyAssignedLevel: 'bool'}"
+                <td data-title="'level.assigned_manually'|translate"
                     sortable="'manuallyAssignedLevelId'">
                     <span ng-if="!row.manuallyAssignedLevelId" ng-bind="'global.no'|translate"></span>
                     <span ng-if="row.manuallyAssignedLevelId" ng-bind="'global.yes'|translate"></span>
@@ -94,4 +97,30 @@
         </table>
     </div>
 </div>
+<modal show='importCustomerModal' modalId="importCustomerModal" modal-title="'customer.import_title' | translate">
+    <form novalidate ng-submit="CustomerCtrl.importCustomers(file)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="columns medium-6">
+                    <label>{{ "customer.import_xml_field" | translate }} </label>
+                </div>
+                <div class="columns medium-6">
+                    <div ng-model="file" xml-upload></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit"
+                            ng-disabled="CustomerCtrl.loaderStates.importCustomers">
+                        {{ "global.import" | translate }}
+                    </button>
+                    <div class="spinner-loader-wrapper">
+                        <spinner-loader loading="CustomerCtrl.loaderStates.importCustomers" class="inline"
+                                        delay="5"></spinner-loader>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>
 <ng-include src="'./templates/customers-list.modals.html'"></ng-include>

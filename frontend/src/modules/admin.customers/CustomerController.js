@@ -765,5 +765,39 @@ export default class CustomerController {
                     }
                 )
     }
+
+    importCustomers(file) {
+        let self = this;
+
+        if (file) {
+            self.loaderStates.importCustomers = true;
+            self.CustomerService.postImportCustomers(file)
+                .then(
+                    res => {
+                if (res.totalProcessed == 0) {
+                let message = self.$filter('translate')('xhr.import.no_data');
+                self.Flash.create('warning', message);
+            } else if (res.totalFailed == 0 && res.totalProcessed > 0) {
+                let message = self.$filter('translate')('xhr.import.success', {processed: res.totalProcessed});
+                self.Flash.create('success', message);
+            } else {
+                let message = self.$filter('translate')('xhr.import.warning',
+                    {processed: res.totalProcessed, success: res.totalSuccess, failed: res.totalFailed}
+                );
+                self.Flash.create('warning', message);
+            }
+
+            self.$scope.importCustomerModal = false;
+            self.loaderStates.importCustomers = false;
+            self.tableParams.reload();
+        },
+            res => {
+                let message = self.$filter('translate')('xhr.import.error');
+                self.Flash.create('danger', message);
+                self.loaderStates.importCustomers = false;
+            }
+        );
+        }
+    }
 }
 CustomerController.$inject = ['$scope', '$state', '$stateParams', 'AuthService', 'CustomerService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'LevelService', 'Validation', '$filter', 'DataService', 'PosService', 'TransferService', 'SellerService'];
