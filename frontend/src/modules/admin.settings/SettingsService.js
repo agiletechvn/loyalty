@@ -75,6 +75,25 @@ export default class SettingsService {
     }
 
     /**
+     * Calls for post post conditions file
+     *
+     * @method postConditionsFile
+     * @param {Object} data
+     * @returns {Promise}
+     */
+    postConditionsFile(data) {
+        let fd = new FormData();
+
+        fd.append('conditions[file]', data);
+
+        return this.Restangular
+            .one('settings')
+            .one('conditions-file')
+            .withHttpConfig({transformRequest: angular.identity})
+            .customPOST(fd, '', undefined, {'Content-Type': undefined});
+    }
+
+    /**
      * Calls for post hero image
      *
      * @method postHeroImage
@@ -138,7 +157,18 @@ export default class SettingsService {
             .get()
     }
 
-
+    /**
+     * Calls for conditions file
+     *
+     * @method getConditionsFile
+     * @returns {Promise}
+     */
+    getConditionsFile() {
+        return this.Restangular
+            .one('settings')
+            .one('conditions-file')
+            .get()
+    }
 
     /**
      * Calls for hero image
@@ -189,6 +219,19 @@ export default class SettingsService {
         return this.Restangular
             .one('settings')
             .one('hero-image')
+            .remove()
+    }
+
+    /**
+     * Calls to remove small logo
+     *
+     * @method deleteSmallLogo
+     * @returns {Promise}
+     */
+    deleteConditionsFile() {
+        return this.Restangular
+            .one('settings')
+            .one('conditions-file')
             .remove()
     }
 

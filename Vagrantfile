@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
           ]
       end
 
-      node.vm.network "forwarded_port", guest: 80, host: 8181
+      node.vm.network "forwarded_port", guest: 80, host: 80
       node.vm.network "forwarded_port", guest: 8182, host: 8182
       node.vm.network "forwarded_port", guest: 8183, host: 8183
       node.vm.network "forwarded_port", guest: 8184, host: 8184
@@ -80,10 +80,6 @@ Vagrant.configure("2") do |config|
       SHELL
 
       node.vm.provision "build", type: "shell", privileged: true, inline: <<-SHELL
-        echo ""
-        echo "Building docker base images"
-        bash /opt/open-loyalty/docker/base/build_vagrant.sh
-
         echo ""
         echo "You can always build base docker images using:"
         echo "vagrant provision --provision-with build"

@@ -79,6 +79,27 @@
                             <span class="prompt">{{ "settings.program_conditions_url_prompt"|translate}}</span>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.conditions_file" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns"
+                             form-validation="heroImageValidate.conditions_file.errors">
+                            <div ng-show="!conditionsFilePath">
+                                <input type="file" file-model="$parent.$parent.conditionsFile" style="padding:9px">
+                            </div>
+                            <div ng-show="conditionsFilePath" class="campainFileWrapper">
+                                <span class="prompt">{{ uploadsUrl + '/terms-conditions' }}</span>
+                                <button class="button button-septenary-colorized text-uppercase"
+                                        style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
+                                        type="button"
+                                        ng-click="SettingsCtrl.deleteConditionsFile()">
+                                    {{ "global.remove" | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="small-3 medium-2 columns">
                             <label>{{ "settings.faq_url" | translate }}</label>
@@ -191,7 +212,25 @@
                     </div>
                 </fieldset>
                 <fieldset class="fieldset">
-                    <legend>{{"settings.program_logo"|translate}}</legend>
+                    <legend>{{"settings.template"|translate}}</legend>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.accent_color" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.accentColor.errors">
+                            <input type="text" ng-model="settings.accentColor" required>
+                            <span class="prompt">{{ "settings.accent_color_prompt"|translate}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.css_template" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.cssTemplate.errors">
+                            <textarea ng-model="settings.cssTemplate" required rows="8"></textarea>
+                            <span class="prompt">{{ "settings.css_template_prompt"|translate}}</span>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="small-3 medium-2 columns">
                             <label>{{ "settings.logo" | translate }}</label>

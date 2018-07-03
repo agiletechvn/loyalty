@@ -8,7 +8,9 @@ cs_fixer*
 
 backend/app/cache/
 backend/app/log/
+backend/app/Resources/frontend_translations/
 backend/var/cache/
+
 hosts
 tools/deployment/deploy.retry
 /esdata/
@@ -17,5 +19,6 @@ frontend/yarn-error.log
 /backend/app/uploads/
 /docker/docker-compose.local.yml
 /docker/dev/php/fpm-dockerfile.local
+/docker/dev/web/front-dockerfile.local
 /docker/local
 /backend/app/var/import/*

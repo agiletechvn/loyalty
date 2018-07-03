@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 03-07-2018
+### Added
+- possibility to set an accent color for client cockpit
+- /api/customer/level to get list of possible levels for customers
+- added new earning points rule "Multiply by product label"
+- new configuration option to upload terms and condition file
+- labels to the transaction
+- labels to the reward campaigns
+### Changed
+- docker images
+- docker-compose settings, check updated README.md
+### Fixed
+ - sorting for /api/customer/campaign/available
+ - registering a refund transaction and subtracting points
+ - saving settings with a various set of values
+ - changing reward campaign photo
+ - forgot password on client cockpit
+
 ## [2.6.0] - 05-06-2018
 ### Added
 - upload customer from XML file

@@ -74,16 +74,7 @@ export default class EditableMap {
                 agreement2: data.agreement2,
                 agreement3: data.agreement3
             };
-            if (res.labels) {
-                let labels = '';
-                for (let label in res.labels) {
-                    labels += res.labels[label].key + ':' + res.labels[label].value + ';';
-                }
-                if (labels.charAt(labels.length - 1) == ';') {
-                    labels = labels.substring(0, labels.length - 1)
-                }
-                res.labels = labels;
-            }
+            res.labels = this.convertLabels(res);
             if (!ignoreSellerId) {
                 res.sellerId = data.sellerId;
 
@@ -173,16 +164,7 @@ export default class EditableMap {
 
     newCustomer(data) {
         let res = _.clone(data);
-        if (res.labels) {
-            let labels = '';
-            for (let label in res.labels) {
-                labels += res.labels[label].key + ':' + res.labels[label].value + ';';
-            }
-            if (labels.charAt(labels.length - 1) == ';') {
-                labels = labels.substring(0, labels.length - 1)
-            }
-            res.labels = labels;
-        }
+        res.labels = this.convertLabels(res);
 
         return _.pickBy(res);
     }
@@ -196,6 +178,7 @@ export default class EditableMap {
                 delete res.skuIds;
                 delete res.pointsAmount;
                 delete res.multiplier;
+                delete res.labelMultipliers;
                 delete res.limit;
                 delete res.rewardType;
                 break;
@@ -203,6 +186,7 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.labelMultipliers;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
                 delete res.skuIds;
@@ -214,6 +198,7 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.labelMultipliers;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
                 delete res.skuIds;
@@ -228,6 +213,7 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.labelMultipliers;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
                 delete res.skuIds;
@@ -239,6 +225,7 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.labelMultipliers;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
                 delete res.eventName;
@@ -247,6 +234,18 @@ export default class EditableMap {
                 delete res.rewardType;
                 break;
             case 'multiply_for_product' :
+                delete res.excludedSKUs;
+                delete res.pointValue;
+                delete res.excludedLabels;
+                delete res.labelMultipliers;
+                delete res.excludeDeliveryCost;
+                delete res.minOrderValue;
+                delete res.eventName;
+                delete res.pointsAmount;
+                delete res.limit;
+                delete res.rewardType;
+                break;
+            case 'multiply_by_product_labels' :
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
@@ -289,26 +288,8 @@ export default class EditableMap {
             res.excludedSKUs = SKUs;
         }
 
-        if (res.excludedLabels) {
-            let labels = '';
-            for (let label in res.excludedLabels) {
-                labels += res.excludedLabels[label].key + ':' + res.excludedLabels[label].value + ';';
-            }
-            if (labels.charAt(labels.length - 1) == ';') {
-                labels = labels.substring(0, labels.length - 1)
-            }
-            res.excludedLabels = labels;
-        }
-        if (res.labels) {
-            let labels = '';
-            for (let label in res.labels) {
-                labels += res.labels[label].key + ':' + res.labels[label].value + ';';
-            }
-            if (labels.charAt(labels.length - 1) == ';') {
-                labels = labels.substring(0, labels.length - 1)
-            }
-            res.labels = labels;
-        }
+        res.excludedLabels = this.convertLabels(res, 'excludedLabels');
+        res.labels = this.convertLabels(res);
 
         delete res.earningRuleId;
         delete res.fromServer;
@@ -682,6 +663,8 @@ export default class EditableMap {
         let self = this;
         let campaign = angular.copy(data);
 
+        campaign.labels = this.convertLabels(campaign);
+
         if (campaign.campaignActivity) {
             if (campaign.campaignActivity.activeTo) {
                 campaign.campaignActivity.activeTo = moment(campaign.campaignActivity.activeTo).format('YYYY-MM-DDTHH:mm:ssZ');
@@ -736,6 +719,21 @@ export default class EditableMap {
         delete campaign.hasPhoto;
 
         return campaign;
+    }
+
+    convertLabels(object, key = 'labels') {
+        let labels = '';
+
+        if (object[key]) {
+            for (let label in object[key]) {
+                labels += object[key][label].key + ':' + object[key][label].value + ';';
+            }
+            if (labels.charAt(labels.length - 1) == ';') {
+                labels = labels.substring(0, labels.length - 1)
+            }
+        }
+
+        return labels;
     }
 }
 

@@ -348,7 +348,8 @@
                                     <span style="text-transform: uppercase" ng-bind="row.currency"></span>
                                 </td>
                                 <td data-title="'transaction.points_earned'|translate">
-                                    <span ng-bind="row.pointsEarned|roundPoints"></span>
+                                    <span ng-if="row.documentType != 'return'" ng-bind="row.pointsEarned|roundPoints"></span>
+                                    <span ng-if="row.documentType == 'return' && row.pointsRevoked" ng-bind="-1*row.pointsRevoked"></span>
                                 </td>
                                 <td data-title="'transaction.actions'|translate">
                                     <button type="button" class="button  button-quinary tiny"

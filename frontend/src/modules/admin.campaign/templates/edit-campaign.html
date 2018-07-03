@@ -123,6 +123,47 @@
                             <span class="prompt">{{ "campaign.tax_price_value_prompt" | translate }} </span>
                         </div>
                     </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.labels" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.labels.errors">
+                            <div class="collection"
+                                 ng-repeat="label in editableFields.labels track by $index">
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>{{ "campaign.key" | translate }} <span
+                                                class="required">*</span></label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns"
+                                         form-validation="validate.labels[$index].key.errors">
+                                        <input ng-model="editableFields.labels[$index].key">
+                                        <span class="prompt">{{ "campaign.label_key_prompt" | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>{{ "campaign.value" | translate }} <span
+                                                class="required">*</span></label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns"
+                                         form-validation="validate.labels[$index].value.errors">
+                                        <input ng-model="editableFields.labels[$index].value">
+                                        <span class="prompt">{{ "campaign.label_value_prompt" | translate }}</span>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="remove-collection"
+                                        ng-click="CampaignCtrl.removeLabel($index, true)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <button type="button" class="button button-secondary tiny"
+                                    ng-click="CampaignCtrl.addLabel(true)">{{
+                                "campaign.add_label" | translate }}
+                            </button>
+                        </div>
+                    </div>
                 </fieldset>
                 <fieldset class="fieldset">
                     <legend>Target</legend>

@@ -48,6 +48,12 @@ export default class TransactionController {
                     .then(
                         res => {
                             self.$scope.transactions = res;
+                            self.$scope.editLabels = {};
+                            for (let i = 0; i < self.$scope.transactions.length; ++i) {
+                                self.$scope.editLabels[self.$scope.transactions[i].transactionId] = {
+                                    labels: self.$scope.transactions[i].labels
+                                };
+                            }
                             params.total(res.total);
                             self.loaderStates.transactionList = false;
                             self.loaderStates.coverLoader = false;
@@ -65,6 +71,39 @@ export default class TransactionController {
                 return dfd.promise;
             }
         });
+    }
+
+    addLabel(transactionId) {
+        if (!(this.$scope.editLabels[transactionId].labels instanceof Array)) {
+            this.$scope.editLabels[transactionId].labels = [];
+        }
+        this.$scope.editLabels[transactionId].labels.push({
+            key: '',
+            value: ''
+        })
+    }
+
+    removeLabel(transactionId, index) {
+        this.$scope.editLabels[transactionId].labels = _.difference(this.$scope.editLabels[transactionId].labels, [this.$scope.editLabels[transactionId].labels[index]]);
+    }
+
+    editLabels(transactionId, $index) {
+        let self = this;
+        self.TransactionService.postLabels(transactionId, self.$scope.editLabels[transactionId])
+            .then(
+                () => {
+                    let message = self.$filter('translate')('xhr.post_transaction_labels.success');
+                    self.Flash.create('success', message);
+                    self.$scope.transactions[$index].showEditLabelsModal = false;
+                    self.$scope.editLabelsValidate = [];
+                    self.tableParams.reload();
+                },
+                res => {
+                    let message = self.$filter('translate')('xhr.post_transaction_labels.error');
+                    self.Flash.create('danger', message);
+                    self.$scope.editLabelsValidate = self.Validation.mapSymfonyValidation(res.data);
+                }
+            );
     }
 
     linkTransaction(linked) {

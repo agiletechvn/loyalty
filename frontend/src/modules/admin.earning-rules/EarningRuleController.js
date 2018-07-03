@@ -141,6 +141,10 @@ export default class EarningRuleController {
                 value: "multiply_for_product"
             },
             {
+                name: this.$filter('translate')('earning_rule.types.multiply_by_product_labels'),
+                value: "multiply_by_product_labels"
+            },
+            {
                 name: this.$filter('translate')('earning_rule.types.referral'),
                 value: "referral"
             }
@@ -397,6 +401,25 @@ export default class EarningRuleController {
         }
     }
 
+    addLabelMultiplier(edit) {
+        if (edit) {
+            if (!(this.$scope.editableFields.labelMultipliers instanceof Array)) {
+                this.$scope.editableFields.labelMultipliers = [];
+            }
+            this.$scope.editableFields.labelMultipliers.push({
+                key: '',
+                value: '',
+                multiplier: ''
+            })
+        } else {
+            this.$scope.newEarningRule.labelMultipliers.push({
+                key: '',
+                value: '',
+                multiplier: ''
+            })
+        }
+    }
+
     removeExcludedSKU(index, edit) {
         let self = this;
         let earningRule;
@@ -421,6 +444,20 @@ export default class EarningRuleController {
         }
 
         earningRule.excludedLabels = _.difference(earningRule.excludedLabels, [earningRule.excludedLabels[index]])
+    }
+
+
+    removeLabelMultiplier(index, edit) {
+        let self = this;
+        let earningRule;
+
+        if (!edit) {
+            earningRule = self.$scope.newEarningRule;
+        } else {
+            earningRule = self.$scope.editableFields;
+        }
+
+        earningRule.labelMultipliers = _.difference(earningRule.labelMultipliers, [earningRule.labelMultipliers[index]])
     }
 
     setRuleState(state, ruleId) {

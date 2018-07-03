@@ -12,11 +12,17 @@
   </div>
   <div class="box-content with-minimal-height">
     <box-loader loading="CampaignCtrl.loaderStates.redeemedCampaigns"></box-loader>
-    <table ng-table="CampaignCtrl.redeemedCampaignsTableParams" class="default"
+    <table ng-table="CampaignCtrl.redeemedCampaignsTableParams" show-filter="true" class="default"
            template-pagination="templatePagination.html">
       <tr ng-repeat="row in $data">
-        <td data-title="'campaign.reward_redeem_date'|translate" sortable="'purchasedAt'">
+        <td data-title="'campaign.reward_redeem_date'|translate" sortable="'purchasedAt'" filter="{ purchasedAt: 'rewards-by-date'}">
           <span ng-bind="row.purchasedAt|date : 'yyyy-MM-dd HH:mm'"></span>
+        </td>
+        <td data-title="'campaign.cost_in_points'|translate">
+          <span>{{row.costInPoints}}</span>
+        </td>
+        <td data-title="'campaign.tax_price_value'|translate">
+          <span>{{row.taxPriceValue}}</span>
         </td>
         <td data-title="'campaign.customer_email'|translate">
           <span ng-bind="row.customerEmail"></span>
@@ -28,7 +34,16 @@
           <span>{{row.campaignName + ' (' + row.coupon.code + ')'}}</span>
         </td>
         <td data-title="'campaign.reward_type'|translate">
-          <span>{{'campaign.'+row.campaignType|translate}}</span>
+          <span>{{row.campaignType|translate}}</span>
+        </td>
+        <td data-title="'campaign.customer_name'|translate">
+          <span>{{row.customerName}}</span>
+        </td>
+        <td data-title="'campaign.customer_lastname'|translate">
+          <span>{{row.customerLastname}}</span>
+        </td>
+        <td data-title="'campaign.current_points_amount'|translate">
+          <span>{{row.currentPointsAmount}}</span>
         </td>
         <td data-title="'campaign.delivered'|translate" filter="{used: 'campaignsUsageSelectOptions'}">
           <checkbox ng-model="row.used"
@@ -42,4 +57,8 @@
   <selectize ng-disabled="$filterRow.disabled" options="CampaignCtrl.campaignsUsageSelectOptions"
              config="CampaignCtrl.campaignUsageSelectConfig" ng-model="params.filter()[name]">
   </selectize>
+</script>
+<script type="text/ng-template" id="ng-table/filters/rewards-by-date.html">
+    <label>{{'campaign.date_from'|translate}} <input class="form-control date-picker" datepicker type="text" ng-model="params.filter()[name+'From']"/></label>
+    <label>{{'campaign.date_to'|translate}} <input class="form-control date-picker" datepicker type="text" ng-model="params.filter()[name+'To']"/></label>
 </script>

@@ -52,6 +52,10 @@
                 </td>
                 <td data-title="'transaction.actions'|translate">
                     <button type="button" class="button  button-quinary tiny"
+                            ng-click="transactions[$index].showEditLabelsModal=true">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="button  button-quinary tiny"
                             ng-click="transactions[$index].showModal=true">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
@@ -118,12 +122,16 @@
             <td><span ng-bind="transaction.purchaseDate|date: 'yyyy-MM-dd HH:mm'"></span></td>
         </tr>
         <tr>
-            <td><b>{{ "transaction.transaction_id" | translate }}:</b></td>
+            <td><b>{{ "transaction.document_number" | translate }}:</b></td>
             <td><span ng-bind="transaction.documentNumber"></span></td>
         </tr>
-        <tr>
+        <tr ng-if="transaction.documentType != 'return'">
             <td><b>{{ "transaction.points_earned" | translate }}:</b></td>
             <td><span ng-bind="transaction.pointsEarned || '0'"></span></td>
+        </tr>
+        <tr ng-if="transaction.documentType == 'return'">
+            <td><b>{{ "transaction.points_revoked" | translate }}:</b></td>
+            <td><span ng-bind="transaction.pointsRevoked || '0'"></span></td>
         </tr>
         <tr>
             <td><b>{{ "transaction.pos_name" | translate }}:</b></td>
@@ -136,6 +144,14 @@
         <tr ng-if="transaction.revisedDocument">
             <td><b>{{ "transaction.revised_document" | translate }}:</b></td>
             <td><span ng-bind="transaction.revisedDocument || '---'"></span></td>
+        </tr>
+        <tr>
+            <td><b>{{ "transaction.labels" | translate }}:</b></td>
+            <td>
+                <span class="label label-default"
+                      ng-repeat="label in transaction.labels">{{label.key}}:{{label.value}} </span>
+                <span ng-if="transaction.labels.length==0">---</span>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -179,6 +195,70 @@
             </tbody>
         </table>
     </div>
+</modal>
+<modal ng-repeat="transaction in transactions" show='transactions[$index].showEditLabelsModal'
+       modalId="labels__{{transactions.transactionId}}" modal-title="'transaction.edit_labels' | translate">
+<form novalidate ng-submit="TransactionCtrl.editLabels(transaction.transactionId, $index)">
+    <div class="row">
+        <div class="columns medium-12">
+            <fieldset class="fieldset">
+                <div class="row">
+                    <div class="medium-2 small-2 columns">
+                        <label>{{ "transaction_labels.title" | translate }}</label>
+                    </div>
+                    <div class="medium-10 small-10 columns">
+                        <div class="collection"
+                             ng-repeat="label in editLabels[transaction.transactionId].labels track by $index">
+                            <div class="row">
+                                <div class="medium-2 small-3 columns">
+                                    <label>{{ "transaction_labels.key" | translate }} <span
+                                            class="required">*</span></label>
+                                </div>
+                                <div class="medium-10 small-9 columns"
+                                     form-validation="editLabelsValidate.labels[$index].key.errors">
+                                    <input ng-model="editLabels[transaction.transactionId].labels[$index].key">
+                                    <span class="prompt">{{ "transaction_labels.key_prompt" | translate }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="medium-2 small-3 columns">
+                                    <label>{{ "transaction_labels.value" | translate }} <span
+                                            class="required">*</span></label>
+                                </div>
+                                <div class="medium-10 small-9 columns"
+                                     form-validation="editLabelsValidate.labels[$index].value.errors">
+                                    <input ng-model="editLabels[transaction.transactionId].labels[$index].value">
+                                    <span class="prompt">{{ "transaction_labels.value_prompt" | translate }}</span>
+                                </div>
+                            </div>
+
+                            <button type="button" class="remove-collection"
+                                    ng-click="TransactionCtrl.removeLabel(transaction.transactionId, $index)">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <button type="button" class="button button-secondary tiny"
+                                ng-click="TransactionCtrl.addLabel(transaction.transactionId)">{{
+                            "transaction_labels.add_label" | translate }}
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 30px;">
+        <div class="columns small-12">
+            <button class="button  button-septenary-colorized float-left m-r-1" type="submit">
+                {{ "global.save" | translate}}
+            </button>
+            <button type="button" ng-click="transactions[$index].showEditLabelsModal = false"
+                    class="button  button-quaternary float-left">
+                {{ "global.cancel" | translate }}
+            </button>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+</form>
 </modal>
 <modal show='linkTransactionModal' modalId="linkTransactionModal" modal-title="'transaction.link_modal' | translate">
     <form novalidate ng-submit="TransactionCtrl.linkTransaction()">

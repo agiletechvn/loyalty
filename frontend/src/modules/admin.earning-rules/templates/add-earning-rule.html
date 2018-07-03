@@ -71,7 +71,7 @@
                                     class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.pointValue.errors">
-                            <input type="number" ng-model="newEarningRule.pointValue" step="0.5">
+                            <input type="number" ng-model="newEarningRule.pointValue" step="0.01">
                             <span class="prompt">{{ "earning_rule.point_value_prompt" | translate }}</span>
                         </div>
                     </div>
@@ -254,6 +254,7 @@
                             <span class="prompt">{{ "earning_rule.limit.limit_prompt" | translate }}</span>
                         </div>
                     </div>
+
                     <div class="row"
                          ng-if="newEarningRule.type=='multiply_for_product'">
                         <div class="medium-2 small-3 columns">
@@ -261,8 +262,60 @@
                                     class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.multiplier.errors">
-                            <input type="number" step="0.5" ng-model="newEarningRule.multiplier">
+                            <input type="number" step="0.01" ng-model="newEarningRule.multiplier">
                             <span class="prompt">{{ "earning_rule.multiplier_prompt" | translate }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="newEarningRule.type=='multiply_by_product_labels'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.label_multipliers" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" ng-init="newEarningRule.labelMultipliers=[]">
+                            <div class="collection" ng-repeat="labelMultiplier in newEarningRule.labelMultipliers">
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>{{ "earning_rule.key" | translate }} <span
+                                                class="required">*</span></label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns"
+                                         form-validation="validate.labelMultipliers[$index].key.errors">
+                                        <input ng-model="newEarningRule.labelMultipliers[$index].key">
+                                        <span class="prompt">{{ "earning_rule.key_prompt" | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>{{ "earning_rule.value" | translate }} <span
+                                                class="required">*</span></label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns"
+                                         form-validation="validate.labelMultipliers[$index].value.errors">
+                                        <input ng-model="newEarningRule.labelMultipliers[$index].value">
+                                        <span class="prompt">{{ "earning_rule.label_value_prompt" | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>{{ "earning_rule.multiplier" | translate }} <span
+                                                class="required">*</span></label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns"
+                                         form-validation="validate.labelMultipliers[$index].multiplier.errors">
+                                        <input ng-model="newEarningRule.labelMultipliers[$index].multiplier" type="number" step="0.01">
+                                        <span class="prompt">{{ "earning_rule.label_multiplier_prompt" | translate }}</span>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="remove-collection"
+                                        ng-click="EarningRuleCtrl.removeLabelMultiplier($index)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <button type="button" class="button button-secondary tiny"
+                                    ng-click="EarningRuleCtrl.addLabelMultiplier()">{{
+                                "earning_rule.add_label_multiplier" | translate }}
+                            </button>
                         </div>
                     </div>
                 </fieldset>

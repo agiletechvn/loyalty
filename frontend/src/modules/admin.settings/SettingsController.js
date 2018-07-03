@@ -21,6 +21,7 @@ export default class SettingsController {
         this.$scope.currencies = this.DataService.getCurrencies();
         this.$scope.validate = {};
         this.$scope.fileValidate = this.SettingsService.storedFileError;
+        this.$scope.uploadsUrl = window.OpenLoyaltyConfig.apiUrl.replace('/api', '').replace('/app_dev.php', '');
         this.currencyConfig = {
             valueField: 'code',
             labelField: 'name',
@@ -270,6 +271,32 @@ export default class SettingsController {
      *
      * @method deleteHeroImage
      */
+    deleteConditionsFile() {
+        let self = this;
+
+        this.SettingsService.deleteConditionsFile()
+            .then(
+                res => {
+                    self.$scope.conditionsFilePath = false;
+                    let message = self.$filter('translate')('xhr.delete_settings_conditions_file.success');
+                    self.Flash.create('success', message);
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.delete_settings_conditions_file.error');
+                    self.Flash.create('danger', message);
+                }
+            )
+    }
+
+
+    /**
+     * Deletes hero image
+     *
+     * @method deleteHeroImage
+     */
     deleteHeroImage() {
         let self = this;
 
@@ -343,6 +370,18 @@ export default class SettingsController {
                     self.$scope.heroImageFilePath = false;
                 }
             );
+
+        self.SettingsService.getConditionsFile()
+            .then(
+                res => {
+                    self.$scope.conditionsFilePath = true;
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.conditionsFilePath = false;
+                }
+            );
     }
 
     editSettings(settings) {
@@ -405,15 +444,31 @@ export default class SettingsController {
                     if (self.$scope.heroImageFile) {
                         self.$scope.heroImageValidate = {};
                         postChain.push(
-                        self.SettingsService.postHeroImage(self.$scope.heroImageFile)
-                            .catch(
-                                err => {
-                                    self.$scope.heroImageValidate = self.Validation.mapSymfonyValidation(err.data);
-                                    let message = self.$filter('translate')('xhr.upload_settings_hero_image.error');
-                                    self.Flash.create('danger', message);
-                                    self.loaderStates.coverLoader = false;
-                                }
-                            )
+                            self.SettingsService.postHeroImage(self.$scope.heroImageFile)
+                                .catch(
+                                    err => {
+                                        self.$scope.heroImageValidate = self.Validation.mapSymfonyValidation(err.data);
+                                        let message = self.$filter('translate')('xhr.upload_settings_hero_image.error');
+                                        self.Flash.create('danger', message);
+                                        self.loaderStates.coverLoader = false;
+                                    }
+                                )
+                        );
+                        self.$scope.refresh = true;
+                    }
+
+                    if (self.$scope.conditionsFile) {
+                        self.$scope.conditionsFileValidate = {};
+                        postChain.push(
+                            self.SettingsService.postConditionsFile(self.$scope.conditionsFile)
+                                .catch(
+                                    err => {
+                                        self.$scope.conditionsFileValidate = self.Validation.mapSymfonyValidation(err.data);
+                                        let message = self.$filter('translate')('xhr.upload_settings_conditions_file.error');
+                                        self.Flash.create('danger', message);
+                                        self.loaderStates.coverLoader = false;
+                                    }
+                                )
                         );
                         self.$scope.refresh = true;
                     }

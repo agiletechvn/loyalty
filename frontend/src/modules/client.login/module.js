@@ -25,6 +25,26 @@ angular.module(MODULE_NAME, [])
                     }
                 }
             })
+            .state('customer-terms-conditions', {
+                url: "/terms-conditions",
+                views: {
+                    'extendTop@': {
+                        templateUrl: 'templates/customer-terms-conditions-extend-top.html',
+                        controller: 'CustomerLoginController',
+                        controllerAs: 'CustomerLoginCtrl'
+                    },
+                    'main@': {
+                        templateUrl: require('./templates/customer-terms-conditions.html'),
+                        controller: 'CustomerLoginController',
+                        controllerAs: 'CustomerLoginCtrl'
+                    },
+                    'extendBottom@': {
+                        templateUrl: 'templates/customer-terms-conditions-extend-bottom.html',
+                        controller: 'CustomerLoginController',
+                        controllerAs: 'CustomerLoginCtrl'
+                    }
+                }
+            })
     })
     .run(($templateCache, $http) => {
         let catchErrorTemplate = () => {
@@ -33,11 +53,20 @@ angular.module(MODULE_NAME, [])
 
         $templateCache.put('templates/customer-login-extend-top.html', '');
         $templateCache.put('templates/customer-login-extend-bottom.html', '');
+        $templateCache.put('templates/customer-terms-conditions-extend-top.html', '');
+        $templateCache.put('templates/customer-terms-conditions-extend-bottom.html', '');
 
         $http.get(`templates/customer-login.html`)
             .then(
                 response => {
                     $templateCache.put('templates/customer-login.html', response.data);
+                }
+            )
+            .catch(catchErrorTemplate);
+        $http.get(`templates/customer-terms-conditions.html`)
+            .then(
+                response => {
+                    $templateCache.put('templates/customer-terms-conditions.html', response.data);
                 }
             )
             .catch(catchErrorTemplate);

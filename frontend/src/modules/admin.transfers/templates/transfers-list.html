@@ -64,6 +64,10 @@
                     <span ng-bind="('transfer.issuer.'+row.issuer) | translate"></span>
                 </td>
                 <td data-title="'transfer.actions'|translate">
+                    <button type="button" class="button  button-quinary tiny"
+                            ng-click="transfers[$index].showModal=true">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
                     <button type="button" ng-disabled="row.type=='spending' || row.state=='canceled'"
                             class="button  button-septenary tiny" ng-click="transfers[$index].showRemoveModal=true">
                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -150,7 +154,32 @@
         </fieldset>
     </form>
 </modal>
+<modal ng-repeat="transfer in transfers" show='transfers[$index].showModal'
+       modalId="{{transfer.pointsTransferId}}" modal-title="'transfer.details' | translate">
+    <table class="default">
+        <tbody>
+            <tr>
+                <td><b>{{ "transfer.comment" | translate }}:</b></td>
+                <td><span ng-bind="transfer.comment || '---'"></span></td>
+            </tr>
+            <tr ng-if="transfer.revisedTransactionDocumentNumber">
+                <td><b>{{ "transfer.revised_transaction" | translate }}:</b></td>
+                <td><span
+                        ng-bind="transfer.revisedTransactionDocumentNumber || '---'"
+                >
+                </span></td>
+            </tr>
+            <tr ng-if="transfer.revisedTransactionId">
+                <td><b>{{ "transfer.revised_transaction_id" | translate }}:</b></td>
+                <td><span
+                        ng-bind="transfer.revisedTransactionId.transactionId || '---'"
+                >
+                </span></td>
+            </tr>
 
+        </tbody>
+    </table>
+</modal>
 <modal show='showTransferImportModal' modalId="transferImportModal"
        modal-title="'transfer.import_title' | translate">
     <form novalidate ng-submit="TransferCtrl.importTransfer(file)">

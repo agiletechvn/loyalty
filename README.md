@@ -35,12 +35,6 @@ Execute bellow command to run application:
 docker-compose up
 ```
 
-Then use another command to setup database, Elasticsearch and load some demo data:
-
-```
-docker-compose exec php phing setup
-```
-
 Before you start using Open Loyalty you need to define hosts in your local environment. Add host openloyalty.localhost as 127.0.0.1 in your system configuration file (/etc/hosts).
 If you find any problems using docker (for example on Windows environments) please try our Vagrant recipe.
 
@@ -72,16 +66,24 @@ After starting Open Loyalty it's exposes services under following URLs:
  * http://openloyalty.localhost:8182 - the administration panel,
  * http://openloyalty.localhost:8183 - the customer panel,
  * http://openloyalty.localhost:8184 - the merchant panel,
- * http://openloyalty.localhost:8181 - RESTful API port
- * http://openloyalty.localhost:8181/doc - swagger-like API doc
+ * http://openloyalty.localhost - RESTful API port
+ * http://openloyalty.localhost/doc - swagger-like API doc
+
+
+## For developers
 
 If you are developer and want to attach source code then:
 
 ```
-docker-compose -f docker/docker-compose.yml -f docker/docker-compose.dev.yml up
+docker-compose -f docker/docker-compose.dev.yml up
 ```
 
-## Url access for developer
+Remember about setup database using bellow command:
+
+```
+docker-compose -f docker/docker-compose.dev.yml exec php phing setup
+```
+
 After starting Open Loyalty in developer mode it's exposes services under slightly different URLs:
 
  * http://openloyalty.localhost:8081/admin - the administration panel,

@@ -42,7 +42,7 @@ export default class CampaignController {
         this.EditableMap = EditableMap;
         this.ParamsMap = ParamsMap;
         this.Validation = Validation;
-        this.CustomerService = CustomerService
+        this.CustomerService = CustomerService;
 
         this.Flash = Flash;
         this.NgTableParams = NgTableParams;
@@ -64,12 +64,15 @@ export default class CampaignController {
             coverLoader: true,
             redeemedCampaigns: true
         };
+
         this.campaignId = this.$stateParams.campaignId || null;
         this.$scope.campaignName = this.$stateParams.campaignName || false;
-        this.$scope.newCampaign = {};
+        this.$scope.newCampaign = {labels: []};
         this.$scope.showCompany = false;
         this.$scope.showAddress = false;
         this.$scope.fileValidate = this.CampaignService.storedFileError;
+        this.$scope.dateFrom = null;
+        this.$scope.dateTo = null;
         this.segments = null;
         this.levels = null;
         this.config = this.DataService.getConfig();
@@ -558,6 +561,36 @@ export default class CampaignController {
 
         }
       )
+    }
+
+    addLabel(edit) {
+        if (edit) {
+            if (!(this.$scope.editableFields.labels instanceof Array)) {
+                this.$scope.editableFields.labels = [];
+            }
+            this.$scope.editableFields.labels.push({
+                key: '',
+                value: ''
+            })
+        } else {
+            this.$scope.newCampaign.labels.push({
+                key: '',
+                value: ''
+            })
+        }
+    }
+
+    removeLabel(index, edit) {
+        let self = this;
+        let campaign;
+
+        if (!edit) {
+            campaign = self.$scope.newCampaign;
+        } else {
+            campaign = self.$scope.editableFields;
+        }
+
+        campaign.labels = _.difference(campaign.labels, [campaign.labels[index]])
     }
 
     _selectizeConfigs() {

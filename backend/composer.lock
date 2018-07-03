@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ffa053c85f55a9369d31209693f452b4",
-    "content-hash": "f2f74be857603fa647a081cc8687e6bc",
+    "hash": "f0ebc53182d24b9dd0a93e502580fdce",
+    "content-hash": "edc4920b3963c8197a58d9e7fc5b6ae8",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -465,16 +465,16 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
-                "reference": "27a88c512e8b90528372434171cd358e2ddbe56c"
+                "reference": "d87f0047a0f264a6b17c361888d7ff7277a1a169"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/27a88c512e8b90528372434171cd358e2ddbe56c",
-                "reference": "27a88c512e8b90528372434171cd358e2ddbe56c",
+                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/d87f0047a0f264a6b17c361888d7ff7277a1a169",
+                "reference": "d87f0047a0f264a6b17c361888d7ff7277a1a169",
                 "shasum": ""
             },
             "require": {
@@ -521,7 +521,7 @@
             "type": "project",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7.x-dev"
+                    "dev-master": "2.8.x-dev"
                 },
                 "symfony-app-dir": "app",
                 "symfony-bin-dir": "bin",
@@ -546,7 +546,7 @@
             "license": [
                 "proprietary"
             ],
-            "time": "2018-06-05 12:57:23"
+            "time": "2018-07-03 19:05:52"
         },
         {
             "name": "doctrine/annotations",

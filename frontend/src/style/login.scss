@@ -5,6 +5,7 @@ body.customer_panel_registration_from_invitation,
 body.customer_panel_registration_success,
 body.customer_panel_registration_activate_sms,
 body.customer-login,
+body.customer-terms-conditions,
 body.seller-login,
 body.forgot-password-request,
 body.customer-forgot-password-reset,
@@ -24,6 +25,12 @@ section {
     width: 680px;
     max-width: 100%;
     margin: 0 auto;
+  }
+
+  .customer-terms-conditions {
+    .forgot {
+      margin-top: 0 !important;
+    }
   }
 
   .login-form {

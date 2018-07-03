@@ -87,6 +87,9 @@
                                 <span ng-show="row.type == 'adding' && row.transactionId">
                                     Get for transaction #{{ row.transactionDocumentNumber }}
                                 </span>
+                                <span ng-show="row.type == 'spending' && row.revisedTransactionId">
+                                    Return transaction #{{ row.revisedTransactionDocumentNumber }}
+                                </span>
                             </td>
                         </tr>
                         <tr ng-if="!$data.length">

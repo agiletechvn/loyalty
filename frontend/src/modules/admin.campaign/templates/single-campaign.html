@@ -151,6 +151,14 @@
                         <td><b>{{ "campaign.photo" | translate }}:</b></td>
                         <td><img ng-src="{{CampaignCtrl.generatePhotoRoute()}}" style="width:300px"/></td>
                     </tr>
+                    <tr ng-if="campaign.labels && campaign.labels.length > 0">
+                        <td><b>{{ "campaign.labels"|translate }}:</b></td>
+                        <td>
+                            <label class="label label-default" ng-repeat="label in campaign.labels">
+                                {{ label.key }}:{{ label.value }}
+                            </label>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

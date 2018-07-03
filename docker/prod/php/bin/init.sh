@@ -15,7 +15,7 @@ done
 
 info "Setting permissions."
 chown -R www-data:www-data /var/www/openloyalty
-chmod 755 /var/www/openloyalty/var /var/www/openloyalty/var/cache /var/www/openloyalty/var/logs /var/www/openloyalty/app/uploads /var/www/openloyalty/var/sessions /var/www/openloyalty/var/import
+chmod 755 /var/www/openloyalty/var /var/www/openloyalty/var/cache /var/www/openloyalty/var/logs /var/www/openloyalty/app/uploads /var/www/openloyalty/web/uploads /var/www/openloyalty/var/sessions /var/www/openloyalty/var/import
 
 info "Checking if database is already initialized"
 if [[ `PGPASSWORD="$APP_DB_PASSWORD" psql -h $APP_DB_HOST -U $APP_DB_USER -l -A -t | grep $APP_DB_NAME | wc -l` -gt 0 ]] \

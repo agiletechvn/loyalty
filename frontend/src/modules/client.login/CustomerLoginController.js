@@ -1,5 +1,5 @@
 export default class CustomerLoginController {
-    constructor($scope, $state, AuthService) {
+    constructor($scope, $state, $timeout, AuthService) {
         if (AuthService.getStoredRefreshToken()) {
             AuthService.getRefreshToken()
                 .then(
@@ -19,6 +19,7 @@ export default class CustomerLoginController {
         }
         this.$scope = $scope;
         this.$state = $state;
+        this.$timeout = $timeout
         this.AuthService = AuthService;
     }
 
@@ -50,6 +51,12 @@ export default class CustomerLoginController {
                 }
             )
     }
+
+    getTerms() {
+        var link = document.createElement('a');
+        link.href = window.OpenLoyaltyConfig.apiUrl.replace('api', '') + 'terms-conditions';
+        this.$timeout(function() { link.dispatchEvent(new MouseEvent('click')); }, 2000);
+    }
 }
 
-CustomerLoginController.$inject = ['$scope', '$state', 'AuthService'];
+CustomerLoginController.$inject = ['$scope', '$state', '$timeout', 'AuthService'];

@@ -18,7 +18,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
-  - cd docker && docker-compose -f docker-compose.yml -f docker-compose.test.yml run php && cd ..
+  - cd docker && docker-compose -f docker-compose.test.yml run php && cd ..
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then

@@ -36,6 +36,14 @@ export default class TransactionService {
             .customPOST({assign: linked})
     }
 
+    postLabels(transactionId, obj) {
+        return this.Restangular
+            .one('admin')
+            .one('transaction')
+            .one('labels')
+            .customPOST({transaction_labels: {transactionId: transactionId, labels: obj.labels}})
+    }
+
 }
 
 TransactionService.$inject = ['Restangular', 'EditableMap'];

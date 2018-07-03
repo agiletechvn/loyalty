@@ -120,9 +120,15 @@
         <tr ng-if="rule.type=='points'">
             <td><b>{{ "earning_rule.excluded_labels" | translate }}</b></td>
             <td>
-                <label class="label label-default" ng-repeat="s in rule.excludedLabels">{{ s.key }}:{{ s.value
-                    }}</label>
+                <label class="label label-default" ng-repeat="s in rule.excludedLabels">{{ s.key }}:{{ s.value }}</label>
                 <span ng-if="!rule.excludedLabels.length">{{ 'global.not_set'|translate }}</span>
+            </td>
+        </tr>
+        <tr ng-if="rule.type=='multiply_by_product_labels'">
+            <td><b>{{ "earning_rule.label_multipliers" | translate }}</b></td>
+            <td>
+                <label class="label label-default" ng-repeat="s in rule.labelMultipliers">{{ s.key }}:{{ s.value}} * {{ s.multiplier}}</label>
+                <span ng-if="!rule.labelMultipliers.length">{{ 'global.not_set'|translate }}</span>
             </td>
         </tr>
         <tr ng-if="rule.type=='points'">
