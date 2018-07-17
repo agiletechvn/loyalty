@@ -30,6 +30,6 @@ RUN mkdir /var/www/openloyalty/var/cache && mkdir /var/www/openloyalty/var/logs 
 
 WORKDIR /var/www/openloyalty
 COPY ./docker/prod/php/bin/init.sh init.sh
-RUN chmod a+x init.sh && rm web/app_dev.php && composer install --no-dev -o --prefer-dist && bin/console assets:install && rm web/config.php && chown -R www-data:www-data /var/www/openloyalty/var
+RUN chmod a+x init.sh && rm web/app_dev.php && composer install --no-dev -o --prefer-dist && bin/console assets:install && rm web/config.php && chown -R www-data:www-data /var/www/openloyalty
 
 CMD ["./init.sh"]
