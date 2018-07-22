@@ -44,6 +44,72 @@ export default class CampaignController {
         this.Validation = Validation;
         this.CustomerService = CustomerService;
 
+        this.activityStatusSelectOptions = [
+            {
+                value: '',
+                label: $filter('translate')('campaign.activity_statuses.all')
+            },
+            {
+                value: '1',
+                label: $filter('translate')('campaign.activity_statuses.active')
+            },
+            {
+                value: '0',
+                label: $filter('translate')('campaign.activity_statuses.inactive')
+            },
+        ];
+
+        this.activityStatusSelectConfig = {
+            valueField: 'value',
+            labelField: 'label',
+            create: false,
+            sortField: 'label',
+            searchField: 'label',
+            maxItems: 1,
+            allowEmptyOption: true
+        };
+
+        this.rewardSelectConfig = {
+            valueField: 'value',
+            labelField: 'label',
+            create: false,
+            sortField: 'label',
+            searchField: 'label',
+            maxItems: 1,
+            allowEmptyOption: true
+        };
+
+        this.rewardSelectOptions = [
+            {
+                value: '',
+                label: $filter('translate')('campaign.campaign_type.all')
+            },
+            {
+                label: $filter('translate')('campaign.discount_code'),
+                value: 'discount_code'
+            },
+            {
+                label: $filter('translate')('campaign.event_code'),
+                value: 'event_code'
+            },
+            {
+                label: $filter('translate')('campaign.free_delivery_code'),
+                value: 'free_delivery_code'
+            },
+            {
+                label: $filter('translate')('campaign.gift_code'),
+                value: 'gift_code'
+            },
+            {
+                label: $filter('translate')('campaign.value_code'),
+                value: 'value_code'
+            },
+            {
+                label: $filter('translate')('campaign.cashback'),
+                value: 'cashback'
+            }
+        ];
+
         this.Flash = Flash;
         this.NgTableParams = NgTableParams;
         this.$q = $q;
@@ -73,6 +139,9 @@ export default class CampaignController {
         this.$scope.fileValidate = this.CampaignService.storedFileError;
         this.$scope.dateFrom = null;
         this.$scope.dateTo = null;
+        this.$scope.exportDateFrom = null;
+        this.$scope.exportDateTo = null;
+        this.$scope.content = "test";
         this.segments = null;
         this.levels = null;
         this.config = this.DataService.getConfig();
@@ -116,7 +185,7 @@ export default class CampaignController {
             },
             {
                 name: this.$filter('translate')('campaign.value_code'),
-                type: 'value code'
+                type: 'value_code'
             },
             {
                 name: this.$filter('translate')('campaign.cashback'),
@@ -591,6 +660,48 @@ export default class CampaignController {
         }
 
         campaign.labels = _.difference(campaign.labels, [campaign.labels[index]])
+    }
+
+    downloadRedeemedCampaignsReportCSV(dateFrom = null, dateTo = null) {
+        var self = this;
+        let params = {
+        };
+
+        if (dateFrom) {
+            params.purchasedAtFrom = dateFrom;
+        }
+
+        if (dateTo) {
+            params.purchasedAtTo = dateTo;
+        }
+
+        self.CampaignService.getBoughtReport(params).then(function (response) {
+           let file = new Blob([response], {type: 'text/csv'});
+           self.downloadFile(file, 'report.csv');
+        });
+    }
+
+    downloadFile(blob, filename) {
+            // It is necessary to create a new blob object with mime-type explicitly set
+            // otherwise only Chrome works like it should
+            let newBlob = new Blob([blob], {type: "text/csv"});
+            // IE doesn't allow using a blob object directly as link href
+            // instead it is necessary to use msSaveOrOpenBlob
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(newBlob);
+                return;
+            }
+            // For other browsers:
+            // Create a link pointing to the ObjectURL containing the blob.
+            const data = window.URL.createObjectURL(newBlob);
+            let link = document.createElement('a');
+            link.href = data;
+            link.download = filename;
+            link.click();
+            setTimeout(function() {
+                    // For Firefox it is necessary to delay revoking the ObjectURL
+                    window.URL.revokeObjectURL(data);
+                }, 100)
     }
 
     _selectizeConfigs() {

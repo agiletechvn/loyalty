@@ -15,6 +15,8 @@ export default class SettingsController {
         this.$scope.availableFrontendTranslations = this.DataService.getAvailableFrontendTranslations();
         this.$scope.availableCustomerStatuses = this.DataService.getAvailableCustomerStatuses();
         this.$scope.availableAccountActivationMethods = this.DataService.getAvailableAccountActivationMethods();
+        this.$scope.availableMarketingVendors = this.DataService.getAvailableMarketingVendors();
+        this.$scope.availableMarketingVendorsConfig = this.DataService.getAvailableMarketingVendorsConfig();
         this.$scope.smsGatewayConfig = this.DataService.getSmsGatewayConfig();
         this.$scope.timezones = this.DataService.getTimezones();
         this.$scope.countries = this.DataService.getCountries();
@@ -97,6 +99,23 @@ export default class SettingsController {
                     self.$scope.refresh = true;
                 }
                 this.accountActivationMethodValue = value;
+            }
+        };
+        this.marketingVendorsConfig = {
+            valueField: 'code',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField: 'name',
+            maxItems: 1,
+            onChange: function (value) {
+                if (!this.marketingVendorsValue) {
+                    this.marketingVendorsValue = value;
+                }
+                if (this.marketingVendorsValue != value) {
+                    self.$scope.refresh = true;
+                }
+                this.marketingVendorsValue = value;
             }
         };
         this.customerStatusesSpendingConfig = {
@@ -371,6 +390,18 @@ export default class SettingsController {
                 }
             );
 
+        self.SettingsService.getConditionsUrl()
+            .then(
+                res => {
+                    self.$scope.conditionsFileUrl = res.url;
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.conditionsFileUrl = null;
+                }
+            );
+
         self.SettingsService.getConditionsFile()
             .then(
                 res => {
@@ -403,10 +434,30 @@ export default class SettingsController {
                 return;
             }
         }
+        if (settings.marketingVendorsValue !== 'none') {
+            let errors = 0;
+            self.$scope.validate = {};
+            self.$scope.validate[settings.marketingVendorsValue] = {};
+            for (let i = 0; i < self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue].length; i += 1) {
+                if (!settings[settings.marketingVendorsValue] || !settings[settings.marketingVendorsValue][self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue][i].name]) {
+                    self.$scope.validate[settings.marketingVendorsValue][self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue][i].name] = { errors: [self.$filter('translate')('front_error.not_blank')]};
+                    errors += 1;
+                } else {
+                    self.$scope.validate[settings.marketingVendorsValue][self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue][i].name] = {};
+                }
+            }
+            if (errors === self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue].length && errors > 0) {
+                let message = self.$filter('translate')('xhr.put_settings.error');
+                self.Flash.create('danger', message);
+
+                return;
+            }
+        }
         self.SettingsService.postSettings(settings)
             .then(
                 res => {
                     let postChain = [1];
+                    let errors = [];
 
                     if (self.$scope.logoFile) {
                         self.$scope.fileValidate = {};
@@ -416,6 +467,7 @@ export default class SettingsController {
                                     err => {
                                         self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
                                         let message = self.$filter('translate')('xhr.upload_settings_logo.error');
+                                        errors.push(message);
                                         self.Flash.create('danger', message);
                                         self.loaderStates.coverLoader = false;
                                     }
@@ -433,6 +485,7 @@ export default class SettingsController {
                                 err => {
                                     self.$scope.smallLogoValidate = self.Validation.mapSymfonyValidation(err.data);
                                     let message = self.$filter('translate')('xhr.upload_settings_small_logo.error');
+                                    errors.push(message);
                                     self.Flash.create('danger', message);
                                     self.loaderStates.coverLoader = false;
                                 }
@@ -449,6 +502,7 @@ export default class SettingsController {
                                     err => {
                                         self.$scope.heroImageValidate = self.Validation.mapSymfonyValidation(err.data);
                                         let message = self.$filter('translate')('xhr.upload_settings_hero_image.error');
+                                        errors.push(message);
                                         self.Flash.create('danger', message);
                                         self.loaderStates.coverLoader = false;
                                     }
@@ -459,18 +513,19 @@ export default class SettingsController {
 
                     if (self.$scope.conditionsFile) {
                         self.$scope.conditionsFileValidate = {};
+                        self.$scope.refresh = true;
                         postChain.push(
                             self.SettingsService.postConditionsFile(self.$scope.conditionsFile)
                                 .catch(
                                     err => {
                                         self.$scope.conditionsFileValidate = self.Validation.mapSymfonyValidation(err.data);
                                         let message = self.$filter('translate')('xhr.upload_settings_conditions_file.error');
+                                        errors.push(message);
                                         self.Flash.create('danger', message);
                                         self.loaderStates.coverLoader = false;
                                     }
                                 )
                         );
-                        self.$scope.refresh = true;
                     }
 
                     Promise.all(postChain).then(function(values) {
@@ -482,7 +537,7 @@ export default class SettingsController {
                         self.$translate.refresh();
                         self.$scope.settingsOld = angular.copy(self.$scope.settings);
 
-                        if (self.$scope.refresh) {
+                        if (errors.length == 0 && self.$scope.refresh) {
                             window.location.reload(true);
                         }
                     });

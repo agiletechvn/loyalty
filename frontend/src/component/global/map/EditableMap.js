@@ -172,6 +172,8 @@ export default class EditableMap {
     newEarningRule(data, deleteType) {
         let res = _.clone(data);
         delete res.usageUrl;
+        delete res.hasPhoto;
+
         switch (res.type) {
             case 'points' :
                 delete res.eventName;
@@ -298,6 +300,7 @@ export default class EditableMap {
         delete res.usages;
         delete res.levelNames;
         delete res.segmentNames;
+        delete res.posNames;
         if (deleteType) {
             delete res.type;
         }

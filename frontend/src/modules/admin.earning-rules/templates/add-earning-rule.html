@@ -87,7 +87,7 @@
                     </div>
                     <div class="row" ng-if="newEarningRule.type=='points'">
                         <div class="medium-2 small-3 columns">
-                            <label>{{ "earning_rule.exluded_labels" | translate }}</label>
+                            <label>{{ "earning_rule.excluded_labels" | translate }}</label>
                         </div>
                         <div class="medium-10 small-9 columns" ng-init="newEarningRule.excludedLabels=[]">
                             <div class="collection" ng-repeat="label in newEarningRule.excludedLabels">
@@ -280,7 +280,7 @@
                                     </div>
                                     <div class="medium-10 small-9 columns"
                                          form-validation="validate.labelMultipliers[$index].key.errors">
-                                        <input ng-model="newEarningRule.labelMultipliers[$index].key">
+                                        <input type="text" ng-model="newEarningRule.labelMultipliers[$index].key">
                                         <span class="prompt">{{ "earning_rule.key_prompt" | translate }}</span>
                                     </div>
                                 </div>
@@ -291,7 +291,7 @@
                                     </div>
                                     <div class="medium-10 small-9 columns"
                                          form-validation="validate.labelMultipliers[$index].value.errors">
-                                        <input ng-model="newEarningRule.labelMultipliers[$index].value">
+                                        <input type="text" ng-model="newEarningRule.labelMultipliers[$index].value">
                                         <span class="prompt">{{ "earning_rule.label_value_prompt" | translate }}</span>
                                     </div>
                                 </div>
@@ -351,6 +351,21 @@
                         <div class="medium-10 small-9 columns" form-validation="validate.endAt.errors">
                             <input type="text" ng-model="newEarningRule.endAt" datepicker>
                             <span class="prompt">{{ "earning_rule.end_at_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset">
+                    <legend>POS</legend>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.pos" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.levels.errors">
+                            <selectize config="EarningRuleCtrl.posConfig"
+                                       options="EarningRuleCtrl.pos"
+                                       ng-model="newEarningRule.pos">
+                            </selectize>
+                            <span class="prompt">{{ "earning_rule.pos_prompt" | translate }} </span>
                         </div>
                     </div>
                 </fieldset>

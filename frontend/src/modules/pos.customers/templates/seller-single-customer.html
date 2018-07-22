@@ -330,6 +330,9 @@
                         <button class="button button-septenary-colorized medium"
                                 ui-sref="seller.panel.single-customer.transfers">{{"customer.all_transfers"|translate}}
                         </button>
+                        <button class="button button-septenary-colorized medium" ng-show="SellerCustomerCtrl.allowPointTransfer"
+                                ng-click="SellerCustomerCtrl.openTransferModal()">{{"customer.add_points_transfer"|translate}}
+                        </button>
 
                     </div>
                     <div class="tabs-panel" id="panel3">
@@ -403,6 +406,53 @@
             </div>
         </div>
     </div>
+
+    <modal modalId="showTransferModal" show="showTransferModal" modal-title="'transfer.transfer_points'|translate"
+       size="'tiny-small'">
+        <form novalidate ng-submit="SellerCustomerCtrl.transferPoints(newTransfer, transferType)">
+            <fieldset class="fieldset" style="margin-top:30px">
+                <div class="row">
+                    <div class="columns medium-4">
+                        <label>{{ "transfer.transfer_type" | translate }} <span class="required">*</span></label>
+                    </div>
+                    <div class="columns medium-8" ng-init="transferType='spend'">
+                        <selectize ng-model="transferType" config="SellerCustomerCtrl.transferTypeConfig"
+                                   options="SellerCustomerCtrl.transferType" required>
+                        </selectize>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns medium-4">
+                        <label>{{ "transfer.points_to_add" | translate }} <span class="required">*</span></label>
+                    </div>
+                    <div class="columns medium-8" form-validation="validate.points.errors">
+                        <input type="number" min="1" step="0.5" ng-model="newTransfer.points"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns medium-4">
+                        <label>{{ "transfer.comment" | translate }}</label>
+                    </div>
+                    <div class="columns medium-8" form-validation="validate.comment.errors">
+                        <input type="text" ng-model="newTransfer.comment"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="columns small-12 text-center">
+                        <button class="button button-septenary-colorized medium m-t-10 m-b-0" type="submit"
+                                ng-disabled="SellerCustomerCtrl.loaderStates.addTransfer">
+                            {{ "global.save" |translate }}
+                        </button>
+                        <div class="spinner-loader-wrapper">
+                            <spinner-loader loading="SellerCustomerCtrl.loaderStates.addTransfer" class="inline"
+                                            delay="5"></spinner-loader>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </modal>
 
     <modal show='assignedLevel.showModal' modalId="{{assignedLevel.id}}" modal-title="'level.special_rewards'|translate"
            size="tiny-small">

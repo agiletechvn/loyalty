@@ -1,7 +1,11 @@
 <box-loader loading="CampaignCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="500"></box-loader>
 
 <div class="heading" ng-init="CampaignCtrl.getRedeemedCampaigns()">
-  <h1>{{ "campaign.redeemed_heading" | translate }}</h1>
+    <h1>{{ "campaign.redeemed_heading" | translate }}</h1>
+    &nbsp;
+    <button class="medium button button-septenary-colorized" ng-click="exportBoughtCampaignsReport=true">
+        {{ "campaign.export_csv" | translate }}
+    </button>
 </div>
 <div style="clear:both;"></div>
 
@@ -53,6 +57,27 @@
     </table>
   </div>
 </div>
+
+<modal show='exportBoughtCampaignsReport' modalId="exportBoughtCampaignsReport" modal-title="'campaign.export_title' | translate">
+    <form novalidate>
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="medium-3 columns"><label>{{'campaign.date_from'|translate}}</label></div>
+                <div class="medium-9 columns"><input class="form-control date-picker" datepicker type="text" ng-model="exportDateFrom"/></div>
+            </div>
+            <div class="row">
+                <div class="medium-3 columns"><label>{{'campaign.date_to'|translate}}</label></div>
+                <div class="medium-9 columns"><input class="form-control date-picker" datepicker type="text" ng-model="exportDateTo"/></div>
+            </div>
+            <div class="row">
+                <button class="medium button button-septenary-colorized" ng-click="CampaignCtrl.downloadRedeemedCampaignsReportCSV(exportDateFrom, exportDateTo)">
+                    {{ "campaign.download_report" | translate }}
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</modal>
+
 <script type="text/ng-template" id="ng-table/filters/campaignsUsageSelectOptions.html">
   <selectize ng-disabled="$filterRow.disabled" options="CampaignCtrl.campaignsUsageSelectOptions"
              config="CampaignCtrl.campaignUsageSelectConfig" ng-model="params.filter()[name]">

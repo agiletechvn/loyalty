@@ -48,7 +48,7 @@ Then, please execute following commands:
 vagrant up
 vagrant ssh
 docker-compose -f docker/docker-compose.yml up -d
-docker-compose -f docker/docker-compose.yml exec php phing demo 
+docker-compose -f docker/docker-compose.yml exec php phing setup
 ```
 
 That's all. Now you can go to admin panel [openloyalty.localhost:8182](http://openloyalty.localhost:8182).
@@ -72,7 +72,13 @@ After starting Open Loyalty it's exposes services under following URLs:
 
 ## For developers
 
-If you are developer and want to attach source code then:
+If you are developer and want to attach source code then you have to build base docker images:
+
+```
+./docker/base/build_dev.sh
+```
+
+and run containers:
 
 ```
 docker-compose -f docker/docker-compose.dev.yml up

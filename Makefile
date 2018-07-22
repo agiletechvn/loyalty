@@ -6,11 +6,11 @@ RUN_ARGS ?=
 BUILD_ARGS ?=
 TEST_ARGS ?=
 
-COMPOSE_FILE_ARGS ?= -f $(CURDIR)/docker/docker-compose.yml
+COMPOSE_FILE_ARGS ?= -f docker/docker-compose.yml
 
-DOCKER_COMPOSE_LOCAL = $(CURDIR)/docker/docker-compose.local.yml
+DOCKER_COMPOSE_LOCAL = docker/docker-compose.local.yml
 ifeq ($(shell test -f $(DOCKER_COMPOSE_LOCAL) && echo yes),yes)
-COMPOSE_FILE_ARGS := $(COMPOSE_FILE_ARGS) -f $(CURDIR)/docker/docker-compose.local.yml
+COMPOSE_FILE_ARGS := -f docker/docker-compose.local.yml
 endif
 
 DOCKER_COMPOSE = docker-compose $(COMPOSE_FILE_ARGS)
@@ -50,9 +50,12 @@ composer-install: run
 
 install: run
 	$(DOCKER_COMPOSE) exec -T php phing setup
+	$(DOCKER_COMPOSE) exec -T php bin/console cache:clear
+	$(DOCKER_COMPOSE) exec -T php chown -R www-data:www-data var/
 
 cache-clear: run
 	$(DOCKER_COMPOSE) exec -T php bin/console cache:clear
+	$(DOCKER_COMPOSE) exec -T php chown -R www-data:www-data var/
 
 ci-setup-test: run
 	$(DOCKER_COMPOSE) exec -T php phing ci-setup-test

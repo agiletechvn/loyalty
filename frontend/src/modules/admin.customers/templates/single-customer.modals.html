@@ -293,3 +293,50 @@
         </tbody>
     </table>
 </modal>
+
+<modal modalId="showTransferModal" show="showTransferModal" modal-title="'transfer.transfer_points'|translate"
+       size="'tiny-small'">
+    <form novalidate ng-submit="CustomerCtrl.transferPoints(newTransfer, transferType)">
+        <fieldset class="fieldset" style="margin-top:30px">
+            <div class="row">
+                <div class="columns medium-4">
+                    <label>{{ "transfer.transfer_type" | translate }} <span class="required">*</span></label>
+                </div>
+                <div class="columns medium-8" ng-init="transferType='spend'">
+                    <selectize ng-model="transferType" config="CustomerCtrl.transferTypeConfig"
+                               options="CustomerCtrl.transferType" required>
+                    </selectize>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns medium-4">
+                    <label>{{ "transfer.points_to_add" | translate }} <span class="required">*</span></label>
+                </div>
+                <div class="columns medium-8" form-validation="validate.points.errors">
+                    <input type="number" min="1" step="0.5" ng-model="newTransfer.points"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns medium-4">
+                    <label>{{ "transfer.comment" | translate }}</label>
+                </div>
+                <div class="columns medium-8" form-validation="validate.comment.errors">
+                    <input type="text" ng-model="newTransfer.comment"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button class="button button-septenary-colorized medium m-t-10 m-b-0" type="submit"
+                            ng-disabled="CustomerCtrl.loaderStates.addTransfer">
+                        {{ "global.save" |translate }}
+                    </button>
+                    <div class="spinner-loader-wrapper">
+                        <spinner-loader loading="CustomerCtrl.loaderStates.addTransfer" class="inline"
+                                        delay="5"></spinner-loader>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>

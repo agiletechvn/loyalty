@@ -19,22 +19,8 @@ export default class TransferController {
         this.$scope.validate = {};
         this.$scope.clientSearch = 0; //0 - nothing, 1 - loading, 2 - nothing found
         this.config = DataService.getConfig();
-        this.transferTypeConfig = {
-            valueField: 'type',
-            labelField: 'name',
-            create: false,
-            maxItems: 1,
-        };
-        this.transferType = [
-            {
-                name: this.$filter('translate')('transfer.spend_points'),
-                type: 'spend'
-            },
-            {
-                name: this.$filter('translate')('transfer.add_points'),
-                type: 'add'
-            }
-        ];
+        this.transferTypeConfig = this.TransferService.getTransferTypeConfig();
+        this.transferType = this.TransferService.getTransferType();
 
         let self = this;
         this.customerConfig = {

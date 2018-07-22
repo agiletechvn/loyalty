@@ -6,7 +6,12 @@
     <target name="none">
         <echo>By default I do nothing! Add -l to see all available tasks</echo>
     </target>
-
+    <target name="migrate">
+        <property name="env" value="prod" />
+        <exec command="bin/console doctrine:schema:update --env=${env} -n --force" checkreturn="true" passthru="true"/>
+        <exec command="bin/console oloy:user:projections:index:create --drop-old -n --env=${env}" checkreturn="true" passthru="true"/>
+        <exec command="bin/console oloy:utility:read-models:recreate --force --env=${env}" checkreturn="true" passthru="true"/>
+    </target>
     <target name="prepare-for-tests">
         <property name="env" value="test" />
 
@@ -28,7 +33,7 @@
         </phingcall>
     </target>
     <target name="fix-code" description="Fix code">
-        <exec command="bin/php-cs-fixer fix src" checkreturn="true" passthru="true"/>
+        <exec command="bin/php-cs-fixer fix --verbose --show-progress=estimating --rules=@Symfony,-yoda_style,-single_blank_line_before_namespace src" checkreturn="true" passthru="true"/>
     </target>
     <target name="test" description="Setup everything and run some tests">
         <echo>

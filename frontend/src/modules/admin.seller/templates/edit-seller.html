@@ -63,7 +63,7 @@
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.plainPassword.errors">
                             <div ng-show="!showChange">
-                                <span class="regular-text">*****</span> <a class="link" ng-click="showChange=true">({{'seller.change_passowrd'|translate}})</a>
+                                <span class="regular-text">*****</span> <a class="link" ng-click="showChange=true">({{'seller.change_password'|translate}})</a>
                             </div>
                             <input type="text" ng-show="showChange" ng-model="editableFields.plainPassword">
                             <span class="prompt">{{ "seller.pass_prompt_change" | translate }} </span>
@@ -79,6 +79,14 @@
                                        ng-model="editableFields.posId">
                             </selectize>
                             <span class="prompt">{{ "seller.pos_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "seller.allow_point_transfer" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns">
+                            <checkbox ng-model="editableFields.allowPointTransfer"></checkbox>
                         </div>
                     </div>
                 </fieldset>

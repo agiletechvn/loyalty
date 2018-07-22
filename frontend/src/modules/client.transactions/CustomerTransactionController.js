@@ -34,7 +34,7 @@ export default class CustomerTransactionController {
                             dfd.resolve(res);
                         },
                         () => {
-                            let message = self.$filter('translate')('xhr.get_transations.error');
+                            let message = self.$filter('translate')('xhr.get_translations.error');
                             self.Flash.create('danger', message);
                             dfd.reject();
                         }

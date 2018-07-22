@@ -12,6 +12,8 @@ export default class DataService {
         this.availableFrontendTranslations = null;
         this.availableCustomerStatuses = null;
         this.availableAccountActivationMethods = null;
+        this.availableMarketingVendors = null;
+        this.availableMarketingVendorsConfig = null;
         this.smsGatewayConfig = null;
         this.activationMethod = null;
         this._availableEarningRuleLimitPeriods = null;
@@ -79,6 +81,7 @@ export default class DataService {
         let availableFrontendTranslations = self.Restangular.one('settings').one('choices').one('availableFrontendTranslations').get();
         let availableCustomerStatuses = self.Restangular.one('settings').one('choices').one('availableCustomerStatuses').get();
         let availableAccountActivationMethods = self.Restangular.one('settings').one('choices').one('availableAccountActivationMethods').get();
+        let availableMarketingVendors = self.Restangular.one('settings').one('choices').one('availableMarketingVendors').get();
         let smsGatewatConfig = self.Restangular.one('settings').one('choices').one('smsGatewayConfig').get();
         let availableEarningRuleLimitPeriods = self.Restangular.one('settings').one('choices').one('earningRuleLimitPeriod').get();
         let timezones = self.Restangular.one('settings').one('choices').one('timezone').get();
@@ -89,7 +92,7 @@ export default class DataService {
 
         let dfd = self.$q.defer();
 
-        self.$q.all([languages, timezones, countries, events, availableCustomerStatuses, availableEarningRuleLimitPeriods, referralEvents, referralTypes, availableCustomerStatuses, availableAccountActivationMethods, smsGatewatConfig, availableFrontendTranslations])
+        self.$q.all([languages, timezones, countries, events, availableCustomerStatuses, availableEarningRuleLimitPeriods, referralEvents, referralTypes, availableCustomerStatuses, availableAccountActivationMethods, smsGatewatConfig, availableFrontendTranslations, availableMarketingVendors])
             .then(
                 function (res) {
                     if (res[0].choices) {
@@ -284,6 +287,33 @@ export default class DataService {
                         self.availableFrontendTranslations = methods;
                     }
 
+
+                    if (res[12].choices) {
+                        let methods = [];
+                        let config = {};
+                        let index = 0;
+
+                        for (let i in res[12].choices) {
+                            methods.push({
+                                _id: index,
+                                name: res[12].choices[i]['name'],
+                                code: i
+                            });
+
+                            config[i] = [];
+                            for (let field in res[12].choices[i]['config']) {
+                                config[i].push({
+                                    name: field,
+                                    type: res[12].choices[i]['config'][field]
+                                });
+                            }
+                            ++index;
+                        }
+
+                        self.availableMarketingVendors = methods;
+                        self.availableMarketingVendorsConfig = config;
+                    }
+
                     dfd.resolve()
                 },
                 function () {
@@ -363,6 +393,14 @@ export default class DataService {
 
     getSmsGatewayConfig() {
         return this.smsGatewayConfig;
+    }
+
+    getAvailableMarketingVendors() {
+        return this.availableMarketingVendors;
+    }
+
+    getAvailableMarketingVendorsConfig() {
+        return this.availableMarketingVendorsConfig;
     }
 
     getAvailableEarningRuleLimitPeriods() {

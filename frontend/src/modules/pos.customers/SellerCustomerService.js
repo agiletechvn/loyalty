@@ -30,6 +30,10 @@ export default class SellerCustomerService {
         return this.Restangular.one('seller').all('level').getList(params);
     }
 
+    getPosSeller(sellerId) {
+        return this.Restangular.one('seller', sellerId).get();
+    }
+
     getPosList(params) {
         return this.Restangular.one('seller').all('pos').getList(params);
     }
@@ -64,6 +68,14 @@ export default class SellerCustomerService {
         params.customerId = customerId;
 
         return this.Restangular.one('seller').all('transaction').getList(params);
+    }
+
+    postPosAddTransfer(newTransfer) {
+        return this.Restangular.one('pos').one('points').one('transfer').one('add').customPOST({transfer:newTransfer});
+    }
+
+    postPosSpendTransfer(newTransfer) {
+        return this.Restangular.one('pos').one('points').one('transfer').one('spend').customPOST({transfer:newTransfer});
     }
 
     getCustomerTransfers(params, customerId) {

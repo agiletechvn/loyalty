@@ -5,6 +5,8 @@ export default class CustomerController {
         }
         this.$scope = $scope;
         this.TransferService = TransferService;
+        this.transferTypeConfig = this.TransferService.getTransferTypeConfig();
+        this.transferType = this.TransferService.getTransferType();
         this.$scope.dateNow = new Date();
         this.$scope.newCustomer = {labels: []};
         this.$scope.newLevel = {};
@@ -110,7 +112,8 @@ export default class CustomerController {
             cancelTransfer: false,
             assignLevel: false,
             assignPos: false,
-            deactivateCustomer: false
+            deactivateCustomer: false,
+            addTransfer: false
         }
 
         this.referredStatusSelectOptions = [{
@@ -140,6 +143,71 @@ export default class CustomerController {
             maxItems: 1,
             allowEmptyOption: true
         };
+    }
+
+    openTransferModal() {
+        let self = this;
+
+        self.$scope.newTransfer = {};
+        self.$scope.showTransferModal = true;
+    }
+
+    closeTransferModal() {
+        let self = this;
+        self.$scope.showTransferModal = false;
+    }
+
+    transferPoints(newTransfer, type) {
+        let self = this;
+        self.loaderStates.addTransfer = true;
+
+        Object.assign(newTransfer, {
+            'customer':this.customerId
+        });
+
+        switch (type) {
+            case 'add':
+                self.TransferService.postAddTransfer(newTransfer)
+                    .then(
+                        res => {
+                            let message = self.$filter('translate')('xhr.post_add_transfer.success');
+                            self.Flash.create('success', message);
+                            self.transfersTableParams.reload();
+                            self.closeTransferModal();
+                            self.$scope.validate = {};
+                            self.loaderStates.addTransfer = false;
+                        },
+                        res => {
+                            self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                            let message = self.$filter('translate')('xhr.post_add_transfer.error');
+                            self.Flash.create('danger', message);
+                            self.loaderStates.addTransfer = false;
+                        }
+                    );
+                break;
+            case 'spend':
+                self.TransferService.postSpendTransfer(newTransfer)
+                    .then(
+                        res => {
+                            let message = self.$filter('translate')('xhr.post_spend_transfer.success');
+                            self.Flash.create('success', message);
+                            self.transfersTableParams.reload();
+                            self.closeTransferModal();
+                            self.$scope.validate = {};
+                            self.loaderStates.addTransfer = false;
+                        },
+                        res => {
+                            self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                            let message = self.$filter('translate')('xhr.post_spend_transfer.error');
+                            self.Flash.create('danger', message);
+                            self.loaderStates.addTransfer = false;
+                        }
+                    );
+                break;
+            default:
+                self.loaderStates.addTransfer = false;
+                break;
+        }
     }
 
     getData() {
@@ -255,7 +323,7 @@ export default class CustomerController {
                             dfd.resolve(res);
                         },
                         () => {
-                            let message = self.$filter('translate')('xhr.get_transations.error');
+                            let message = self.$filter('translate')('xhr.get_translations.error');
                             self.Flash.create('danger', message);
                             self.loaderStates.transactionList = false;
                             self.loaderStates.coverLoader = false;

@@ -60,7 +60,7 @@ export default class TransactionController {
                             dfd.resolve(res);
                         },
                         () => {
-                            let message = self.$filter('translate')('xhr.get_transations.error');
+                            let message = self.$filter('translate')('xhr.get_translations.error');
                             self.Flash.create('danger', message);
                             self.loaderStates.transferList = false;
                             self.loaderStates.coverLoader = false;

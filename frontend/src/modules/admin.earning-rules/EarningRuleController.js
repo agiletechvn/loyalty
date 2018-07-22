@@ -1,5 +1,5 @@
 export default class EarningRuleController {
-    constructor($scope, $state, AuthService, EarningRuleService, SegmentService, LevelService, DataService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, Validation, $filter) {
+    constructor($scope, $state, AuthService, EarningRuleService, SegmentService, LevelService, PosService, DataService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, Validation, $filter) {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             AuthService.logout();
         }
@@ -7,6 +7,7 @@ export default class EarningRuleController {
         this.EarningRuleService = EarningRuleService;
         this.SegmentService = SegmentService;
         this.LevelService = LevelService;
+        this.PosService = PosService;
         this.$state = $state;
         this.Flash = Flash;
         this.$scope.newEarningRule = {};
@@ -28,6 +29,7 @@ export default class EarningRuleController {
         this.config = DataService.getConfig();
         this.segments = null;
         this.levels = null;
+        this.pos = null;
         this.$scope.skusConfig = {
             delimiter: ';',
             persist: false,
@@ -55,6 +57,13 @@ export default class EarningRuleController {
         };
         this.levelsConfig = {
             valueField: 'id',
+            labelField: 'name',
+            create: false,
+            plugins: ['remove_button'],
+            sortField: 'name'
+        };
+        this.posConfig = {
+            valueField: 'posId',
             labelField: 'name',
             create: false,
             plugins: ['remove_button'],
@@ -170,7 +179,14 @@ export default class EarningRuleController {
                 }
             );
 
-        this.dataPromise = this.$q.all([segmentPromise, levelPromise]);
+        let posPromise = this.PosService.getPosList()
+            .then(
+                res => {
+                    this.pos = res;
+                }
+            );
+
+        this.dataPromise = this.$q.all([segmentPromise, levelPromise, posPromise]);
 
     }
 
@@ -246,6 +262,13 @@ export default class EarningRuleController {
                             let segments = self.$scope.editableFields.segments;
                             for (let i in segments) {
                                 let segment = _.find(self.segments, {id: segments[i]});
+                            }
+
+                        }
+                        if (self.$scope.editableFields.pos && self.$scope.editableFields.pos.length) {
+                            let poses = self.$scope.editableFields.pos;
+                            for (let i in poses) {
+                                let pos = _.find(self.pos, {id: poses[i]});
                             }
 
                         }
@@ -514,4 +537,4 @@ export default class EarningRuleController {
     }
 }
 
-EarningRuleController.$inject = ['$scope', '$state', 'AuthService', 'EarningRuleService', 'SegmentService', 'LevelService', 'DataService', 'Flash', 'NgTableParams', '$q', 'ParamsMap', '$stateParams', 'EditableMap', 'Validation', '$filter'];
+EarningRuleController.$inject = ['$scope', '$state', 'AuthService', 'EarningRuleService', 'SegmentService', 'LevelService', 'PosService', 'DataService', 'Flash', 'NgTableParams', '$q', 'ParamsMap', '$stateParams', 'EditableMap', 'Validation', '$filter'];

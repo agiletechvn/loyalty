@@ -82,7 +82,7 @@
                     </div>
                     <div class="row" ng-if="editableFields.type=='points'">
                         <div class="medium-2 small-3 columns">
-                            <label>{{ "earning_rule.exluded_labels" | translate }}</label>
+                            <label>{{ "earning_rule.excluded_labels" | translate }}</label>
                         </div>
                         <div class="medium-10 small-9 columns">
                             <div class="collection"
@@ -337,6 +337,21 @@
                         <div class="medium-10 small-9 columns" form-validation="validate.endAt.errors">
                             <input type="text" ng-model="editableFields.endAt" datepicker>
                             <span class="prompt">{{ "earning_rule.end_at_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset">
+                    <legend>POS</legend>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.pos" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.pos.errors">
+                            <selectize config="EarningRuleCtrl.posConfig"
+                                       options="EarningRuleCtrl.pos"
+                                       ng-model="editableFields.pos">
+                            </selectize>
+                            <span class="prompt">{{ "earning_rule.pos_prompt" | translate }} </span>
                         </div>
                     </div>
                 </fieldset>

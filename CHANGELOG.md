@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.8.0] - 20-07-2018
+### Added
+- configuring marketing automation tool in the administration panel
+- new command "phing migrate" to automate migration between versions
+- new development documentation
+- master key API token
+- filtering campaign through additional fields
+- seller can add or spend points for a customer
+- assign earning rule to the POS
+- resizing logos
+- added level ID to the endpoint /api/customer/level
+### Changed
+- changed Earning Points Rules to Earning Rules
+### Fixed
+- validation tags on Earning Rule "Multiply by labels"
+- fixed link to the terms and conditions file
+- fixed bug with Earning Rule "Custom event rule"
+- generating demo data
+
 ## [2.7.0] - 03-07-2018
 ### Added
 - possibility to set an accent color for client cockpit

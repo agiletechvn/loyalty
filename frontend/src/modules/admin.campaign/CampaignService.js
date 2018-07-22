@@ -203,6 +203,15 @@ export default class CampaignService {
             .getList(params);
     }
 
+    getBoughtReport(params = {}) {
+        return this.Restangular
+            .all('campaign')
+            .all('bought')
+            .all('export')
+            .one('csv')
+            .withHttpConfig({responseType: 'blob'}).customGET("", params);
+    }
+
 }
 
 CampaignService.$inject = ['Restangular', 'EditableMap'];

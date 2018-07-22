@@ -1,6 +1,7 @@
 export default class SellerCustomerController {
-    constructor($scope, $state, $stateParams, SellerCustomerService, Flash, $filter, DataService, Validation, EditableMap, $q, ParamsMap, NgTableParams) {
+    constructor($scope, $state, $stateParams, SellerCustomerService, Flash, $filter, DataService, Validation, EditableMap, $q, ParamsMap, NgTableParams, AuthService, TransferService) {
         this.$scope = $scope;
+        this.sellerId = AuthService.getLoggedUserId();
         this.$scope.newCustomer = {labels: []};
         this.$scope.editableFields = {};
         this.$scope.newLevel = {};
@@ -15,7 +16,13 @@ export default class SellerCustomerController {
         this.country = DataService.getCountries();
         this.EditableMap = EditableMap;
         this.Validation = Validation;
+        this.TransferService = TransferService;
+        this.transferTypeConfig = this.TransferService.getTransferTypeConfig();
+        this.transferType = this.TransferService.getTransferType();
         this.activationMethod = null;
+        SellerCustomerService.getPosSeller(this.sellerId).then((method) => {
+            this.allowPointTransfer = method.allowPointTransfer;
+        });
         DataService.getActivationMethod().then((method) => {
             this.activationMethod = method;
         });
@@ -71,6 +78,7 @@ export default class SellerCustomerController {
         this.$scope.customers = null;
         this.$q = $q;
         this.loaderVisible = {
+            addTransfer: false,
             editCustomer: true,
             singleCustomer: true
         };
@@ -206,7 +214,7 @@ export default class SellerCustomerController {
                             dfd.resolve(res);
                         },
                         () => {
-                            let message = self.$filter('translate')('xhr.get_transations.error');
+                            let message = self.$filter('translate')('xhr.get_translations.error');
                             self.Flash.create('danger', message);
                             dfd.reject();
                         }
@@ -549,6 +557,71 @@ export default class SellerCustomerController {
 
         customer.labels = _.difference(customer.labels, [customer.labels[index]])
     }
+
+    openTransferModal() {
+        let self = this;
+
+        self.$scope.newTransfer = {};
+        self.$scope.showTransferModal = true;
+    }
+
+    closeTransferModal() {
+        let self = this;
+        self.$scope.showTransferModal = false;
+    }
+
+    transferPoints(newTransfer, type) {
+        let self = this;
+        self.loaderVisible.addTransfer = true;
+
+        Object.assign(newTransfer, {
+            'customer':this.customerId
+        });
+
+        switch (type) {
+            case 'add':
+                self.SellerCustomerService.postPosAddTransfer(newTransfer)
+                    .then(
+                        res => {
+                            let message = self.$filter('translate')('xhr.post_add_transfer.success');
+                            self.Flash.create('success', message);
+                            self.transfersTableParams.reload();
+                            self.closeTransferModal();
+                            self.$scope.validate = {};
+                            self.loaderVisible.addTransfer = false;
+                        },
+                        res => {
+                            self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                            let message = self.$filter('translate')('xhr.post_add_transfer.error');
+                            self.Flash.create('danger', message);
+                            self.loaderVisible.addTransfer = false;
+                        }
+                    );
+                break;
+            case 'spend':
+                self.SellerCustomerService.postPosSpendTransfer(newTransfer)
+                    .then(
+                        res => {
+                            let message = self.$filter('translate')('xhr.post_spend_transfer.success');
+                            self.Flash.create('success', message);
+                            self.transfersTableParams.reload();
+                            self.closeTransferModal();
+                            self.$scope.validate = {};
+                            self.loaderVisible.addTransfer = false;
+                        },
+                        res => {
+                            self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                            let message = self.$filter('translate')('xhr.post_spend_transfer.error');
+                            self.Flash.create('danger', message);
+                            self.loaderVisible.addTransfer = false;
+                        }
+                    );
+                break;
+            default:
+                self.loaderVisible.addTransfer = false;
+                break;
+        }
+    }
 }
 
-SellerCustomerController.$inject = ['$scope', '$state', '$stateParams', 'SellerCustomerService', 'Flash', '$filter', 'DataService', 'Validation', 'EditableMap', '$q', 'ParamsMap', 'NgTableParams'];
+SellerCustomerController.$inject = ['$scope', '$state', '$stateParams', 'SellerCustomerService', 'Flash', '$filter', 'DataService', 'Validation', 'EditableMap', '$q', 'ParamsMap', 'NgTableParams', 'AuthService', 'TransferService'];

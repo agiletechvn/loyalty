@@ -112,8 +112,7 @@
         <tr ng-if="rule.type=='points'">
             <td><b>{{ "earning_rule.excluded_skus" | translate }}</b></td>
             <td>
-                <label class="label label-default" ng-repeat="s in rule.excludedSKUs">{{ rule.excludedSKUs[$index]
-                    }}</label>
+                <label class="label label-default" ng-repeat="s in rule.excludedSKUs">{{rule.excludedSKUs[$index]}}</label>
                 <span ng-if="!rule.excludedSKUs.length">{{ 'global.not_set'|translate }}</span>
             </td>
         </tr>
@@ -179,11 +178,15 @@
         </tr>
         <tr>
             <td><b>{{ "earning_rule.segments" | translate }}</b></td>
-            <td><span style="padding-right: 10px" ng-repeat="(key, value) in rule.segmentNames">{{ value }}</span></td>
+            <td><label class="label label-default" ng-repeat="(key, value) in rule.segmentNames">{{ value }}</label></td>
         </tr>
         <tr>
             <td><b>{{ "earning_rule.levels" | translate }}</b></td>
-            <td><span style="padding-right: 10px" ng-repeat="(key, value) in rule.levelNames">{{ value }}</span></td>
+            <td><label class="label label-default" ng-repeat="(key, value) in rule.levelNames">{{ value }}</label></td>
+        </tr>
+        <tr>
+            <td><b>{{ "earning_rule.pos" | translate }}</b></td>
+            <td><label class="label label-default" ng-repeat="(key, value) in rule.posNames">{{ value }}</label></td>
         </tr>
         </thead>
     </table>

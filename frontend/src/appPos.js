@@ -67,6 +67,7 @@ window.Selectize = require('selectize');
 
 
 // open loyalty modules
+require('./modules/admin.transfers/module.js');
 require('./modules/pos.login/module.js');
 require('./modules/pos.campaigns/module.js');
 require('./modules/pos.dashboard/module.js');
@@ -97,6 +98,7 @@ angular.module('OpenLoyalty', [
     'pascalprecht.translate',
     'selectize',
     'angular-loading-bar',
+    'admin.transfers',
     'pos.login',
     'pos.campaigns',
     'pos.customers',

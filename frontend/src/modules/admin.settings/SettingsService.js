@@ -171,6 +171,19 @@ export default class SettingsService {
     }
 
     /**
+     * Calls for conditions url
+     *
+     * @method getConditionsUrl
+     * @returns {Promise}
+     */
+    getConditionsUrl() {
+        return this.Restangular
+            .one('settings')
+            .one('conditions-url')
+            .get()
+    }
+
+    /**
      * Calls for hero image
      *
      * @method getHeroImage

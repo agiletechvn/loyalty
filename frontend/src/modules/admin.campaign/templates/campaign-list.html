@@ -19,10 +19,10 @@
         <box-loader loading="CampaignCtrl.loaderStates.campaignList"></box-loader>
         <table ng-table="CampaignCtrl.tableParams" class="default" template-pagination="templatePagination.html">
             <tr ng-repeat="row in $data">
-                <td data-title="'campaign.name'|translate" sortable="'name'">
+                <td data-title="'campaign.name'|translate" sortable="'name'" filter="{name: 'text'}">
                     <span ng-bind="row.name"></span>
                 </td>
-                <td data-title="'campaign.active'|translate" sortable="'active'">
+                <td data-title="'campaign.active'|translate" sortable="'active'" filter="{active: 'activitySelect'}">
                     <button
                             ng-if="row.active"
                             class="tiny button button-septenary-colorized"
@@ -38,7 +38,7 @@
                         {{'global.inactive'|translate}}
                     </button>
                 </td>
-                <td data-title="'campaign.type'|translate" sortable="'reward'">
+                <td data-title="'campaign.type'|translate" sortable="'reward'" filter="{campaignType: 'rewardSelect'}">
                     <span>{{'campaign.'+row.reward|translate}}</span>
                 </td>
                 <td data-title="'campaign.cost_in_points'|translate" sortable="'costInPoints'">
@@ -92,3 +92,13 @@
         </table>
     </div>
 </div>
+<script type="text/ng-template" id="ng-table/filters/activitySelect.html">
+    <selectize ng-disabled="$filterRow.disabled" options="CampaignCtrl.activityStatusSelectOptions"
+               config="CampaignCtrl.activityStatusSelectConfig" ng-model="params.filter()[name]">
+    </selectize>
+</script>
+<script type="text/ng-template" id="ng-table/filters/rewardSelect.html">
+    <selectize ng-disabled="$filterRow.disabled" options="CampaignCtrl.rewardSelectOptions"
+               config="CampaignCtrl.rewardSelectConfig" ng-model="params.filter()[name]">
+    </selectize>
+</script>
