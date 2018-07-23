@@ -527,16 +527,16 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "2.8.0",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
-                "reference": "7781a94cc9322f58a3675ef8ff532b95a6c935fa"
+                "reference": "a8354125801481c86596e860e179255710513e8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/7781a94cc9322f58a3675ef8ff532b95a6c935fa",
-                "reference": "7781a94cc9322f58a3675ef8ff532b95a6c935fa",
+                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/a8354125801481c86596e860e179255710513e8c",
+                "reference": "a8354125801481c86596e860e179255710513e8c",
                 "shasum": ""
             },
             "require": {
@@ -609,7 +609,7 @@
             "license": [
                 "proprietary"
             ],
-            "time": "2018-07-20 14:08:35"
+            "time": "2018-07-23 06:08:52"
         },
         {
             "name": "doctrine/annotations",
