@@ -216,16 +216,24 @@
                             <table class="simple" ng-if="customer.levelId">
                                 <tbody>
                                 <tr>
+                                    <td><b>{{ "customer.loyalty.total_points"|translate }}:</b></td>
+                                    <td><span ng-bind="status.totalEarnedPoints|roundPoints"></span></td>
+                                </tr>
+                                <tr>
                                     <td><b>{{ "customer.loyalty.active_points"|translate }}:</b></td>
-                                    <td><span ng-bind="status.points"></span></td>
+                                    <td><span ng-bind="status.points|roundPoints"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>{{ "customer.loyalty.used_points"|translate }}:</b></td>
-                                    <td><span ng-bind="status.usedPoints"></span></td>
+                                    <td><span ng-bind="status.usedPoints|roundPoints"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>{{ "customer.loyalty.expired_points"|translate }}:</b></td>
-                                    <td><span ng-bind="status.expiredPoints"></span></td>
+                                    <td><span ng-bind="status.expiredPoints|roundPoints"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>{{ "customer.loyalty.locked_points"|translate }}:</b></td>
+                                    <td><span ng-bind="status.lockedPoints|roundPoints"></span></td>
                                 </tr>
                                 </tbody>
                             </table>

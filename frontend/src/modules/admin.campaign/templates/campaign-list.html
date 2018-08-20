@@ -56,8 +56,8 @@
                     <span ng-bind="row.usersWhoUsedThisCampaignCount"></span>
                 </td>
                 <td data-title="'campaign.coupons_count'|translate">
-                    <span ng-bind="row.coupons.length"  ng-if="row.reward != 'cashback'"></span>
-                    <span ng-bind="'---'"  ng-if="row.reward == 'cashback'"></span>
+                    <span ng-bind="row.coupons.length"  ng-if="row.reward != 'cashback' && campaign.reward == 'percentage_discount_code'"></span>
+                    <span ng-bind="'---'"  ng-if="row.reward == 'cashback' || campaign.reward == 'percentage_discount_code'"></span>
                 </td>
                 <td data-title="'campaign.active_from'|translate" sortable="'campaignActivity.activeFrom'">
                     <span ng-if="row.campaignActivity.allTimeActive">{{'global.all_time_active'|translate}}</span>
@@ -70,13 +70,13 @@
                           ng-bind="row.campaignActivity.activeTo|date:'yyyy-MM-dd HH:mm'"></span>
                 </td>
                 <td data-title="'campaign.customers'|translate" style="min-width: 150px;">
-                    <span ng-bind="row.visibleForCustomersCount" ng-if="row.reward != 'cashback'"></span>
+                    <span ng-bind="row.visibleForCustomersCount" ng-if="row.reward != 'cashback' && row.reward != 'percentage_discount_code'"></span>
 
-                    <button class="button button-primary tiny pull-right"  ng-if="row.reward != 'cashback'"
+                    <button class="button button-primary tiny pull-right"  ng-if="row.reward != 'cashback' && row.reward != 'percentage_discount_code'"
                             ui-sref="admin.campaign-customers({campaignId: row.campaignId, campaignName: row.name})">
                         {{ "campaign.show_customers"|translate }}
                     </button>
-                    <span  ng-if="row.reward == 'cashback'">---</span>
+                    <span  ng-if="row.reward == 'cashback' || row.reward == 'percentage_discount_code'">---</span>
                 </td>
                 <td data-title="'campaign.actions'|translate">
                     <button type="button" class="button  button-secondary tiny"

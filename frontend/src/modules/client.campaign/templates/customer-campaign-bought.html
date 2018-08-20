@@ -23,7 +23,7 @@
                                   class="card-footer" translate="customer_campaign.will_be_active_all_time"></span>
                         </div>
                         <div class="card-checkbox">
-                            <checkbox ng-model="c.used" ng-click="CustomerCampaignCtrl.updateCouponUsage(c.campaignId.campaignId, c.coupon.code, c.used)"></checkbox>
+                            <checkbox ng-model="c.used" ng-click="CustomerCampaignCtrl.updateCouponUsage(c.campaignId, c.coupon.code, c.used)"></checkbox>
                             <span style="" class="coupon-used">{{'customer_campaign.coupon_used' | translate}}</span>
                             <span class="card-footer">{{ c.campaign.conditionsDescription }}</span>
                         </div>

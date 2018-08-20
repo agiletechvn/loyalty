@@ -157,6 +157,25 @@
                     </div>
                     <div class="row">
                         <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.all_time_not_locked" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.allTimeNotLocked.errors">
+                            <checkbox ng-model="settings.allTimeNotLocked"></checkbox>
+                            <span class="prompt">{{ "settings.all_time_not_locked_prompt"|translate}}</span>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="!settings.allTimeNotLocked">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.points_days_locked" | translate }}<span class="required"
+                                                                                        ng-show="!settings.allTimeNotLocked">*</span></label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.pointsDaysLocked.errors">
+                            <input ng-model="settings.pointsDaysLocked" type="number" required>
+                            <span class="prompt">{{ "settings.points_days_locked_prompt"|translate}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
                             <label>{{ "settings.returns" | translate }}</label>
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.returns.errors">

@@ -26,13 +26,14 @@ export default class CampaignController {
      * @param {CustomerService} CustomerService
      * @method constructor
      */
-    constructor($scope, $state, $stateParams, AuthService, CampaignService, Flash, EditableMap, NgTableParams, ParamsMap, $q, Validation, $filter, SegmentService, LevelService, DataService, CustomerService) {
+    constructor($scope, $state, $stateParams, $timeout, AuthService, CampaignService, Flash, EditableMap, NgTableParams, ParamsMap, $q, Validation, $filter, SegmentService, LevelService, DataService, CustomerService) {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             $state.go('admin-login')
         }
         this.$scope = $scope;
         this.$state = $state;
         this.$stateParams = $stateParams;
+        this.$timeout = $timeout;
 
         this.SegmentService = SegmentService;
         this.LevelService = LevelService;
@@ -107,6 +108,10 @@ export default class CampaignController {
             {
                 label: $filter('translate')('campaign.cashback'),
                 value: 'cashback'
+            },
+            {
+                label: $filter('translate')('campaign.percentage_discount_code'),
+                value: 'percentage_discount_code'
             }
         ];
 
@@ -190,6 +195,10 @@ export default class CampaignController {
             {
                 name: this.$filter('translate')('campaign.cashback'),
                 type: 'cashback'
+            },
+            {
+                name: this.$filter('translate')('campaign.percentage_discount_code'),
+                type: 'percentage_discount_code'
             }
         ];
         this.egCoupon = ['Example_coupon'];
@@ -681,27 +690,21 @@ export default class CampaignController {
         });
     }
 
-    downloadFile(blob, filename) {
-            // It is necessary to create a new blob object with mime-type explicitly set
-            // otherwise only Chrome works like it should
-            let newBlob = new Blob([blob], {type: "text/csv"});
-            // IE doesn't allow using a blob object directly as link href
-            // instead it is necessary to use msSaveOrOpenBlob
-            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(newBlob);
-                return;
-            }
-            // For other browsers:
-            // Create a link pointing to the ObjectURL containing the blob.
-            const data = window.URL.createObjectURL(newBlob);
-            let link = document.createElement('a');
-            link.href = data;
-            link.download = filename;
-            link.click();
-            setTimeout(function() {
-                    // For Firefox it is necessary to delay revoking the ObjectURL
-                    window.URL.revokeObjectURL(data);
-                }, 100)
+    downloadFile(res, filename) {
+        let self = this;
+
+        let blob = new Blob([res], {type: 'text/csv'});
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob);
+            return;
+        }
+
+        const data = window.URL.createObjectURL(blob);
+
+        let link = document.createElement('a');
+        link.href = data;
+        link.download = filename;
+        self.$timeout(function() { link.dispatchEvent(new MouseEvent('click')); }, 2000);
     }
 
     _selectizeConfigs() {
@@ -733,4 +736,4 @@ export default class CampaignController {
     }
 }
 
-CampaignController.$inject = ['$scope', '$state', '$stateParams', 'AuthService', 'CampaignService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'Validation', '$filter', 'SegmentService', 'LevelService', 'DataService', 'CustomerService'];
+CampaignController.$inject = ['$scope', '$state', '$stateParams', '$timeout', 'AuthService', 'CampaignService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'Validation', '$filter', 'SegmentService', 'LevelService', 'DataService', 'CustomerService'];

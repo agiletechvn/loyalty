@@ -1,4 +1,5 @@
 * * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod oloy:segment:recreate > /var/www/openloyalty/var/logs/cron_ol_segment_recreate.log 2>&1"
 * * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod ol:points:transfers:expire > /var/www/openloyalty/var/logs/cron_ol_points_expire.log 2>&1"
+0 * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod ol:points:transfers:unlock > /var/www/openloyalty/var/logs/cron_ol_points_expire.log 2>&1"
 
 

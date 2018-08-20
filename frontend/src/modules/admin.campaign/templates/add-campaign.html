@@ -40,7 +40,7 @@
                             <label>{{ "campaign.short_description" | translate }} </label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.shortDescription.errors">
-                            <input type="text" ng-model="newCampaign.shortDescription"/>
+                            <textarea simplemde="{ hideIcons:['image', 'fullscreen', 'side-by-side'], showIcons: ['strikethrough', 'code'] }" ng-model="newCampaign.shortDescription"></textarea>
                             <span class="prompt">{{ "campaign.short_description_prompt" | translate }} </span>
                         </div>
                     </div>
@@ -64,7 +64,41 @@
                             <span class="prompt">{{ "campaign.active_prompt" | translate }} </span>
                         </div>
                     </div>
-                    <div class="row" ng-if="newCampaign.reward && newCampaign.reward != 'cashback'">
+                    <div class="row" ng-if="newCampaign.reward && newCampaign.reward == 'percentage_discount_code'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.transaction_percentage_value" | translate }}<span
+                                    class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.transactionPercentageValue.errors">
+                            <input type="number" ng-model="newCampaign.transactionPercentageValue" required step="1">
+                            <span class="prompt">{{ "campaign.transaction_percentage_value_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="newCampaign.reward == 'percentage_discount_code'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.days_inactive" | translate }}<span
+                                    class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.daysInactive.errors"
+                             ng-init="newCampaign.daysInactive = 28">
+                            <input type="number" ng-model="newCampaign.daysInactive" required step="1">
+                            <span class="prompt">{{ "campaign.days_inactive_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="newCampaign.reward == 'percentage_discount_code'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.days_valid" | translate }}<span
+                                    class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.daysValid.errors"
+                             ng-init="newCampaign.daysValid = 90">
+                            <input type="number" ng-model="newCampaign.daysValid" required step="1">
+                            <span class="prompt">{{ "campaign.days_valid_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row"
+                         ng-if="newCampaign.reward && newCampaign.reward != 'cashback'
+                            && newCampaign.reward != 'percentage_discount_code'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "campaign.cost_in_points" | translate }} <span
                                     class="required">*</span></label>
@@ -84,14 +118,26 @@
                             <span class="prompt">{{ "campaign.point_value_prompt" | translate }} </span>
                         </div>
                     </div>
-                    <div class="row"  ng-if="newCampaign.reward && newCampaign.reward != 'cashback'">
+                    <div class="row"
+                         ng-if="newCampaign.reward && newCampaign.reward != 'cashback'
+                            && newCampaign.reward != 'percentage_discount_code'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "campaign.conditions_description" | translate }} </label>
                         </div>
                         <div class="medium-10 small-9 columns"
                              form-validation="validate.conditionsDescription.errors">
-                            <input type="text" ng-model="newCampaign.conditionsDescription"/>
+                            <textarea simplemde="{ hideIcons:['image', 'fullscreen', 'side-by-side'], showIcons: ['strikethrough', 'code'] }" ng-model="newCampaign.conditionsDescription"></textarea>
                             <span class="prompt">{{ "campaign.conditions_description_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.brand_description" | translate }} </label>
+                        </div>
+                        <div class="medium-10 small-9 columns"
+                             form-validation="validate.brandDescription.errors">
+                            <textarea simplemde="{ hideIcons:['image', 'fullscreen', 'side-by-side'], showIcons: ['strikethrough', 'code'] }" ng-model="newCampaign.brandDescription"></textarea>
+                            <span class="prompt">{{ "campaign.brand_description_prompt" | translate }} </span>
                         </div>
                     </div>
                     <div class="row">
@@ -100,7 +146,7 @@
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.rewardValue.errors">
                             <input type="number" ng-model="newCampaign.rewardValue" step="0.01">
-                            <span class="prompt">{{ "campaign.reward_value_description" | translate }} </span>
+                            <span class="prompt">{{ "campaign.reward_value_prompt" | translate }} </span>
                         </div>
                     </div>
                     <div class="row">
@@ -119,15 +165,6 @@
                         <div class="medium-10 small-9 columns" form-validation="validate.taxPriceValue.errors">
                             <input type="number" ng-model="newCampaign.taxPriceValue" step="0.01">
                             <span class="prompt">{{ "campaign.tax_price_value_prompt" | translate }} </span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="medium-2 small-3 columns">
-                            <label>{{ "campaign.reward_value" | translate }}</label>
-                        </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.rewardValue.errors">
-                            <input type="number" ng-model="newCampaign.rewardValue" step="0.01">
-                            <span class="prompt">{{ "campaign.reward_value_prompt" | translate }} </span>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 20px;">
@@ -209,7 +246,9 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset"  ng-if="newCampaign.reward && newCampaign.reward != 'cashback'">
+                <fieldset class="fieldset"
+                          ng-if="newCampaign.reward && newCampaign.reward != 'cashback'
+                            && newCampaign.reward != 'percentage_discount_code'">
                     <legend>{{ "campaign.limit_info" | translate }}</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
@@ -249,7 +288,9 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset"  ng-if="newCampaign.reward && newCampaign.reward != 'cashback'">
+                <fieldset class="fieldset"
+                          ng-if="newCampaign.reward && newCampaign.reward != 'cashback'
+                            && newCampaign.reward != 'percentage_discount_code'">
                     <legend>{{ "campaign.coupons_info" | translate }}</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
@@ -278,12 +319,14 @@
                         </div>
                         <div class="medium-10 small-9 columns"
                              form-validation="validate.usageInstruction.errors">
-                            <input type="text" ng-model="newCampaign.usageInstruction"/>
+                            <textarea simplemde="{ hideIcons:['image', 'fullscreen', 'side-by-side'], showIcons: ['strikethrough', 'code'] }" ng-model="newCampaign.usageInstruction"></textarea>
                             <span class="prompt">{{ "campaign.usage_instruction_prompt" | translate }} </span>
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset"  ng-if="newCampaign.reward && newCampaign.reward != 'cashback'">
+                <fieldset class="fieldset"
+                          ng-if="newCampaign.reward && newCampaign.reward != 'cashback'
+                            && newCampaign.reward != 'percentage_discount_code'">
                     <legend>{{ "campaign.visibility" | translate }}</legend>
                     <div class="row" ng-init="newCampaign.campaignVisibility.allTimeVisible=false">
                         <div class="medium-2 small-3 columns">
@@ -365,7 +408,9 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset" ng-show="newCampaign.reward && newCampaign.reward != 'cashback'">
+                <fieldset class="fieldset"
+                          ng-show="newCampaign.reward && newCampaign.reward != 'cashback'
+                            && newCampaign.reward != 'percentage_discount_code'">
                     <legend>{{ "campaign.photo" | translate }}</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">

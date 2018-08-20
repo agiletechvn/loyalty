@@ -10,7 +10,6 @@ export default class EarningRuleController {
         this.PosService = PosService;
         this.$state = $state;
         this.Flash = Flash;
-        this.$scope.newEarningRule = {};
         this.$scope.editableFields = {};
         this.earningRuleId = $stateParams.earningRuleId || null;
         this.NgTableParams = NgTableParams;
@@ -36,7 +35,14 @@ export default class EarningRuleController {
             create: true,
             plugins: ['remove_button'],
         };
-
+        this.rewardCampaignConfig = {
+            valueField: 'id',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField: ['name'],
+            maxItems: 1,
+        };
         this.target = [
             {
                 name: this.$filter('translate')('global.segment'),
@@ -90,6 +96,13 @@ export default class EarningRuleController {
             sortField: 'name',
             maxItems: 1,
         };
+        this.labelsInclusionTypeConfig = {
+            valueField: 'value',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            maxItems: 1,
+        };
         this.promotedEventsConfig = {
             valueField: 'code',
             labelField: 'name',
@@ -128,6 +141,20 @@ export default class EarningRuleController {
                 value: 0
             }
         ];
+        this.labelsInclusionType = [
+            {
+                name: this.$filter('translate')('earning_rule.labels_inclusion_type_none'),
+                value: 'none_labels'
+            },
+            {
+                name: this.$filter('translate')('earning_rule.labels_inclusion_type_include'),
+                value: 'include_labels'
+            },
+            {
+                name: this.$filter('translate')('earning_rule.labels_inclusion_type_exclude'),
+                value: 'exclude_labels'
+            }
+        ];
         this.types = [
             {
                 name: this.$filter('translate')('earning_rule.types.points'),
@@ -156,6 +183,10 @@ export default class EarningRuleController {
             {
                 name: this.$filter('translate')('earning_rule.types.referral'),
                 value: "referral"
+            },
+            {
+                name: this.$filter('translate')('earning_rule.types.instant_reward'),
+                value: "instant_reward"
             }
         ];
 
@@ -163,7 +194,8 @@ export default class EarningRuleController {
             earningRuleDetails: true,
             earningRuleList: true,
             coverLoader: true
-        }
+        };
+        this.$scope.newEarningRule = {labelsInclusionType: this.labelsInclusionType[0].value};
 
         let segmentPromise = this.SegmentService.getActiveSegments({perPage: 1000})
             .then(
@@ -187,6 +219,15 @@ export default class EarningRuleController {
             );
 
         this.dataPromise = this.$q.all([segmentPromise, levelPromise, posPromise]);
+
+        let rewardCampaignsPromise = this.EarningRuleService.getActiveCampaigns()
+            .then(
+                res => {
+                    this.rewardCampaigns = res;
+                }
+            );
+
+        this.dataPromise = this.$q.all([segmentPromise, levelPromise, rewardCampaignsPromise]);
 
     }
 
@@ -424,6 +465,23 @@ export default class EarningRuleController {
         }
     }
 
+    addIncludedLabel(edit) {
+        if (edit) {
+            if (!(this.$scope.editableFields.includedLabels instanceof Array)) {
+                this.$scope.editableFields.includedLabels = [];
+            }
+            this.$scope.editableFields.includedLabels.push({
+                key: '',
+                value: ''
+            })
+        } else {
+            this.$scope.newEarningRule.includedLabels.push({
+                key: '',
+                value: ''
+            })
+        }
+    }
+
     addLabelMultiplier(edit) {
         if (edit) {
             if (!(this.$scope.editableFields.labelMultipliers instanceof Array)) {
@@ -467,6 +525,19 @@ export default class EarningRuleController {
         }
 
         earningRule.excludedLabels = _.difference(earningRule.excludedLabels, [earningRule.excludedLabels[index]])
+    }
+
+    removeIncludedLabel(index, edit) {
+        let self = this;
+        let earningRule;
+
+        if (!edit) {
+            earningRule = self.$scope.newEarningRule;
+        } else {
+            earningRule = self.$scope.editableFields;
+        }
+
+        earningRule.includedLabels = _.difference(earningRule.includedLabels, [earningRule.includedLabels[index]])
     }
 
 
@@ -534,6 +605,10 @@ export default class EarningRuleController {
                     self.Flash.create('danger', message);
                 }
             )
+    }
+
+    isStoppable(type){
+        return this.DataService.isStoppableEarningRule(type);
     }
 }
 

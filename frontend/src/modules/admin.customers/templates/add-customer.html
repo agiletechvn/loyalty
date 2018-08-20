@@ -100,8 +100,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="medium-2 small-3 columns">
-                                        <label>{{ "customer.value" | translate }} <span
-                                                class="required">*</span></label>
+                                        <label>{{ "customer.value" | translate }}</label>
                                     </div>
                                     <div class="medium-10 small-9 columns"
                                          form-validation="validate.labels[$index].value.errors">
@@ -115,9 +114,11 @@
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </button>
                             </div>
+                        </div>
+
+                        <div class="medium-10 small-9 columns">
                             <button type="button" class="button button-secondary tiny"
-                                    ng-click="CustomerCtrl.addLabel(false)">{{
-                                "customer.add_label" | translate }}
+                                    ng-click="CustomerCtrl.addLabel(false)">{{ "customer.add_label" | translate }}
                             </button>
                         </div>
                     </div>

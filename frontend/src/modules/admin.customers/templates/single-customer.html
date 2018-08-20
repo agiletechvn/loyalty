@@ -265,6 +265,10 @@
                         <table class="simple" ng-if="customer.levelId">
                             <tbody>
                             <tr>
+                                <td><b>{{ "customer.loyalty.total_points"|translate }}:</b></td>
+                                <td><span ng-bind="status.totalEarnedPoints|roundPoints"></span></td>
+                            </tr>
+                            <tr>
                                 <td><b>{{ "customer.loyalty.active_points"|translate }}:</b></td>
                                 <td><span ng-bind="status.points|roundPoints"></span></td>
                             </tr>
@@ -275,6 +279,10 @@
                             <tr>
                                 <td><b>{{ "customer.loyalty.expired_points"|translate }}:</b></td>
                                 <td><span ng-bind="status.expiredPoints|roundPoints"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>{{ "customer.loyalty.locked_points"|translate }}:</b></td>
+                                <td><span ng-bind="status.lockedPoints|roundPoints"></span></td>
                             </tr>
                             </tbody>
                         </table>
@@ -374,7 +382,7 @@
                     <div class="tabs-panel" id="panel2">
                         <table ng-table="CustomerCtrl.transfersTableParams" class="default">
                             <tr ng-repeat="row in $data">
-                                <td data-title="'transfer.issuer'|translate">
+                                <td data-title="'transfer.issuer.title'|translate">
                                     <span ng-bind="row.issuer"></span>
                                 </td>
                                 <td data-title="'transfer.state'|translate">
@@ -391,6 +399,12 @@
                                 </td>
                                 <td data-title="'transfer.created_at'|translate" sortable="'createdAt'">
                                     <span ng-bind="row.createdAt|date : 'yyyy-MM-dd HH:mm'"></span>
+                                </td>
+                                <td data-title="'transfer.locked_until'|translate" sortable="'lockedUntil'">
+                                    <span>{{ (row.lockedUntil|date : 'yyyy-MM-dd HH:mm') || '---' }}</span>
+                                </td>
+                                <td data-title="'transfer.expires_at'|translate" sortable="'expiresAt'">
+                                    <span>{{ (row.expiresAt|date : 'yyyy-MM-dd HH:mm') || '---' }}</span>
                                 </td>
                                 <td data-title="'transfer.actions'|translate">
                                     <button type="button"
@@ -477,7 +491,7 @@
                                 </td>
                                 <td data-title="'campaign.coupon_used'|translate">
                                     <checkbox ng-model="row.used" ng-if="row.campaign.reward != 'cashback'"
-                                              ng-click="CustomerCtrl.updateCouponUsage(customer.id, row.campaignId.campaignId, row.coupon.code, row.used)"/>
+                                              ng-click="CustomerCtrl.updateCouponUsage(customer.id, row.campaignId, row.coupon.code, row.used)"/>
                                     <span ng-if="row.campaign.reward == 'cashback'">---</span>
                                 </td>
                             </tr>

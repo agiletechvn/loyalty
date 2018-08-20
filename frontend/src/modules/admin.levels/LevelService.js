@@ -23,7 +23,7 @@ export default class LevelService {
         return this.Restangular.one('level', levelId).all('customers').getList();
     }
     getFile(levelId) {
-        return this.Restangular.setFullResponse(true).one('csv').one('level', levelId).get();
+        return this.Restangular.one('csv').one('level', levelId).get();
     }
     putLevel(editedLevel) {
         let self = this;

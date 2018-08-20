@@ -117,10 +117,24 @@
             </td>
         </tr>
         <tr ng-if="rule.type=='points'">
+            <td><b>{{ "earning_rule.labels_inclusion_type" | translate }}</b></td>
+            <td>
+                <span ng-if="rule.labelsInclusionType=='exclude_labels'">{{ 'earning_rule.labels_inclusion_type_exclude'|translate }}</span>
+                <span ng-if="rule.labelsInclusionType=='include_labels'">{{ 'earning_rule.labels_inclusion_type_include'|translate }}</span>
+            </td>
+        </tr>
+        <tr ng-if="rule.type=='points' && rule.labelsInclusionType=='exclude_labels'">
             <td><b>{{ "earning_rule.excluded_labels" | translate }}</b></td>
             <td>
                 <label class="label label-default" ng-repeat="s in rule.excludedLabels">{{ s.key }}:{{ s.value }}</label>
                 <span ng-if="!rule.excludedLabels.length">{{ 'global.not_set'|translate }}</span>
+            </td>
+        </tr>
+        <tr ng-if="rule.type=='points' && rule.labelsInclusionType=='include_labels'">
+            <td><b>{{ "earning_rule.included_labels" | translate }}</b></td>
+            <td>
+                <label class="label label-default" ng-repeat="s in rule.includedLabels">{{ s.key }}:{{ s.value }}</label>
+                <span ng-if="!rule.includedLabels.length">{{ 'global.not_set'|translate }}</span>
             </td>
         </tr>
         <tr ng-if="rule.type=='multiply_by_product_labels'">
@@ -187,6 +201,10 @@
         <tr>
             <td><b>{{ "earning_rule.pos" | translate }}</b></td>
             <td><label class="label label-default" ng-repeat="(key, value) in rule.posNames">{{ value }}</label></td>
+        </tr>
+        <tr ng-if="EarningRuleCtrl.isStoppable(rule.type)">
+            <td><b>{{ "earning_rule.last_executed_rule" | translate }}</b></td>
+            <td><span>{{rule.lastExecutedRule || 'false'}}</span></td>
         </tr>
         </thead>
     </table>

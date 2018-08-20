@@ -41,7 +41,7 @@
                             <label>{{ "campaign.short_description" | translate }} </label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.shortDescription.errors">
-                            <input type="text" ng-model="editableFields.shortDescription"/>
+                            <textarea simplemde="{ hideIcons:['image', 'fullscreen', 'side-by-side'], showIcons: ['strikethrough', 'code'] }" ng-model="editableFields.shortDescription"></textarea>
                             <span class="prompt">{{ "campaign.short_description_prompt" | translate }} </span>
                         </div>
                     </div>
@@ -66,13 +66,45 @@
                             <span class="prompt">{{ "campaign.active_prompt" | translate }} </span>
                         </div>
                     </div>
-                    <div class="row" ng-if="editableFields.reward && editableFields.reward != 'cashback'">
+                    <div class="row" ng-if="editableFields.reward && editableFields.reward == 'percentage_discount_code'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.transaction_percentage_value" | translate }}<span
+                                    class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.transactionPercentageValue.errors">
+                            <input type="number" ng-model="editableFields.transactionPercentageValue" required step="1">
+                            <span class="prompt">{{ "campaign.transaction_percentage_value_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="editableFields.reward == 'percentage_discount_code'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.days_inactive" | translate }}<span
+                                    class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.daysInactive.errors">
+                            <input type="number" ng-model="editableFields.daysInactive" required step="1">
+                            <span class="prompt">{{ "campaign.days_inactive_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="editableFields.reward == 'percentage_discount_code'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.days_valid" | translate }}<span
+                                    class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.daysValid.errors">
+                            <input type="number" ng-model="editableFields.daysValid" required step="1">
+                            <span class="prompt">{{ "campaign.days_valid_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row"
+                         ng-if="editableFields.reward && editableFields.reward != 'cashback'
+                            && editableFields.reward != 'percentage_discount_code'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "campaign.cost_in_points" | translate }} <span
                                     class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.costInPoints.errors">
-                            <input type="number" ng-model="editableFields.costInPoints" step="0.5" required>
+                            <input type="number" ng-model="editableFields.costInPoints" required step="0.5">
                             <span class="prompt">{{ "campaign.cost_in_points_prompt" | translate }} </span>
                         </div>
                     </div>
@@ -86,14 +118,26 @@
                             <span class="prompt">{{ "campaign.point_value_prompt" | translate }} </span>
                         </div>
                     </div>
-                    <div class="row" ng-if="editableFields.reward && editableFields.reward != 'cashback'">
+                    <div class="row"
+                         ng-if="editableFields.reward && editableFields.reward != 'cashback'
+                            && editableFields.reward != 'percentage_discount_code'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "campaign.conditions_description" | translate }} </label>
                         </div>
                         <div class="medium-10 small-9 columns"
                              form-validation="validate.conditionsDescription.errors">
-                            <input type="text" ng-model="editableFields.conditionsDescription"/>
+                             <textarea simplemde="{ hideIcons:['image', 'fullscreen', 'side-by-side'], showIcons: ['strikethrough', 'code'] }" ng-model="editableFields.conditionsDescription"></textarea>
                             <span class="prompt">{{ "campaign.conditions_description_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.brand_description" | translate }} </label>
+                        </div>
+                        <div class="medium-10 small-9 columns"
+                             form-validation="validate.brandDescription.errors">
+                             <textarea simplemde="{ hideIcons:['image', 'fullscreen', 'side-by-side'], showIcons: ['strikethrough', 'code'] }" ng-model="editableFields.brandDescription"></textarea>
+                            <span class="prompt">{{ "campaign.brand_description_prompt" | translate }} </span>
                         </div>
                     </div>
                     <div class="row">
@@ -202,7 +246,9 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset"  ng-if="editableFields.reward && editableFields.reward != 'cashback'">
+                <fieldset class="fieldset"
+                          ng-if="editableFields.reward && editableFields.reward != 'cashback'
+                            && editableFields.reward != 'percentage_discount_code'">
                     <legend>{{ "campaign.limit_info" | translate }}</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
@@ -242,7 +288,9 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset" ng-if="editableFields.reward && editableFields.reward != 'cashback'">
+                <fieldset class="fieldset"
+                          ng-if="editableFields.reward && editableFields.reward != 'cashback'
+                            && editableFields.reward != 'percentage_discount_code'">
                     <legend>{{ "campaign.coupons_info" | translate }}</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
@@ -270,12 +318,14 @@
                         </div>
                         <div class="medium-10 small-9 columns"
                              form-validation="validate.usageInstruction.errors">
-                            <input type="text" ng-model="editableFields.usageInstruction"/>
+                             <textarea simplemde="{ hideIcons:['image', 'fullscreen', 'side-by-side'], showIcons: ['strikethrough', 'code'] }" ng-model="editableFields.usageInstruction"></textarea>
                             <span class="prompt">{{ "campaign.usage_instruction_prompt" | translate }} </span>
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset" ng-if="editableFields.reward && editableFields.reward != 'cashback'">
+                <fieldset class="fieldset"
+                          ng-if="editableFields.reward && editableFields.reward != 'cashback'
+                            && editableFields.reward != 'percentage_discount_code'">
                     <legend>{{ "campaign.visibility" | translate }}</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
@@ -356,7 +406,9 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset" ng-show="editableFields.reward && editableFields.reward != 'cashback'">
+                <fieldset class="fieldset"
+                          ng-show="editableFields.reward && editableFields.reward != 'cashback'
+                            && editableFields.reward != 'percentage_discount_code'">
                     <legend>{{ "campaign.photo" | translate }}</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">

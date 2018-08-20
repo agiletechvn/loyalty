@@ -103,7 +103,8 @@ const config = {
         extractCSS,
         extractCommons,
         new CopyWebpackPlugin([
-            { from: 'config.js', to: 'config.js'}
+            { from: 'config.js', to: 'config.js'},
+            { from: path.resolve(__dirname, './node_modules/simplemde/dist/simplemde.min.js'), to: 'assets/js/simplemde.js'}
         ])
     ]
 };

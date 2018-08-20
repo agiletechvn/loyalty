@@ -46,9 +46,6 @@
                         </div>
                     </div>
                 </fieldset>
-
-
-
             </div>
             <div class="columns medium-12">
                 <fieldset class="fieldset">
@@ -87,6 +84,18 @@
                     </div>
                     <div class="row" ng-if="newEarningRule.type=='points'">
                         <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.labels_inclusion_type" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.labelsInclusionType.errors">
+                            <selectize ng-model="newEarningRule.labelsInclusionType"
+                                       options="EarningRuleCtrl.labelsInclusionType"
+                                       config="EarningRuleCtrl.labelsInclusionTypeConfig"
+                            ></selectize>
+                            <span class="prompt">{{ "earning_rule.labels_inclusion_type_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="newEarningRule.type=='points' && newEarningRule.labelsInclusionType=='exclude_labels'">
+                        <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.excluded_labels" | translate }}</label>
                         </div>
                         <div class="medium-10 small-9 columns" ng-init="newEarningRule.excludedLabels=[]">
@@ -122,6 +131,47 @@
                             <button type="button" class="button button-secondary tiny"
                                     ng-click="EarningRuleCtrl.addExcludedLabel()">{{
                                 "earning_rule.add_excluded_label" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="newEarningRule.type=='points' && newEarningRule.labelsInclusionType=='include_labels'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.included_labels" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" ng-init="newEarningRule.includedLabels=[]">
+                            <div class="collection"
+                                 ng-repeat="label in newEarningRule.includedLabels track by $index">
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>{{ "earning_rule.key" | translate }} <span
+                                                class="required">*</span></label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns"
+                                         form-validation="validate.includedLabels[$index].key.errors">
+                                        <input ng-model="newEarningRule.includedLabels[$index].key">
+                                        <span class="prompt">{{ "earning_rule.key_prompt" | translate }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>{{ "earning_rule.value" | translate }} <span
+                                                class="required">*</span></label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns"
+                                         form-validation="validate.includedLabels[$index].value.errors">
+                                        <input ng-model="newEarningRule.includedLabels[$index].value">
+                                        <span class="prompt">{{ "earning_rule.label_value_prompt" | translate }}</span>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="remove-collection"
+                                        ng-click="EarningRuleCtrl.removeIncludedLabel($index, false)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <button type="button" class="button button-secondary tiny"
+                                    ng-click="EarningRuleCtrl.addIncludedLabel(false)">{{
+                                "earning_rule.add_included_label" | translate }}
                             </button>
                         </div>
                     </div>
@@ -254,7 +304,6 @@
                             <span class="prompt">{{ "earning_rule.limit.limit_prompt" | translate }}</span>
                         </div>
                     </div>
-
                     <div class="row"
                          ng-if="newEarningRule.type=='multiply_for_product'">
                         <div class="medium-2 small-3 columns">
@@ -266,7 +315,6 @@
                             <span class="prompt">{{ "earning_rule.multiplier_prompt" | translate }}</span>
                         </div>
                     </div>
-
                     <div class="row" ng-if="newEarningRule.type=='multiply_by_product_labels'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.label_multipliers" | translate }}</label>
@@ -316,6 +364,15 @@
                                     ng-click="EarningRuleCtrl.addLabelMultiplier()">{{
                                 "earning_rule.add_label_multiplier" | translate }}
                             </button>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="EarningRuleCtrl.isStoppable(newEarningRule.type)">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.last_executed_rule" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.lastExecutedRule.errors">
+                            <checkbox ng-model="newEarningRule.lastExecutedRule"></checkbox>
+                            <span class="prompt">{{ "earning_rule.last_executed_rule_prompt" | translate }}</span>
                         </div>
                     </div>
                 </fieldset>
@@ -426,6 +483,26 @@
                                     {{ "global.remove" | translate }}
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset"
+                          ng-show="newEarningRule && newEarningRule.type=='instant_reward'">
+                    <legend>{{ "earning_rule.reward_campaign" | translate }}</legend>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.reward_campaign" | translate }}<span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.rewardCampaignId.errors">
+                            <selectize
+                                    config="EarningRuleCtrl.rewardCampaignConfig"
+                                    options="EarningRuleCtrl.rewardCampaigns"
+                                    style="border-radius:0"
+                                    ng-model="newEarningRule.rewardCampaignId"
+                                    required
+                            >
+                            </selectize>
+                            <span class="prompt">{{ "earning_rule.reward_campaign_prompt" | translate }}</span>
                         </div>
                     </div>
                 </fieldset>

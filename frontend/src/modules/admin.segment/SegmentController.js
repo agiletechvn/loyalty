@@ -1,5 +1,5 @@
 export default class SegmentController {
-    constructor($scope, $state, AuthService, SegmentService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, DataService, PosService, Validation, $filter) {
+    constructor($scope, $state, $timeout, AuthService, SegmentService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, DataService, PosService, Validation, $filter) {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             AuthService.logout();
         }
@@ -20,6 +20,7 @@ export default class SegmentController {
         this.$scope.removeCriterion = this.removeCriterion;
         this.Validation = Validation;
         this.$filter = $filter;
+        this.$timeout = $timeout;
         this.active = [
             {
                 name: this.$filter('translate')('global.active'),
@@ -166,12 +167,20 @@ export default class SegmentController {
             self.SegmentService.getFile(segmentId)
                 .then(
                     function (res) {
-                        var date = new Date();
-                        var blob = new Blob([res.data], {type: res.headers('Content-Type')});
-                        var downloadLink = angular.element('<a></a>');
-                        downloadLink.attr('href', window.URL.createObjectURL(blob));
-                        downloadLink.attr('download', segmentName.replace(" ", "-") + "-" + date.toISOString().substring(0, 10) + ".csv");
-                        downloadLink[0].click();
+                        let date = new Date();
+                        let filename = segmentName.replace(" ", "-") + "-" + date.toISOString().substring(0, 10) + ".csv";
+                        let blob = new Blob([res], {type: 'text/csv'});
+                        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                            window.navigator.msSaveOrOpenBlob(blob);
+                            return;
+                        }
+
+                        const data = window.URL.createObjectURL(blob);
+
+                        let link = document.createElement('a');
+                        link.href = data;
+                        link.download = filename;
+                        self.$timeout(function() { link.dispatchEvent(new MouseEvent('click')); }, 2000);
                     }
                 );
         }
@@ -318,4 +327,4 @@ export default class SegmentController {
     }
 }
 
-SegmentController.$inject = ['$scope', '$state', 'AuthService', 'SegmentService', 'Flash', 'NgTableParams', '$q', 'ParamsMap', '$stateParams', 'EditableMap', 'DataService', 'PosService', 'Validation', '$filter'];
+SegmentController.$inject = ['$scope', '$state', '$timeout', 'AuthService', 'SegmentService', 'Flash', 'NgTableParams', '$q', 'ParamsMap', '$stateParams', 'EditableMap', 'DataService', 'PosService', 'Validation', '$filter'];

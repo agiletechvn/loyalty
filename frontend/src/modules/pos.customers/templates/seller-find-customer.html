@@ -35,10 +35,18 @@
                     </div>
                     <div class="row">
                         <div class="columns small-3">
-                            <label>{{ "seller.customer_search.name"|translate }}</label>
+                            <label>{{ "seller.customer_search.firstName"|translate }}</label>
                         </div>
                         <div class="columns small-9" form-validation="validate.firstName.errors">
                             <input type="text" ng-model="search.firstName"/>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="columns small-3">
+                            <label>{{ "seller.customer_search.lastName"|translate }}</label>
+                        </div>
+                        <div class="columns small-9" form-validation="validate.lastName.errors">
                             <input type="text" ng-model="search.lastName"/>
                         </div>
                     </div>

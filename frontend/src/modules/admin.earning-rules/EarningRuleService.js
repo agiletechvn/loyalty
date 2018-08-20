@@ -2,6 +2,7 @@ export default class EarningRuleService {
     constructor(Restangular, EditableMap) {
         this.Restangular = Restangular;
         this.EditableMap = EditableMap;
+        this._availableActiveCampaings = null;
     }
 
     getEarningRules(params) {
@@ -74,6 +75,14 @@ export default class EarningRuleService {
             .one('earningRule', earningRule)
             .one('photo')
             .remove()
+    }
+
+    /**
+     * @method getActiveCampaigns
+     * @returns {Promise}
+     */
+    getActiveCampaigns(){
+        return this.Restangular.one('campaign').all('active').getList();
     }
 
 }

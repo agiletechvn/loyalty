@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4b987191f859cecac9813e8bf582c43b",
-    "content-hash": "61f7846ad997023798f7df28d24f0725",
+    "hash": "ba4f0fdd5bf1490fc6dfb86bbe1dc705",
+    "content-hash": "5c67fdf9e5ed318d2a41ca0d8ce0e059",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -527,16 +527,16 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "2.8.3",
+            "version": "2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
-                "reference": "c9ca488b65e1a7ae748604af969ba6ece3e2bd2c"
+                "reference": "c7cfc7adb617a47168e4619f29b87f8a9dcf47fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/c9ca488b65e1a7ae748604af969ba6ece3e2bd2c",
-                "reference": "c9ca488b65e1a7ae748604af969ba6ece3e2bd2c",
+                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/c7cfc7adb617a47168e4619f29b87f8a9dcf47fe",
+                "reference": "c7cfc7adb617a47168e4619f29b87f8a9dcf47fe",
                 "shasum": ""
             },
             "require": {
@@ -551,6 +551,7 @@
                 "doctrine/doctrine-fixtures-bundle": "^2.3",
                 "doctrine/orm": "^2.5",
                 "elasticsearch/elasticsearch": "^5.0",
+                "erusev/parsedown": "^1.7",
                 "friendsofsymfony/rest-bundle": "^2.0",
                 "fzaninotto/faker": "^1.6",
                 "gesdinet/jwt-refresh-token-bundle": "^0.1.7",
@@ -586,7 +587,7 @@
             "type": "project",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.9.x-dev"
+                    "dev-master": "2.10.x-dev"
                 },
                 "symfony-app-dir": "app",
                 "symfony-bin-dir": "bin",
@@ -611,7 +612,7 @@
             "license": [
                 "proprietary"
             ],
-            "time": "2018-08-06 13:39:57"
+            "time": "2018-08-20 07:47:37"
         },
         {
             "name": "doctrine/annotations",
@@ -1551,6 +1552,52 @@
                 "search"
             ],
             "time": "2017-11-08 17:04:47"
+        },
+        {
+            "name": "erusev/parsedown",
+            "version": "1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erusev/parsedown.git",
+                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
+                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Parsedown": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuil Rusev",
+                    "email": "hello@erusev.com",
+                    "homepage": "http://erusev.com"
+                }
+            ],
+            "description": "Parser for Markdown.",
+            "homepage": "http://parsedown.org",
+            "keywords": [
+                "markdown",
+                "parser"
+            ],
+            "time": "2018-03-08 01:11:30"
         },
         {
             "name": "fig/link-util",

@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.9.0] - 20-08-2018
+### Added
+- configurable e-mail content for referring a friend
+- markdown for campaign details
+- new earning rule "Instant Reward" to collect rewards instantly after a transaction
+- include/exclude labels for earning rule "General Spending Rule"
+- locking points for X number of days
+- assign earning rules to the POS
+- set earning rule as last
+### Changed
+- label value for the customer is not required anymore
+### Fixed
+- download level list as CSV file
+- translations
+- search client by first or last name in POS
+- upload button in firefox
+- upgrading read model
+- dashboard
+- points transfer list in client cockpit
+- creating Earning Rule without labels
+
 ## [2.8.0] - 20-07-2018
 ### Added
 - configuring marketing automation tool in the administration panel

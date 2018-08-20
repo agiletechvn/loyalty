@@ -188,6 +188,8 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.includedLabels;
+                delete res.labelsInclusionType;
                 delete res.labelMultipliers;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
@@ -200,6 +202,8 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.includedLabels;
+                delete res.labelsInclusionType;
                 delete res.labelMultipliers;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
@@ -215,6 +219,8 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.includedLabels;
+                delete res.labelsInclusionType;
                 delete res.labelMultipliers;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
@@ -227,6 +233,8 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.includedLabels;
+                delete res.labelsInclusionType;
                 delete res.labelMultipliers;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
@@ -239,6 +247,8 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.includedLabels;
+                delete res.labelsInclusionType;
                 delete res.labelMultipliers;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
@@ -251,6 +261,8 @@ export default class EditableMap {
                 delete res.excludedSKUs;
                 delete res.pointValue;
                 delete res.excludedLabels;
+                delete res.includedLabels;
+                delete res.labelsInclusionType;
                 delete res.excludeDeliveryCost;
                 delete res.minOrderValue;
                 delete res.eventName;
@@ -258,8 +270,21 @@ export default class EditableMap {
                 delete res.limit;
                 delete res.rewardType;
                 break;
+            case 'instant_reward':
+                delete res.eventName;
+                delete res.skuIds;
+                delete res.pointsAmount;
+                delete res.multiplier;
+                delete res.labelMultipliers;
+                delete res.limit;
+                delete res.rewardType;
+                break;
             default:
                 break;
+        }
+
+        if (!res.rewardCampaignId){
+            delete res.rewardCampaignId;
         }
 
         if (res.allTimeActive) {
@@ -290,7 +315,11 @@ export default class EditableMap {
             res.excludedSKUs = SKUs;
         }
 
+        if (!this.DataService.isStoppableEarningRule(res.type)){
+            delete res.lastExecutedRule;
+        }
         res.excludedLabels = this.convertLabels(res, 'excludedLabels');
+        res.includedLabels = this.convertLabels(res, 'includedLabels');
         res.labels = this.convertLabels(res);
 
         delete res.earningRuleId;
@@ -342,6 +371,7 @@ export default class EditableMap {
                 return e
             });
         }
+        data.includedLabels = _.pickBy(data.includedLabels);
 
         return data;
     }
@@ -709,6 +739,20 @@ export default class EditableMap {
             delete campaign.coupons;
             delete campaign.singleCoupon;
             delete campaign.unlimited;
+        }
+
+        if (campaign.reward == 'percentage_discount_code') {
+            delete campaign.costInPoints;
+            delete campaign.campaignVisibility;
+            delete campaign.limit;
+            delete campaign.limitPerUser;
+            delete campaign.coupons;
+            delete campaign.singleCoupon;
+            delete campaign.unlimited;
+        } else {
+            delete campaign.transactionPercentageValue;
+            delete campaign.daysInactive;
+            delete campaign.daysValid;
         }
 
         delete campaign.couponsCsv;

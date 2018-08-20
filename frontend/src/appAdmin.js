@@ -30,6 +30,10 @@ import 'brace';
 import 'angular-animate';
 import 'angular-loading-bar';
 import 'ace-angular';
+import 'simplemde/dist/simplemde.min.css';
+import 'ng-simplemde';
+
+
 // global styles
 import 'pickadate/lib/themes/classic.css';
 import 'pickadate/lib/themes/classic.date.css';
@@ -143,7 +147,8 @@ angular.module('OpenLoyalty', [
      'admin.translations',
      'admin.users',
      'admin.emails',
-     'admin.logs'
+     'admin.logs',
+     'simplemde'
 ])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider, RestangularProvider, $translateProvider, $locationProvider, cfpLoadingBarProvider) {
         let config = window.OpenLoyaltyConfig;

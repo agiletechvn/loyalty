@@ -31,6 +31,13 @@ export default class DataService {
                 code: 'eur'
             }
         ];
+        this.stoppableEarningRulesType = [
+            'points',
+            'product_purchase',
+            'multiply_for_product',
+            'multiply_by_product_labels',
+            'instant_reward'
+        ];
         this.config = window.OpenLoyaltyConfig || {};
     }
 
@@ -429,6 +436,10 @@ export default class DataService {
 
     setActivationMethod(value) {
         this.activationMethod = value;
+    }
+
+    isStoppableEarningRule(type) {
+        return this.stoppableEarningRulesType.includes(type);
     }
 }
 

@@ -1,5 +1,5 @@
 export default class LevelController {
-    constructor($scope, $state, AuthService, LevelService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, Validation, $filter, DataService) {
+    constructor($scope, $state, $timeout, AuthService, LevelService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, Validation, $filter, DataService) {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             AuthService.logout();
         }
@@ -15,6 +15,7 @@ export default class LevelController {
         this.$q = $q;
         this.Validation = Validation;
         this.$filter = $filter;
+        this.$timeout = $timeout;
         this.config = DataService.getConfig();
         this.$scope.fileValidate = {};
         this.active = [
@@ -158,12 +159,20 @@ export default class LevelController {
             self.LevelService.getFile(levelId)
                 .then(
                     function (res) {
-                        var date = new Date();
-                        var blob = new Blob([res.data], {type: res.headers('Content-Type')});
-                        var downloadLink = angular.element('<a></a>');
-                        downloadLink.attr('href', window.URL.createObjectURL(blob));
-                        downloadLink.attr('download', levelName.replace(" ", "-") + "-" + date.toISOString().substring(0, 10) + ".csv");
-                        downloadLink[0].click();
+                        let date = new Date();
+                        let filename = levelName.replace(" ", "-") + "-" + date.toISOString().substring(0, 10) + ".csv";
+                        let blob = new Blob([res], {type: 'text/csv'});
+                        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                            window.navigator.msSaveOrOpenBlob(blob);
+                            return;
+                        }
+
+                        const data = window.URL.createObjectURL(blob);
+
+                        let link = document.createElement('a');
+                        link.href = data;
+                        link.download = filename;
+                        self.$timeout(function() { link.dispatchEvent(new MouseEvent('click')); }, 2000);
                     }
                 );
         }
@@ -340,4 +349,4 @@ export default class LevelController {
     }
 }
 
-LevelController.$inject = ['$scope', '$state', 'AuthService', 'LevelService', 'Flash', 'NgTableParams', '$q', 'ParamsMap', '$stateParams', 'EditableMap', 'Validation', '$filter', 'DataService'];
+LevelController.$inject = ['$scope', '$state', '$timeout', 'AuthService', 'LevelService', 'Flash', 'NgTableParams', '$q', 'ParamsMap', '$stateParams', 'EditableMap', 'Validation', '$filter', 'DataService'];

@@ -67,12 +67,13 @@ export default class SellerCustomerController {
         this.$scope.search = {};
         this.ParamsMap = ParamsMap;
         this.$scope.searchCustomerValidate = {
-            loyaltyCardNumber: '@assert:one_from:phone:email:firstName:city:postcode',
-            phone: '@assert:one_from:loyaltyCardNumber:email:firstName:city:postcode',
-            email: '@assert:one_from:phone:loyaltyCardNumber:firstName:city:postcode',
-            firstName: '@assert:one_from:phone:email:loyaltyCardNumber:city:postcode',
-            city: '@assert:one_from:phone:email:firstName:loyaltyCardNumber:postcode',
-            postcode: '@assert:one_from:phone:email:firstName:city:loyaltyCardNumber'
+            loyaltyCardNumber: '@assert:one_from:phone:email:firstName:lastName:city:postcode',
+            phone: '@assert:one_from:loyaltyCardNumber:email:firstName:lastName:city:postcode',
+            email: '@assert:one_from:phone:loyaltyCardNumber:firstName:lastName:city:postcode',
+            firstName: '@assert:one_from:phone:email:loyaltyCardNumber:city:postcode:lastName',
+            lastName: '@assert:one_from:phone:email:loyaltyCardNumber:city:postcode:firstName',
+            city: '@assert:one_from:phone:email:firstName:lastName:loyaltyCardNumber:postcode',
+            postcode: '@assert:one_from:phone:email:firstName:lastName:city:loyaltyCardNumber'
         };
         this.NgTableParams = NgTableParams;
         this.$scope.customers = null;
@@ -173,7 +174,6 @@ export default class SellerCustomerController {
         }
 
         let frontValidation = self.Validation.frontValidation(newCustomer, validateFields);
-
         if (_.isEmpty(frontValidation)) {
             self.SellerCustomerService.postCustomer(newCustomer)
                 .then(
@@ -303,6 +303,8 @@ export default class SellerCustomerController {
         });
     }
 
+
+
     getCustomerData() {
         let self = this;
 
@@ -394,7 +396,7 @@ export default class SellerCustomerController {
                     self.levels = res;
                 },
                 () => {
-                    let message = self.$filter('translate')('xhr.get_levels.error');
+                    let messagsearchCustomerValidatee = self.$filter('translate')('xhr.get_levels.error');
                     self.Flash.create('danger', message);
                 }
             )
@@ -466,7 +468,6 @@ export default class SellerCustomerController {
                                 let message = self.$filter('translate')('xhr.customer_search.nothing_found');
                                 self.Flash.create('warning', message);
                             } else {
-
                                 let message = self.$filter('translate')('xhr.customer_search.success');
                                 self.Flash.create('success', message);
                             }

@@ -1,8 +1,8 @@
 import LevelController from '../admin.levels/LevelController';
 
 export default class DashboardController extends LevelController {
-    constructor($scope, $state, AuthService, LevelService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, Validation, $filter, DataService) {
-        super($scope, $state, AuthService, LevelService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, Validation, $filter, DataService);
+    constructor($scope, $state, $timeout, AuthService, LevelService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, Validation, $filter, DataService) {
+        super($scope, $state, $timeout, AuthService, LevelService, Flash, NgTableParams, $q, ParamsMap, $stateParams, EditableMap, Validation, $filter, DataService);
 
         this.$scope.stats = {};
         this.$scope.charts = {
@@ -84,4 +84,4 @@ export default class DashboardController extends LevelController {
 
 }
 
-DashboardController.$inject = ['$scope', '$state', 'AuthService', 'LevelService', 'Flash', 'NgTableParams', '$q', 'ParamsMap', '$stateParams', 'EditableMap', 'Validation', '$filter', 'DataService'];
+DashboardController.$inject = ['$scope', '$state', '$timeout', 'AuthService', 'LevelService', 'Flash', 'NgTableParams', '$q', 'ParamsMap', '$stateParams', 'EditableMap', 'Validation', '$filter', 'DataService'];

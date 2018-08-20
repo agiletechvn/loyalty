@@ -14,12 +14,20 @@
                     <table class="table default">
                         <tbody>
                         <tr>
+                            <td style="width: 270px;max-width: 50%;"><b>{{ 'customer_status.total_points' | translate }}:</b></td>
+                            <td>{{ status.totalEarnedPoints | roundPoints }}</td>
+                        </tr>
+                        <tr>
                             <td style="width: 270px;max-width: 50%;"><b>{{ 'customer_status.active_points' | translate }}:</b></td>
                             <td>{{ status.points | roundPoints }}</td>
                         </tr>
                         <tr>
                             <td><b>{{ 'customer_status.used_points' | translate }}:</b></td>
                             <td>{{ status.usedPoints | roundPoints}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{{ 'customer_status.locked_points' | translate }}:</b></td>
+                            <td>{{ status.lockedPoints | roundPoints }}</td>
                         </tr>
                         <tr>
                             <td><b>{{ 'customer_status.expired_points' | translate }}:</b></td>
@@ -77,8 +85,15 @@
                             <td data-title="'customer_transfer.created_at'|translate" sortable="'createdAt'">
                                 <span ng-bind="row.createdAt|date : 'yyyy-MM-dd HH:mm'"></span>
                             </td>
-                            <td data-title="'customer_transfer.expire_at'|translate" ng-show="row.expireAt">
-                                <span ng-bind="row.expireAt|date : 'yyyy-MM-dd HH:mm'"></span>
+                            <td data-title="'customer_transfer.locked_until'|translate">
+                                <span ng-show="row.lockedUntil && row.state === 'pending'">
+                                    {{ (row.lockedUntil|date : 'yyyy-MM-dd HH:mm') || '---' }}
+                                </span>
+                            </td>
+                            <td data-title="'customer_transfer.expire_at'|translate">
+                                <span>
+                                    {{ (row.expiresAt|date : 'yyyy-MM-dd HH:mm') || '---' }}
+                                </span>
                             </td>
                             <td data-title="'customer_transfer.comment'|translate">
                                 <span ng-show="row.comment">

@@ -31,7 +31,7 @@ export default class SegmentService {
         return this.Restangular.one('segment', segmentId).get();
     }
     getFile(segmentId) {
-        return this.Restangular.setFullResponse(true).one('csv').one('segment', segmentId).get();
+        return this.Restangular.one('csv').one('segment', segmentId).get();
     }
 
     postSegment(newSegment) {

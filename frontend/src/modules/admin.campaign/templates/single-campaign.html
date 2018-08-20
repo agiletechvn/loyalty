@@ -47,6 +47,10 @@
                         <td><b>{{ "campaign.conditions_description"|translate }}:</b></td>
                         <td><span ng-bind="campaign.conditionsDescription || '---'"></span></td>
                     </tr>
+                    <tr>
+                        <td><b>{{ "campaign.brand_description"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.brandDescription || '---'"></span></td>
+                    </tr>
                     <tr ng-if="campaign.reward && campaign.reward != 'cashback'">
                         <td><b>{{ "campaign.cost_in_points"|translate }}:</b></td>
                         <td><span ng-bind="campaign.costInPoints || '---'"></span></td>
@@ -54,6 +58,18 @@
                     <tr ng-if="campaign.reward && campaign.reward == 'cashback'">
                         <td><b>{{ "campaign.point_value"|translate }}:</b></td>
                         <td><span ng-bind="campaign.pointValue || '---'"></span></td>
+                    </tr>
+                    <tr ng-if="campaign.transactionPercentageValue && campaign.reward == 'percentage_discount_code'">
+                        <td><b>{{ "campaign.transaction_percentage_value"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.transactionPercentageValue || '---'"></span></td>
+                    </tr>
+                    <tr ng-if="campaign.daysInactive && campaign.reward == 'percentage_discount_code'">
+                        <td><b>{{ "campaign.days_inactive"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.daysInactive || '---'"></span></td>
+                    </tr>
+                    <tr ng-if="campaign.daysValid && campaign.reward == 'percentage_discount_code'">
+                        <td><b>{{ "campaign.days_valid"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.daysValid || '---'"></span></td>
                     </tr>
                     <tr>
                         <td><b>{{ "campaign.reward_value"|translate }}:</b></td>

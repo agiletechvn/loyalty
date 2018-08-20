@@ -31,8 +31,17 @@
                 <td data-title="'transfer.value'|translate">
                     <span ng-bind="row.value"></span>
                 </td>
-                <td data-title="'transfer.created_at'|translate">
+                <td data-title="'transfer.comment'|translate">
+                    <span ng-bind="row.comment"></span>
+                </td>
+                <td data-title="'transfer.created_at'|translate" sortable="'createdAt'">
                     <span ng-bind="row.createdAt|date : 'yyyy-MM-dd HH:mm'"></span>
+                </td>
+                <td data-title="'transfer.locked_until'|translate" sortable="'lockedUntil'">
+                    <span>{{ (row.lockedUntil|date : 'yyyy-MM-dd HH:mm') || '---' }}</span>
+                </td>
+                <td data-title="'transfer.expires_at'|translate" sortable="'expiresAt'">
+                    <span>{{ (row.expiresAt|date : 'yyyy-MM-dd HH:mm') || '---' }}</span>
                 </td>
             </tr>
         </table>
