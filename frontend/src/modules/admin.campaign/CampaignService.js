@@ -15,6 +15,9 @@ export default class CampaignService {
         this.EditableMap = EditableMap;
         this.campaigns = null;
         this._campaignFileError = {};
+        this.campaignRequireTransaction = [
+            'percentage_discount_code'
+        ];
     }
 
     /**
@@ -210,6 +213,20 @@ export default class CampaignService {
             .all('export')
             .one('csv')
             .withHttpConfig({responseType: 'blob'}).customGET("", params);
+    }
+
+    postBuyCampaignManually(params){
+        return this.Restangular
+            .one('admin')
+            .one('customer', params.customerId)
+            .one('campaign', params.campaignId)
+            .one('buy')
+            .customPOST(
+                {
+                    withoutPoints: params.withoutPoints,
+                    transactionId: params.transactionId
+                }
+            )
     }
 
 }

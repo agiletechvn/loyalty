@@ -220,12 +220,9 @@ angular.module('OpenLoyalty', [
         $rootScope.pendingRequests = _.isNumber($rootScope.pendingRequests) ? $rootScope.pendingRequests : 0;
         Restangular.setErrorInterceptor(function (response) {
             $rootScope.pendingRequests -= 1;
-            if (typeof response.data === 'object' && response.data && response.data.message && response.data.message === 'Bad credentials') {
-                return true;
-            }
+
             if (response.status === 401) {
                 AuthService.logout();
-                return false;
             }
             return true;
         });

@@ -29,6 +29,7 @@ export default class EarningRuleController {
         this.segments = null;
         this.levels = null;
         this.pos = null;
+        this.$scope.newEarningRule = {};
         this.$scope.skusConfig = {
             delimiter: ';',
             persist: false,
@@ -195,7 +196,6 @@ export default class EarningRuleController {
             earningRuleList: true,
             coverLoader: true
         };
-        this.$scope.newEarningRule = {labelsInclusionType: this.labelsInclusionType[0].value};
 
         let segmentPromise = this.SegmentService.getActiveSegments({perPage: 1000})
             .then(

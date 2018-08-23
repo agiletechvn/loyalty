@@ -11,6 +11,7 @@ export default class CampaignController {
      * @param {Object} $scope
      * @param {Object} $state
      * @param {Object} $stateParams
+     * @param {Object} $timeout
      * @param {AuthService} AuthService
      * @param {CampaignService} CampaignService
      * @param {Object} Flash
@@ -24,9 +25,10 @@ export default class CampaignController {
      * @param {Object} LevelService
      * @param {DataService} DataService
      * @param {CustomerService} CustomerService
+     * @param {TransactionService} TransactionService
      * @method constructor
      */
-    constructor($scope, $state, $stateParams, $timeout, AuthService, CampaignService, Flash, EditableMap, NgTableParams, ParamsMap, $q, Validation, $filter, SegmentService, LevelService, DataService, CustomerService) {
+    constructor($scope, $state, $stateParams, $timeout, AuthService, CampaignService, Flash, EditableMap, NgTableParams, ParamsMap, $q, Validation, $filter, SegmentService, LevelService, DataService, CustomerService, TransactionService) {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             $state.go('admin-login')
         }
@@ -40,6 +42,7 @@ export default class CampaignController {
         this.AuthService = AuthService;
         this.DataService = DataService;
         this.CampaignService = CampaignService;
+        this.TransactionService = TransactionService;
         this.EditableMap = EditableMap;
         this.ParamsMap = ParamsMap;
         this.Validation = Validation;
@@ -128,17 +131,20 @@ export default class CampaignController {
      * @method $onInit
      */
     $onInit() {
+        this.$scope.clientSearch = 0;
         this.loaderStates = {
             campaignList: true,
             campaignDetails: true,
             campaignCustomerList: true,
             coverLoader: true,
-            redeemedCampaigns: true
+            redeemedCampaigns: true,
+            buyCampaignManually: false
         };
 
         this.campaignId = this.$stateParams.campaignId || null;
         this.$scope.campaignName = this.$stateParams.campaignName || false;
         this.$scope.newCampaign = {labels: []};
+        this.$scope.buyCampaignManually = {};
         this.$scope.showCompany = false;
         this.$scope.showAddress = false;
         this.$scope.fileValidate = this.CampaignService.storedFileError;
@@ -147,6 +153,7 @@ export default class CampaignController {
         this.$scope.exportDateFrom = null;
         this.$scope.exportDateTo = null;
         this.$scope.content = "test";
+        this.$scope.buyCampaignManuallyModal = false;
         this.segments = null;
         this.levels = null;
         this.config = this.DataService.getConfig();
@@ -584,37 +591,37 @@ export default class CampaignController {
      * @method getRedeemedCampaigns
      */
     getRedeemedCampaigns() {
-      let self = this;
+        let self = this;
 
-      self.redeemedCampaignsTableParams = new self.NgTableParams({
-        count: self.config.perPage,
-        sorting: {
-          purchasedAt: 'desc'
-        }
-      }, {
-        getData: function (params) {
-          let dfd = self.$q.defer();
-          self.loaderStates.redeemedCampaigns = true;
-          self.CampaignService.getRedeemedCampaignRewards(self.ParamsMap.params(params.url()))
-              .then(
-                res => {
-                  self.loaderStates.redeemedCampaigns = false;
-                  self.loaderStates.coverLoader = false;
-                  params.total(res.total);
-                  dfd.resolve(res)
-                },
-                () => {
-                  let message = self.$filter('translate')('xhr.get_redeemed_campaigns.error');
-                  self.loaderStates.redeemedCampaigns = false;
-                  self.loaderStates.coverLoader = false;
-                  self.Flash.create('danger', message);
-                  dfd.reject();
-                }
-              );
+        self.redeemedCampaignsTableParams = new self.NgTableParams({
+            count: self.config.perPage,
+            sorting: {
+                purchasedAt: 'desc'
+            }
+        }, {
+            getData: function (params) {
+                let dfd = self.$q.defer();
+                self.loaderStates.redeemedCampaigns = true;
+                self.CampaignService.getRedeemedCampaignRewards(self.ParamsMap.params(params.url()))
+                    .then(
+                        res => {
+                            self.loaderStates.redeemedCampaigns = false;
+                            self.loaderStates.coverLoader = false;
+                            params.total(res.total);
+                            dfd.resolve(res)
+                        },
+                        () => {
+                            let message = self.$filter('translate')('xhr.get_redeemed_campaigns.error');
+                            self.loaderStates.redeemedCampaigns = false;
+                            self.loaderStates.coverLoader = false;
+                            self.Flash.create('danger', message);
+                            dfd.reject();
+                        }
+                    );
 
-          return dfd.promise;
-        }
-      });
+                return dfd.promise;
+            }
+        });
     }
 
 
@@ -627,18 +634,18 @@ export default class CampaignController {
      * @param {string} code
      * @param {Boolean} used
      */
-    updateCampaignUsage(customerId, campaignId, code, used){
-      let self = this;
-      self.CustomerService.postUsage(customerId, campaignId, code, used).then(
-        () => {
-          self.redeemedCampaignsTableParams.reload();
-        },
-        () => {
-          let message = self.$filter('translate')('xhr.pos_coupon_usage.error');
-          self.Flash.create('danger', message);
+    updateCampaignUsage(customerId, campaignId, code, used) {
+        let self = this;
+        self.CustomerService.postUsage(customerId, campaignId, code, used).then(
+            () => {
+                self.redeemedCampaignsTableParams.reload();
+            },
+            () => {
+                let message = self.$filter('translate')('xhr.pos_coupon_usage.error');
+                self.Flash.create('danger', message);
 
-        }
-      )
+            }
+        )
     }
 
     addLabel(edit) {
@@ -673,8 +680,7 @@ export default class CampaignController {
 
     downloadRedeemedCampaignsReportCSV(dateFrom = null, dateTo = null) {
         var self = this;
-        let params = {
-        };
+        let params = {};
 
         if (dateFrom) {
             params.purchasedAtFrom = dateFrom;
@@ -685,8 +691,8 @@ export default class CampaignController {
         }
 
         self.CampaignService.getBoughtReport(params).then(function (response) {
-           let file = new Blob([response], {type: 'text/csv'});
-           self.downloadFile(file, 'report.csv');
+            let file = new Blob([response], {type: 'text/csv'});
+            self.downloadFile(file, 'report.csv');
         });
     }
 
@@ -707,33 +713,155 @@ export default class CampaignController {
         self.$timeout(function() { link.dispatchEvent(new MouseEvent('click')); }, 2000);
     }
 
-    _selectizeConfigs() {
-      let self = this;
+    canBeBoughtManually(campaing) {
+        return campaing.active && campaing.reward !== 'cashback';
+    }
 
-      this.campaignsUsageSelectOptions = [{
-          value: '',
-          label: self.$filter('translate')('campaign.usage_types.both')
-        },
-        {
-          value: USAGE_TYPE_DELIVERED,
-          label: self.$filter('translate')('campaign.usage_types.' + USAGE_TYPE_DELIVERED)
-        },
-        {
-          value: USAGE_TYPE_USED,
-          label: self.$filter('translate')('campaign.usage_types.' + USAGE_TYPE_USED)
+    activateBuyCampaignManuallyModal(campaignId, name, transactionId, reward) {
+        this.$scope.buyCampaignManually.name = name;
+        this.$scope.buyCampaignManually.campaignId = campaignId;
+        this.$scope.buyCampaignManually.transactionId = transactionId;
+        this.$scope.buyCampaignManually.reward = reward;
+        this.$scope.buyCampaignManuallyModal = true;
+    }
+
+    buyCampaignManuallyByAdmin() {
+        let self = this;
+        self.loaderStates.addTransaction = true;
+
+        if (self.$scope.buyCampaignManually.customerId) {
+            self.CampaignService.postBuyCampaignManually(self.$scope.buyCampaignManually)
+                .then(
+                    () => {
+                        let message = self.$filter('translate')('xhr.post_campaign_buy_manually_assign.success');
+                        self.Flash.create('success', message);
+                        this.$scope.buyCampaignManuallyModal = false;
+                        self.loaderStates.buyCampaignManually = false;
+                        self.tableParams.reload();
+                    },
+                    res => {
+                        let message;
+                        if (res.status === 400) {
+                            message = self.$filter('translate')('xhr.post_campaign_buy_manually_assign.error_occurred') + ': ' + res.data.error;
+                        } else {
+                            message = self.$filter('translate')('xhr.post_campaign_buy_manually_assign.error');
+                        }
+                        self.Flash.create('danger', message);
+                        this.$scope.buyCampaignManuallyModal = false;
+                        self.loaderStates.buyCampaignManually = false;
+                    }
+                );
         }
-      ];
 
-      this.campaignUsageSelectConfig = {
-        valueField: 'value',
-        labelField: 'label',
-        create: false,
-        sortField: 'label',
-        searchField: 'label',
-        maxItems: 1,
-        allowEmptyOption: true
-      };
+    }
+
+    _selectizeConfigs() {
+        let self = this;
+        this.$scope.clientSearch = 0; //0 - nothing, 1 - loading, 2 - nothing found
+
+        this.campaignsUsageSelectOptions = [{
+            value: '',
+            label: self.$filter('translate')('campaign.usage_types.both')
+        },
+            {
+                value: USAGE_TYPE_DELIVERED,
+                label: self.$filter('translate')('campaign.usage_types.' + USAGE_TYPE_DELIVERED)
+            },
+            {
+                value: USAGE_TYPE_USED,
+                label: self.$filter('translate')('campaign.usage_types.' + USAGE_TYPE_USED)
+            }
+        ];
+
+        this.campaignUsageSelectConfig = {
+            valueField: 'value',
+            labelField: 'label',
+            create: false,
+            sortField: 'label',
+            searchField: 'label',
+            maxItems: 1,
+            allowEmptyOption: true
+        };
+
+        this.customersConfig = {
+            valueField: 'customerId',
+            render: {
+                option: (item, escape) => {
+                    return '<div>' + (item.email ? escape(item.email) : '') + ' (' + escape(item.phone) + ')</div>';
+                },
+                item: (item, escape) => {
+                    return '<div>' + (item.email ? escape(item.email) : '') + ' (' + escape(item.phone) + ')</div>';
+                }
+            },
+            create: false,
+            sortField: 'email',
+            maxItems: 1,
+            searchField: ['phone', 'email'],
+            placeholder: this.$filter('translate')('global.start_typing_an_email_or_phone'),
+            onChange: () => {
+                self.$scope.clientSearch = 0;
+                self.transactionsToLink = [];
+            },
+            load: (query, callback) => {
+                if (!query.length) return callback();
+
+                self.$scope.clientSearch = 1;
+
+                self.CustomerService.getCustomers(self.ParamsMap.params({
+                    'filter[emailOrPhone]': query,
+                    'filter[silenceQuery]': true
+                }))
+                    .then(
+                        res => {
+                            self.$scope.clientSearch = 0;
+                            callback(res)
+                        },
+                        () => {
+                            callback();
+                        }
+                    );
+
+            }
+        };
+
+        this.transactionsConfig = {
+            valueField: 'transactionId',
+            labelField: 'documentNumber',
+            create: false,
+            sortField: 'documentNumber',
+            maxItems: 1,
+            searchField: 'documentNumber',
+            placeholder: this.$filter('translate')('global.start_typing_a_number'),
+            onChange: value => {
+                self.$scope.documentSearch = 0;
+            },
+            load: (query, callback) => {
+                if (!query.length) return callback();
+
+                self.$scope.documentSearch = 1;
+
+                self.TransactionService.getTransactions(self.ParamsMap.params({
+                    'filter[documentNumber]': query,
+                    'filter[customerId]': self.$scope.buyCampaignManually.customerId,
+                    'filter[silenceQuery]': true
+                }))
+                    .then(
+                        res => {
+                            self.$scope.documentSearch = 0;
+                            callback(res)
+                        },
+                        () => {
+                            callback();
+                        }
+                    );
+
+            }
+        };
+    }
+
+    isTransactionRequired(type) {
+        return this.CampaignService.campaignRequireTransaction.includes(type);
     }
 }
 
-CampaignController.$inject = ['$scope', '$state', '$stateParams', '$timeout', 'AuthService', 'CampaignService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'Validation', '$filter', 'SegmentService', 'LevelService', 'DataService', 'CustomerService'];
+CampaignController.$inject = ['$scope', '$state', '$stateParams', '$timeout', 'AuthService', 'CampaignService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'Validation', '$filter', 'SegmentService', 'LevelService', 'DataService', 'CustomerService', 'TransactionService'];

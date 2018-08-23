@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ba4f0fdd5bf1490fc6dfb86bbe1dc705",
-    "content-hash": "5c67fdf9e5ed318d2a41ca0d8ce0e059",
+    "hash": "7c246d0d268eadf297366216fc1f6875",
+    "content-hash": "1162b69e48321450608013f0d6318108",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -527,16 +527,16 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "2.9.0",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
-                "reference": "c7cfc7adb617a47168e4619f29b87f8a9dcf47fe"
+                "reference": "84de0b1db68850feeb8ec4378f3343afcc91f243"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/c7cfc7adb617a47168e4619f29b87f8a9dcf47fe",
-                "reference": "c7cfc7adb617a47168e4619f29b87f8a9dcf47fe",
+                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/84de0b1db68850feeb8ec4378f3343afcc91f243",
+                "reference": "84de0b1db68850feeb8ec4378f3343afcc91f243",
                 "shasum": ""
             },
             "require": {
@@ -552,6 +552,7 @@
                 "doctrine/orm": "^2.5",
                 "elasticsearch/elasticsearch": "^5.0",
                 "erusev/parsedown": "^1.7",
+                "ext-json": "*",
                 "friendsofsymfony/rest-bundle": "^2.0",
                 "fzaninotto/faker": "^1.6",
                 "gesdinet/jwt-refresh-token-bundle": "^0.1.7",
@@ -577,7 +578,7 @@
                 "symfony/monolog-bundle": "^2.8",
                 "symfony/polyfill-apcu": "^1.0",
                 "symfony/swiftmailer-bundle": "^2.3",
-                "symfony/symfony": "3.4.14"
+                "symfony/symfony": "3.4.*"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.10",
@@ -612,7 +613,7 @@
             "license": [
                 "proprietary"
             ],
-            "time": "2018-08-20 07:47:37"
+            "time": "2018-08-23 07:49:15"
         },
         {
             "name": "doctrine/annotations",

@@ -79,13 +79,19 @@
                     <span  ng-if="row.reward == 'cashback' || row.reward == 'percentage_discount_code'">---</span>
                 </td>
                 <td data-title="'campaign.actions'|translate">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button type="button" class="button button-secondary tiny"
                             ui-sref="admin.edit-campaign({campaignId: row.campaignId})">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>
-                    <button type="button" class="button  button-quinary tiny"
+                    <button type="button" class="button button-quinary tiny"
                             ui-sref="admin.single-campaign({campaignId: row.campaignId})">
                         <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                    <button type="button"
+                            class="button button-quinary tiny"
+                            ng-if="CampaignCtrl.canBeBoughtManually(row)"
+                            ng-click="CampaignCtrl.activateBuyCampaignManuallyModal(row.campaignId, row.name, row.transactionDocumentNumber, row.reward)">
+                        <i class="fa fa-user-plus" aria-hidden="true"></i>
                     </button>
                 </td>
             </tr>
@@ -102,3 +108,60 @@
                config="CampaignCtrl.rewardSelectConfig" ng-model="params.filter()[name]">
     </selectize>
 </script>
+<modal show='buyCampaignManuallyModal'
+       modalId="buyCampaignManuallyModal"
+       modal-title="'campaign.buy_campaign_manually_modal' | translate: { name: buyCampaignManually.name }">
+    <form novalidate ng-submit="CampaignCtrl.buyCampaignManuallyByAdmin()">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="columns medium-3">
+                    <label>{{ "campaign.customer_email_or_phone"|translate }}</label>
+                    <spinner-loader loading="clientSearch"></spinner-loader>
+                </div>
+                <div class="columns medium-6">
+                    <selectize options="CampaignCtrl.customers" config="CampaignCtrl.customersConfig"
+                               ng-model="buyCampaignManually.customerId" required>
+                    </selectize>
+                </div>
+                <div class="columns medium-3">
+                    <span class="prompt">{{ "campaign.customer_email_or_phone_prompt"|translate }}</span>
+                </div>
+            </div>
+            <div class="row" ng-if="CampaignCtrl.isTransactionRequired(buyCampaignManually.reward)">
+                <div class="columns medium-3">
+                    <label>{{ "campaign.transaction_document_number"|translate }}</label>
+                    <spinner-loader loading="documentSearch"></spinner-loader>
+                </div>
+                <div class="columns medium-6">
+                    <selectize options="CampaignCtrl.transactionsToLink" config="CampaignCtrl.transactionsConfig"
+                               ng-model="buyCampaignManually.transactionId" required>
+                    </selectize>
+                </div>
+                <div class="columns medium-3">
+                    <span class="prompt">{{ "campaign.transaction_document_number_prompt"|translate }}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="medium-3 columns">
+                    <label>{{ "campaign.without_spending_points" | translate }} </label>
+                </div>
+                <div class="medium-9 columns">
+                    <checkbox ng-model="buyCampaignManually.withoutPoints"></checkbox>
+                    <span class="prompt">{{ "campaign.without_spending_points_prompt" | translate }} </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit"
+                                ng-disabled="CampaignCtrl.loaderStates.buyCampaignManually">
+                        {{ "global.save" | translate }}
+                    </button>
+                    <div class="spinner-loader-wrapper">
+                        <spinner-loader loading="CampaignCtrl.loaderStates.buyCampaignManually" class="inline"
+                                        delay="5"></spinner-loader>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>

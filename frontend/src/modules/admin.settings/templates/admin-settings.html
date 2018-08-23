@@ -470,7 +470,7 @@
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.webhooks.errors">
                             <checkbox ng-model="settings.webhooks"></checkbox>
-                            <span class="prompt">{{ "settings.enable_webhooks"|translate}}</span>
+                            <span class="prompt">{{ "settings.enable_webhooks"|translate }}</span>
                         </div>
                     </div>
                     <div class="row">
@@ -479,7 +479,25 @@
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.uriWebhooks.errors">
                             <input type="text" ng-model="settings.uriWebhooks">
-                            <span class="prompt">{{ "settings.uri_webhooks_prompt"|translate}}</span>
+                            <span class="prompt">{{ "settings.uri_webhooks_prompt"|translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.webhook_header_name" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.webhookHeaderName.errors">
+                            <input type="text" ng-model="settings.webhookHeaderName">
+                            <span class="prompt">{{ "settings.webhook_header_name_prompt"|translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.webhook_header_value" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.webhookHeaderValue.errors">
+                            <input type="text" ng-model="settings.webhookHeaderValue">
+                            <span class="prompt">{{ "settings.webhook_header_value_prompt"|translate }}</span>
                         </div>
                     </div>
                 </fieldset>
