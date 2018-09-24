@@ -26,7 +26,7 @@
                     <span ng-bind="row.email"></span>
                 </td>
                 <td data-title="'customer.gender'|translate">
-                    <span ng-bind="row.gender"></span>
+                    <span>{{ 'customer.' + row.gender | translate }}</span>
                 </td>
                 <td data-title="'customer.birth_date'|translate">
                     <span ng-bind="row.birthDate|date : 'yyyy-MM-dd'"></span>

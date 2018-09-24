@@ -2,6 +2,7 @@ FROM divante/open-loyalty-base-nodejs AS front
 
 COPY ./frontend /var/www/frontend
 WORKDIR /var/www/frontend
+RUN chmod a+rwx  /usr/local/bin/yarn
 RUN npm rebuild node-sass && yarn install && npm run-script build
 
 FROM divante/open-loyalty-base-nginx as www

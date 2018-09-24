@@ -66,6 +66,10 @@ export default class SegmentPartDirective {
                     code: 'customer_with_labels_values',
                     name: $filter('translate')('segment.partials.customer_with_labels_values')
                 },
+                {
+                    code: 'customer_list',
+                    name: $filter('translate')('segment.partials.customer_list')
+                },
 
             ];
             $scope.segmentTypeSelect = {

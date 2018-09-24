@@ -138,12 +138,15 @@ export default class CampaignController {
             campaignCustomerList: true,
             coverLoader: true,
             redeemedCampaigns: true,
-            buyCampaignManually: false
+            buyCampaignManually: false,
+            categoryList: true,
+            campaignCategoryDetails: true
         };
 
         this.campaignId = this.$stateParams.campaignId || null;
         this.$scope.campaignName = this.$stateParams.campaignName || false;
         this.$scope.newCampaign = {labels: []};
+        this.$scope.newCampaign.reward = 'discount_code';
         this.$scope.buyCampaignManually = {};
         this.$scope.showCompany = false;
         this.$scope.showAddress = false;
@@ -154,8 +157,13 @@ export default class CampaignController {
         this.$scope.exportDateTo = null;
         this.$scope.content = "test";
         this.$scope.buyCampaignManuallyModal = false;
+        this.$scope.brandIconFileValidate = null;
+        this.$scope.campaignBrandIconFilePath = false;
+        this.$scope.campaignBrandIconFile = null;
         this.segments = null;
         this.levels = null;
+        this.campaignCategoryId = this.$stateParams.campaignCategoryId || null;
+        this.$scope.newCategory = {};
         this.config = this.DataService.getConfig();
         this.target = [
             {
@@ -244,6 +252,13 @@ export default class CampaignController {
             sortField: 'name',
             maxItems: 1
         };
+        this.categoriesConfig = {
+            valueField: 'campaignCategoryId',
+            labelField: 'name',
+            create: false,
+            plugins: ['remove_button'],
+            sortField: 'name'
+        };
         this.couponsConfig = {
             delimiter: ',',
             persist: false,
@@ -256,7 +271,12 @@ export default class CampaignController {
             }
         };
 
-
+        let categoryPromise = this.CampaignService.getCategories()
+            .then(
+                res => {
+                    this.categories = res;
+                }
+        );
         let segmentPromise = this.SegmentService.getActiveSegments({perPage: 1000})
             .then(
                 res => {
@@ -271,7 +291,7 @@ export default class CampaignController {
                 }
             );
 
-        this.dataPromise = this.$q.all([segmentPromise, levelPromise]);
+        this.dataPromise = this.$q.all([segmentPromise, levelPromise, categoryPromise]);
     }
 
     /**
@@ -310,6 +330,142 @@ export default class CampaignController {
                 return dfd.promise;
             }
         });
+    }
+
+    /**
+    * Sets category state
+    *
+    * @param {Boolean} active
+    * @param {Integer} campaignCategoryId
+    * @method setCategoryState
+    */
+    setCategoryState(campaignCategoryId, active) {
+        let self = this;
+
+        self.CampaignService.setCategoryState(campaignCategoryId, active)
+            .then(
+                () => {
+                  let message = self.$filter('translate')('xhr.post_activate_campaign_category.success');
+                  self.Flash.create('success', message);
+                  self.categoryTableParams.reload();
+                },
+                () => {
+                  let message = self.$filter('translate')('xhr.post_activate_campaign_category.error');
+                  self.Flash.create('danger', message);
+                }
+            )
+    }
+
+    /**
+    * creates NgTable instances
+    *
+    * @method getCategoryData
+    */
+    getCategoryData() {
+        let self = this;
+
+        self.categoryTableParams = new self.NgTableParams({
+          count: self.config.perPage,
+          sorting: {
+            sortOrder: 'desc'
+          }
+        }, {
+          getData: function (params) {
+            let dfd = self.$q.defer();
+            self.loaderStates.categoryList = true;
+            self.CampaignService.getCategories(self.ParamsMap.params(params.url()))
+              .then(
+                res => {
+                  self.$scope.categories = res;
+                  self.CampaignService.setStoredCategories(res);
+                  self.loaderStates.categoryList = false;
+                  self.loaderStates.coverLoader = false;
+                  params.total(res.total);
+                  dfd.resolve(res)
+                },
+                () => {
+                  let message = self.$filter('translate')('xhr.get_campaign_categories.error');
+                  self.loaderStates.categoryList = false;
+                  self.loaderStates.coverLoader = false;
+                  self.Flash.create('danger', message);
+                  dfd.reject();
+                }
+              );
+
+            return dfd.promise;
+          }
+        });
+    }
+
+    /**
+    * Obtains category details
+    *
+    * @method getCategoryDetails
+    */
+    getCategoryDetails() {
+        let self = this;
+
+        if (self.campaignCategoryId) {
+            self.dataPromise.then(self._getCategory());
+        } else {
+            self.$state.go('admin.campaign-category-list');
+            let message = self.$filter('translate')('xhr.get_campaign_category.no_id');
+            self.Flash.create('warning', message);
+        }
+    }
+
+    /**
+     * Adds new category
+     *
+     * @param {Object} newCategory
+     * @method addCategory
+     */
+    addCategory(newCategory) {
+        let self = this;
+
+        self.CampaignService.postCategory(newCategory)
+            .then(
+                res => {
+                    let message = self.$filter('translate')('xhr.post_campaign_category.success');
+                    self.Flash.create('success', message);
+                    self.loaderStates.coverLoader = false;
+                    self.$state.go('admin.campaign-category-list');
+                },
+                res => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.post_campaign_category.error');
+                    self.Flash.create('danger', message);
+                    self.loaderStates.categoryDetails = false;
+                    self.loaderStates.coverLoader = false;
+                }
+            )
+    }
+
+    /**
+     * Edits category
+     *
+     * @param editedCategory
+     * @method editCategory
+     */
+    editCategory(editedCategory) {
+        let self = this;
+
+        self.CampaignService.putCategory(self.campaignCategoryId, editedCategory)
+            .then(
+                res => {
+                    let message = self.$filter('translate')('xhr.put_campaign_category.success');
+                    self.Flash.create('success', message);
+                    self.loaderStates.coverLoader = false;
+                    self.$state.go('admin.campaign-category-list');
+                },
+                res => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.put_campaign_category.error');
+                    self.Flash.create('danger', message);
+                    self.loaderStates.categoryDetails = false;
+                    self.loaderStates.coverLoader = false;
+                }
+            )
     }
 
     /**
@@ -365,34 +521,7 @@ export default class CampaignController {
         self.CampaignService.postCampaign(newCampaign)
             .then(
                 res => {
-                    if (self.$scope.campaignFile) {
-                        self.$scope.fileValidate = {};
-
-                        self.CampaignService.postCampaignImage(res.campaignId, self.$scope.campaignFile)
-                            .then(
-                                res2 => {
-                                    self.$state.go('admin.single-campaign', {campaignId: res.campaignId});
-                                    let message = self.$filter('translate')('xhr.post_campaign.success');
-                                    self.Flash.create('success', message);
-                                }
-                            )
-                            .catch(
-                                err => {
-                                    self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
-                                    self.CampaignService.storedFileError = self.$scope.fileValidate;
-
-                                    let message = self.$filter('translate')('xhr.post_campaign.warning');
-                                    self.Flash.create('warning', message);
-
-                                    self.$state.go('admin.edit-campaign', {campaignId: res.campaignId})
-                                }
-                            );
-
-                    } else {
-                        self.$state.go('admin.campaign-list');
-                        let message = self.$filter('translate')('xhr.post_campaign.success');
-                        self.Flash.create('success', message);
-                    }
+                   self._uploadCampaignFile(res, 'post');
                 },
                 res => {
                     self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
@@ -428,6 +557,31 @@ export default class CampaignController {
     }
 
     /**
+     * Deletes brand icon
+     *
+     * @method deleteBrandIcon
+     */
+    deleteBrandIcon() {
+        let self = this;
+
+        this.CampaignService.deleteCampaignBrandIcon(this.$stateParams.campaignId)
+            .then(
+                res => {
+                    self.$scope.campaignBrandIconFilePath = false;
+                    let message = self.$filter('translate')('xhr.delete_campaign_brand_icon.success');
+                    self.Flash.create('success', message);
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.delete_campaign_brand_icon.error');
+                    self.Flash.create('danger', message);
+                }
+            )
+    }
+
+    /**
      * Edits campaign
      *
      * @param editedCampaign
@@ -439,36 +593,7 @@ export default class CampaignController {
         self.CampaignService.putCampaign(editedCampaign)
             .then(
                 res => {
-                    if (self.$scope.campaignFile) {
-                        self.$scope.fileValidate = {};
-
-                        self.CampaignService.postCampaignImage(self.$stateParams.campaignId, self.$scope.campaignFile)
-                            .then(
-                                res2 => {
-                                    self.CampaignService.storedFileError = {};
-                                    self.$state.go('admin.single-campaign', {campaignId: res.campaignId});
-
-                                    let message = self.$filter('translate')('xhr.put_campaign.success');
-                                    self.Flash.create('success', message);
-                                    self.loaderStates.coverLoader = false;
-                                }
-                            )
-                            .catch(
-                                err => {
-                                    self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
-                                    let message = self.$filter('translate')('xhr.put_campaign.error');
-                                    self.Flash.create('danger', message);
-                                    self.loaderStates.coverLoader = false;
-                                }
-                            );
-
-                    } else {
-                        self.$state.go('admin.single-campaign', {campaignId: res.campaignId});
-                        let message = self.$filter('translate')('xhr.put_campaign.success');
-                        self.Flash.create('success', message);
-                        self.loaderStates.campaignDetails = false;
-                        self.loaderStates.coverLoader = false;
-                    }
+                   self._uploadCampaignFile(res, 'put');
                 },
                 res => {
                     self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
@@ -479,6 +604,114 @@ export default class CampaignController {
                 }
             )
     }
+
+    /**
+     * Upload campaign file
+     *
+     * @param res
+     * @param method
+     * @method _uploadCampaignFile
+     * @private
+     */
+    _uploadCampaignFile(res, method) {
+        let self = this;
+        let campaignId = res.campaignId
+        var flashMessageType = 'danger';
+
+        if (method == 'post') {
+            flashMessageType = 'warning';
+        }
+
+        function postCampaignImage() {
+            return self.CampaignService.postCampaignImage(campaignId, self.$scope.campaignFile)
+                .then(
+                    res2 => {
+                    }
+                )
+                .catch(
+                    err => {
+                        self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
+                        self.CampaignService.storedFileError = self.$scope.fileValidate;
+
+                        let message = self.$filter('translate')('xhr.'+method+'_campaign_image.warning');
+                        self.Flash.create(flashMessageType, message);
+                    }
+                )
+        }
+
+        function postCampaignBrandIcon() {
+            return self.CampaignService.postCampaignBrandIcon(campaignId, self.$scope.campaignBrandIconFile)
+                .then(
+                    res2 => {
+                    }
+                )
+                .catch(
+                    err => {
+                        self.$scope.brandIconFileValidate = self.Validation.mapSymfonyValidation(err.data);
+
+                        let message = self.$filter('translate')('xhr.'+method+'_campaign_brand_icon.warning');
+                        self.Flash.create(flashMessageType, message);
+                    }
+                )
+            }
+
+        var queries = [];
+        if (self.$scope.campaignFile) {
+            self.$scope.fileValidate = null;
+            queries.push(postCampaignImage());
+        }
+
+        if (self.$scope.campaignBrandIconFile) {
+            self.$scope.brandIconFileValidate = null;
+            queries.push(postCampaignBrandIcon());
+        }
+
+        if (queries.length>0) {
+            self.$q.all(queries).then(function() {
+                var failed = false;
+                if (self.$scope.campaignFile && self.$scope.fileValidate) {
+                    failed = true;
+                }
+                if (self.$scope.campaignBrandIconFile && self.$scope.brandIconFileValidate) {
+                    failed = true;
+                }
+
+                if (failed) {
+                    if (method == 'post') {
+                        self.$state.go('admin.edit-campaign', {campaignId: campaignId});
+                    } else {
+                        self.loaderStates.coverLoader = false;
+                    }
+                } else {
+                    if (method == 'post') {
+                        self.$state.go('admin.single-campaign', {campaignId: campaignId});
+                        let message = self.$filter('translate')('xhr.'+method+'_campaign.success');
+                        self.Flash.create('success', message);
+                    } else {
+                        self.$state.go('admin.single-campaign', {campaignId: campaignId});
+                        let message = self.$filter('translate')('xhr.'+method+'_campaign.success');
+                        self.Flash.create('success', message);
+                        self.loaderStates.campaignDetails = false;
+                        self.loaderStates.coverLoader = false;
+                    }
+                }
+            });
+
+        } else {
+            if (method == 'post') {
+                self.$state.go('admin.campaign-list');
+                let message = self.$filter('translate')('xhr.'+method+'_campaign.success');
+                self.Flash.create('success', message);
+            } else {
+                self.$state.go('admin.single-campaign', {campaignId: campaignId});
+                let message = self.$filter('translate')('xhr.'+method+'_campaign.success');
+                self.Flash.create('success', message);
+                self.loaderStates.campaignDetails = false;
+                self.loaderStates.coverLoader = false;
+            }
+        }
+    }
+
 
     /**
      * Obtains customers for campaign
@@ -536,6 +769,16 @@ export default class CampaignController {
     }
 
     /**
+     * Generating brand icon route
+     *
+     * @method generateBrandIconRoute
+     * @returns {string}
+     */
+    generateBrandIconRoute() {
+        return this.DataService.getConfig().apiUrl + '/campaign/' + this.$stateParams.campaignId + '/brand_icon'
+    }
+
+    /**
      * Obtain all campaign data
      *
      * @method _getCampaign
@@ -554,16 +797,25 @@ export default class CampaignController {
                         for (let i in levels) {
                             let level = _.find(self.levels, {id: levels[i]});
                         }
-
                     }
                     if (self.$scope.editableFields.segments && self.$scope.editableFields.segments.length) {
                         let segments = self.$scope.editableFields.segments;
                         for (let i in segments) {
                             let segment = _.find(self.segments, {id: segments[i]});
                         }
-
+                    }
+                    if (self.$scope.editableFields.categories && self.$scope.editableFields.categories.length) {
+                        let categories = self.$scope.editableFields.categories;
+                        for (let i in categories) {
+                            let category = _.find(self.categories, {id: categories[i]});
+                        }
                     }
                     self.loaderStates.campaignDetails = false;
+
+                    if (res.brandIcon) {
+                        self.$scope.campaignBrandIconFilePath = true;
+                        self.$scope.hasCampaignBrandIconFilePath = true;
+                    }
                 },
                 () => {
                     let message = self.$filter('translate')('xhr.get_campaign.error');
@@ -581,6 +833,30 @@ export default class CampaignController {
             .catch(
                 err => {
                     self.$scope.campaignFilePath = false;
+                }
+            );
+    }
+
+    /**
+     * Obtain all category data
+     *
+     * @method _getCategory
+     * @private
+     */
+    _getCategory() {
+        let self = this;
+
+        self.CampaignService.getCategory(self.campaignCategoryId)
+            .then(
+                res => {
+                    self.$scope.category = res;
+                    self.$scope.editableCategoryFields = self.EditableMap.humanizeCampaignCategory(res);
+                    self.loaderStates.categoryDetails = false;
+                },
+                () => {
+                    let message = self.$filter('translate')('xhr.get_campaign_category.error');
+                    self.Flash.create('danger', message);
+                    self.loaderStates.categoryDetails = false;
                 }
             );
     }
@@ -722,6 +998,7 @@ export default class CampaignController {
         this.$scope.buyCampaignManually.campaignId = campaignId;
         this.$scope.buyCampaignManually.transactionId = transactionId;
         this.$scope.buyCampaignManually.reward = reward;
+        this.$scope.buyCampaignManually.quantity = 1;
         this.$scope.buyCampaignManuallyModal = true;
     }
 

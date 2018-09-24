@@ -37,7 +37,9 @@ services:
       - './dev/web/config.js:/var/www/frontend/src/config.js'
   elk:
     container_name: open_loyalty_elk
-    image: elasticsearch:2.2
+    build:
+      context: '../'
+      dockerfile: './docker/base/elasticsearch-dockerfile'
     ports:
       - "9200:9200"
   db:

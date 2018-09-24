@@ -18,7 +18,7 @@ export default class RootController {
             allXhrsDone: false,
         };
         this.stateClasses = this._stateClasses();
-        this.logo = this.DataService.getConfig().apiUrl + '/settings/logo';
+        this.logo = this.DataService.getConfig().apiUrl + '/settings/photo/logo';
 
         this.activationMethod = null;
 

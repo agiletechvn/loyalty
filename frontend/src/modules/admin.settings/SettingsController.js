@@ -161,6 +161,22 @@ export default class SettingsController {
             searchField: 'name',
             maxItems: 1,
         };
+        this.downgradeModeConfig = {
+            valueField: 'value',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField: 'name',
+            maxItems: 1,
+        };
+        this.downgradeBaseConfig = {
+            valueField: 'value',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField: 'name',
+            maxItems: 1,
+        };
         this.fields = [
             {
                 name: 'loyaltyCardNumber',
@@ -184,6 +200,34 @@ export default class SettingsController {
                 name: 'transactions',
                 value: 'transactions'
             }
+        ];
+        this.downgradeModes = [
+            {
+                name: self.$filter('translate')('settings.level_downgrade.none'),
+                value: 'none'
+            },
+            {
+                name: self.$filter('translate')('settings.level_downgrade.automatic'),
+                value: 'automatic'
+            },
+            {
+                name: self.$filter('translate')('settings.level_downgrade.after_x_days'),
+                value: 'after_x_days'
+            }
+        ];
+        this.downgradeBases = [
+            {
+                name: self.$filter('translate')('settings.level_downgrade.active_points'),
+                value: 'active_points'
+            },
+            {
+                name: self.$filter('translate')('settings.level_downgrade.earned_points'),
+                value: 'earned_points'
+            },
+            {
+                name: self.$filter('translate')('settings.level_downgrade.earned_points_since_last_level_change'),
+                value: 'earned_points_since_last_level_change'
+            },
         ];
         this.egSkus = ['SKU123'];
         this.skusConfig = {
@@ -211,27 +255,36 @@ export default class SettingsController {
      * @returns {string}
      */
     generateLogoRoute() {
-        return this.DataService.getConfig().apiUrl + '/settings/logo';
+        return this.DataService.getConfig().apiUrl + '/settings/photo/logo';
     }
 
     /**
-     * Generating logo route
+     * Generating Client Cockpit small logo route
      *
-     * @method generateLogoRoute
+     * @method generateSmallLogoRoute
      * @returns {string}
      */
     generateSmallLogoRoute() {
-        return this.DataService.getConfig().apiUrl + '/settings/small-logo';
+        return this.DataService.getConfig().apiUrl + '/settings/photo/small-logo';
     }
 
     /**
-     * Generating logo route
+     * Generating Client Cockpit big logo route
+     *
+     * @method generateBigLogoRoute
+     * @returns {string}
+     */
+    generateBigLogoRoute() {
+        return this.DataService.getConfig().apiUrl + '/settings/photo/client-cockpit-logo-big';
+    }
+    /**
+     * Generating Hero Image route
      *
      * @method generateLogoRoute
      * @returns {string}
      */
     generateHeroImageRoute() {
-        return this.DataService.getConfig().apiUrl + '/settings/hero-image';
+        return this.DataService.getConfig().apiUrl + '/settings/photo/hero-image';
     }
 
     /**
@@ -254,6 +307,31 @@ export default class SettingsController {
                 err => {
                     self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
                     let message = self.$filter('translate')('xhr.delete_settings_logo.error');
+                    self.Flash.create('danger', message);
+                }
+            )
+    }
+
+    /**
+     * Deletes big logo
+     *
+     * @method deleteBigLogo
+     */
+    deleteBigLogo() {
+        let self = this;
+
+        this.SettingsService.deleteBigLogo()
+            .then(
+                res => {
+                    self.$scope.bigLogoFilePath = false;
+                    let message = self.$filter('translate')('xhr.delete_settings_big_logo.success');
+                    self.Flash.create('success', message);
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.delete_settings_big_logo.error');
                     self.Flash.create('danger', message);
                 }
             )
@@ -310,7 +388,6 @@ export default class SettingsController {
             )
     }
 
-
     /**
      * Deletes hero image
      *
@@ -328,11 +405,11 @@ export default class SettingsController {
                 }
             )
             .catch(
-                    err => {
-                        self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
-                        let message = self.$filter('translate')('xhr.delete_settings_hero_image.error');
-                        self.Flash.create('danger', message);
-                    }
+                err => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.delete_settings_hero_image.error');
+                    self.Flash.create('danger', message);
+                }
             )
     }
 
@@ -366,6 +443,19 @@ export default class SettingsController {
                     self.$scope.logoFilePath = false;
                 }
             );
+
+        self.SettingsService.getBigLogo()
+            .then(
+                res => {
+                    self.$scope.bigLogoFilePath = true;
+                }
+            )
+            .catch(
+                err => {
+                    self.$scope.bigLogoFilePath = false;
+                }
+            );
+
         self.SettingsService.getSmallLogo()
             .then(
                 res => {
@@ -421,7 +511,7 @@ export default class SettingsController {
             let errors = 0;
             for (let i = 0; i < self.$scope.smsGatewayConfig.length; i += 1) {
                 if (!settings[self.$scope.smsGatewayConfig[i].name]) {
-                    self.$scope.validate[self.$scope.smsGatewayConfig[i].name] = { errors: [self.$filter('translate')('front_error.not_blank')]};
+                    self.$scope.validate[self.$scope.smsGatewayConfig[i].name] = { errors: [self.$filter('translate')('front_error.not_blank')] };
                     errors += 1;
                 } else {
                     self.$scope.validate[self.$scope.smsGatewayConfig[i].name] = {};
@@ -440,7 +530,7 @@ export default class SettingsController {
             self.$scope.validate[settings.marketingVendorsValue] = {};
             for (let i = 0; i < self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue].length; i += 1) {
                 if (!settings[settings.marketingVendorsValue] || !settings[settings.marketingVendorsValue][self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue][i].name]) {
-                    self.$scope.validate[settings.marketingVendorsValue][self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue][i].name] = { errors: [self.$filter('translate')('front_error.not_blank')]};
+                    self.$scope.validate[settings.marketingVendorsValue][self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue][i].name] = { errors: [self.$filter('translate')('front_error.not_blank')] };
                     errors += 1;
                 } else {
                     self.$scope.validate[settings.marketingVendorsValue][self.$scope.availableMarketingVendorsConfig[settings.marketingVendorsValue][i].name] = {};
@@ -476,20 +566,36 @@ export default class SettingsController {
                         self.$scope.refresh = true;
                     }
 
+                    if (self.$scope.bigLogoFile) {
+                        self.$scope.bigLogoValidate = {};
+                        postChain.push(
+                            self.SettingsService.postBigLogo(self.$scope.bigLogoFile)
+                                .catch(
+                                    err => {
+                                        self.$scope.bigLogoValidate = self.Validation.mapSymfonyValidation(err.data);
+                                        let message = self.$filter('translate')('xhr.upload_settings_big_logo.error');
+                                        errors.push(message);
+                                        self.Flash.create('danger', message);
+                                        self.loaderStates.coverLoader = false;
+                                    }
+                                )
+                        );
+                        self.$scope.refresh = true;
+                    }
 
                     if (self.$scope.smallLogoFile) {
                         self.$scope.smallLogoValidate = {};
                         postChain.push(
-                        self.SettingsService.postSmallLogo(self.$scope.smallLogoFile)
-                            .catch(
-                                err => {
-                                    self.$scope.smallLogoValidate = self.Validation.mapSymfonyValidation(err.data);
-                                    let message = self.$filter('translate')('xhr.upload_settings_small_logo.error');
-                                    errors.push(message);
-                                    self.Flash.create('danger', message);
-                                    self.loaderStates.coverLoader = false;
-                                }
-                            )
+                            self.SettingsService.postSmallLogo(self.$scope.smallLogoFile)
+                                .catch(
+                                    err => {
+                                        self.$scope.smallLogoValidate = self.Validation.mapSymfonyValidation(err.data);
+                                        let message = self.$filter('translate')('xhr.upload_settings_small_logo.error');
+                                        errors.push(message);
+                                        self.Flash.create('danger', message);
+                                        self.loaderStates.coverLoader = false;
+                                    }
+                                )
                         );
                         self.$scope.refresh = true;
                     }
@@ -528,7 +634,7 @@ export default class SettingsController {
                         );
                     }
 
-                    Promise.all(postChain).then(function(values) {
+                    Promise.all(postChain).then(function (values) {
                         let message = self.$filter('translate')('xhr.put_settings.success');
                         self.Flash.create('success', message);
                         self.$scope.validate = {};

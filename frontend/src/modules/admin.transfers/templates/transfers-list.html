@@ -65,7 +65,7 @@
                             ng-click="transfers[$index].showModal=true">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
-                    <button type="button" ng-disabled="row.type=='spending' || row.state=='canceled'"
+                    <button type="button" ng-disabled="row.type=='spending' || row.type=='p2p_spending' || row.type=='p2p_adding' || row.state=='canceled'"
                             class="button  button-septenary tiny" ng-click="transfers[$index].showRemoveModal=true">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>

@@ -63,7 +63,7 @@
                     </tr>
                     <tr>
                         <td><b>{{ "customer.gender"|translate }}:</b></td>
-                        <td><span ng-bind="customer.gender"></span></td>
+                        <td><span ng-bind="(customer.gender) ? ('customer.'+customer.gender|translate) : ('global.not_set'|translate)"></span></td>
                     </tr>
                     <tr>
                         <td><b>{{ "customer.created_at"|translate }}:</b></td>
@@ -268,6 +268,15 @@
                                 <td><b>{{ "customer.loyalty.total_points"|translate }}:</b></td>
                                 <td><span ng-bind="status.totalEarnedPoints|roundPoints"></span></td>
                             </tr>
+                            <tr ng-if="status.pointsSinceLastLevelRecalculation !== undefined">
+                                <td><b>{{ "customer.loyalty.total_points_since_last_level_recalculation"|translate }}:</b></td>
+                                <td><span ng-bind="status.pointsSinceLastLevelRecalculation|roundPoints"></span></td>
+                            </tr>
+                            <tr ng-if="status.levelWillExpireInDays !== undefined">
+                                <td><b>{{ "customer.loyalty.level_will_expire_in_days"|translate }}:</b></td>
+                                <td><span ng-bind="status.levelWillExpireInDays"></span><span>{{ "customer.loyalty.level_will_expire_in_days_prompt"|translate }}</span></td>
+                            </tr>
+
                             <tr>
                                 <td><b>{{ "customer.loyalty.active_points"|translate }}:</b></td>
                                 <td><span ng-bind="status.points|roundPoints"></span></td>
@@ -368,7 +377,7 @@
                                 </td>
                             </tr>
                             <tr ng-if="!$data.length">
-                                <td colspan="8" class="text-center">
+                                <td colspan="7" class="text-center">
                                     {{ "customer.empty_transactions"|translate }}
                                 </td>
                             </tr>
@@ -408,7 +417,7 @@
                                 </td>
                                 <td data-title="'transfer.actions'|translate">
                                     <button type="button"
-                                            ng-disabled="row.type=='spending' || row.state=='canceled'"
+                                            ng-disabled="row.type=='spending' || row.type=='p2p_spending' || row.type=='p2p_adding' || row.state=='canceled'"
                                             class="button  button-septenary tiny"
                                             ng-click="customerTransfers[$index].showRemoveModal=true"
                                             style="margin-bottom:5px;">
@@ -417,7 +426,7 @@
                                 </td>
                             </tr>
                             <tr ng-if="!$data.length">
-                                <td colspan="6" class="text-center">
+                                <td colspan="9" class="text-center">
                                     {{ "customer.empty_transfers"|translate }}
                                 </td>
                             </tr>
@@ -482,6 +491,15 @@
                                 <td data-title="'campaign.cost_in_points'|translate">
                                     <span ng-bind="row.costInPoints|roundPoints"></span>
                                 </td>
+                                <td data-title="'campaign.status'|translate">
+                                    <span>{{('campaign.coupon_statuses.'+row.status)|translate}}</span>
+                                </td>
+                                <td data-title="'campaign.active_from'|translate">
+                                    <span ng-bind="(row.activeSince|date : 'yyyy-MM-dd HH:mm') || '---'"></span>
+                                </td>
+                                <td data-title="'campaign.active_to'|translate">
+                                    <span ng-bind="(row.activeTo|date : 'yyyy-MM-dd HH:mm') || '---'"></span>
+                                </td>
                                 <td data-title="'campaign.purchase_at'|translate">
                                     <span ng-bind="row.purchaseAt|date : 'yyyy-MM-dd HH:mm'"></span>
                                 </td>
@@ -490,13 +508,15 @@
                                     <span ng-if="row.campaign.reward == 'cashback'">---</span>
                                 </td>
                                 <td data-title="'campaign.coupon_used'|translate">
-                                    <checkbox ng-model="row.used" ng-if="row.campaign.reward != 'cashback'"
+                                    <checkbox ng-model="row.used" ng-if="row.campaign.reward != 'cashback' && row.canBeUsed"
                                               ng-click="CustomerCtrl.updateCouponUsage(customer.id, row.campaignId, row.coupon.code, row.used)"/>
                                     <span ng-if="row.campaign.reward == 'cashback'">---</span>
+                                    <span ng-if="!row.canBeUsed && row.used == true">{{'campaign.usage_types.true'|translate}}</span>
+                                    <span ng-if="!row.canBeUsed && row.used != true">{{'campaign.usage_types.false'|translate}}</span>
                                 </td>
                             </tr>
                             <tr ng-if="!$data.length">
-                                <td colspan="5" class="text-center">
+                                <td colspan="8" class="text-center">
                                     {{ "customer.empty_rewards"|translate }}
                                 </td>
                             </tr>

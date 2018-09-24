@@ -2,6 +2,14 @@ services:
     _defaults:
         public: true
 
+    oloy.pagination:
+        alias: OpenLoyalty\Bundle\PaginationBundle\Service\Paginator
+        deprecated: The "%service_id%" service is deprecated since 2.8.0
+
+    oloy.campaign.photo_uploader:
+        alias: OpenLoyalty\Bundle\CampaignBundle\Service\CampaignPhotoUploader
+        deprecated: The "%service_id%" service is deprecated since 2.8.0
+
     ol.settings.form_type.settings:
         alias: OpenLoyalty\Bundle\SettingsBundle\Form\Type\SettingsFormType
         deprecated: The "%service_id%" service is deprecated since 2.8.0
@@ -97,10 +105,27 @@ services:
     oloy.user.form_handler.customer_edit:
         alias: OpenLoyalty\Bundle\UserBundle\Form\Handler\CustomerEditFormHandler
         deprecated: The "%service_id%" service is deprecated since 2.8.0
+
     oloy.email.settings:
         alias: OpenLoyalty\Bundle\EmailSettingsBundle\Service\EmailSettings
         deprecated: The "%service_id%" service is deprecated since 2.8.0
 
     oloy.points.account.repository.points_transfer_details:
         alias: OpenLoyalty\Component\Account\Domain\ReadModel\PointsTransferDetailsRepository
+        deprecated: The "%service_id%" service is deprecated since 2.8.0
+
+    oloy.campaign.read_model.repository.campaign_bought:
+        alias: OpenLoyalty\Component\Campaign\Infrastructure\Repository\CampaignBoughtElasticsearchRepository
+        deprecated: The "%service_id%" service is deprecated since 2.8.0
+
+    oloy.transaction.read_model.repository.transaction_details:
+        alias: OpenLoyalty\Component\Transaction\Infrastructure\Repository\TransactionDetailsElasticsearchRepository
+        deprecated: The "%service_id%" service is deprecated since 2.8.0
+
+    oloy.transaction.read_model.projector.transaction_details:
+        alias: OpenLoyalty\Component\Transaction\Domain\ReadModel\TransactionDetailsProjector
+        deprecated: The "%service_id%" service is deprecated since 2.8.0
+
+    oloy.user.form_type.customer_registration:
+        alias: OpenLoyalty\Bundle\UserBundle\Form\Type\CustomerRegistrationFormType
         deprecated: The "%service_id%" service is deprecated since 2.8.0

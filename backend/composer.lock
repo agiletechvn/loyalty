@@ -527,16 +527,16 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "2.9.1",
+            "version": "2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
-                "reference": "84de0b1db68850feeb8ec4378f3343afcc91f243"
+                "reference": "3c5ce68dce0181ac3dfb104f422ce930dcd4b562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/84de0b1db68850feeb8ec4378f3343afcc91f243",
-                "reference": "84de0b1db68850feeb8ec4378f3343afcc91f243",
+                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/3c5ce68dce0181ac3dfb104f422ce930dcd4b562",
+                "reference": "3c5ce68dce0181ac3dfb104f422ce930dcd4b562",
                 "shasum": ""
             },
             "require": {
@@ -588,7 +588,7 @@
             "type": "project",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.10.x-dev"
+                    "dev-master": "3.0.x-dev"
                 },
                 "symfony-app-dir": "app",
                 "symfony-bin-dir": "bin",
@@ -613,7 +613,7 @@
             "license": [
                 "proprietary"
             ],
-            "time": "2018-08-23 07:49:15"
+            "time": "2018-09-24 12:56:03"
         },
         {
             "name": "doctrine/annotations",

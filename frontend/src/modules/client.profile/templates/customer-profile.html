@@ -53,7 +53,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>{{ "customer_profile.gender"|translate }}:</b></td>
-                                    <td><span ng-bind="customer.gender"></span></td>
+                                    <td><span ng-bind="(customer.gender) ? ('customer.'+customer.gender|translate) : ('global.not_set'|translate)"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>{{ "customer_profile.email"|translate }}:</b></td>

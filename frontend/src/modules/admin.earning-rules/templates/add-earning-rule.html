@@ -26,7 +26,7 @@
                             <label>{{ "earning_rule.description" | translate }} <span
                                     class="required">*</span></label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.description.errors">
+                        <div class="medium-10 small-9 columns" form-validation="validate.desc.errors">
                             <textarea ng-model="newEarningRule.description" required></textarea>
                             <span class="prompt">{{ "earning_rule.description_prompt" | translate }}</span>
                         </div>
@@ -229,6 +229,39 @@
                             <span class="prompt">{{ "earning_rule.reward_prompt" | translate }}</span>
                         </div>
                     </div>
+                    <div class="row" ng-if="newEarningRule.type=='geolocation'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.latitude" | translate }}
+                                <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.latitude.errors">
+                            <input type="number"
+                                   ng-model="newEarningRule.latitude"/>
+                            <span class="prompt">{{ "earning_rule.latitude_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="newEarningRule.type=='geolocation'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.longitude" | translate }}
+                                <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.longitude.errors">
+                            <input type="number"
+                                   ng-model="newEarningRule.longitude"/>
+                            <span class="prompt">{{ "earning_rule.longitude_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="newEarningRule.type=='geolocation'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.radius" | translate }}
+                                <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.radius.errors">
+                            <input type="number"
+                                   ng-model="newEarningRule.radius"/>
+                            <span class="prompt">{{ "earning_rule.radius_prompt" | translate }}</span>
+                        </div>
+                    </div>
                     <div class="row" ng-if="newEarningRule.type=='custom_event'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.custom_event_name" | translate }}<span
@@ -252,7 +285,7 @@
                         </div>
                     </div>
                     <div class="row"
-                         ng-if="newEarningRule.type=='event' || newEarningRule.type=='custom_event' || newEarningRule.type=='product_purchase'">
+                         ng-if="newEarningRule.type=='event' || newEarningRule.type=='geolocation' || newEarningRule.type=='custom_event' || newEarningRule.type=='product_purchase'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.points_amount" | translate }} <span
                                     class="required">*</span></label>

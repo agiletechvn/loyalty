@@ -17,6 +17,15 @@
                             <td style="width: 270px;max-width: 50%;"><b>{{ 'customer_status.total_points' | translate }}:</b></td>
                             <td>{{ status.totalEarnedPoints | roundPoints }}</td>
                         </tr>
+                        <tr ng-if="status.pointsSinceLastLevelRecalculation !== undefined">
+                            <td><b>{{ "customer_status.total_points_since_last_level_recalculation"|translate }}:</b></td>
+                            <td><span ng-bind="status.pointsSinceLastLevelRecalculation|roundPoints"></span></td>
+                        </tr>
+                        <tr ng-if="status.levelWillExpireInDays !== undefined">
+                            <td><b>{{ "customer_status.level_will_expire_in_days"|translate }}:</b></td>
+                            <td><span ng-bind="status.levelWillExpireInDays"></span><span>{{ "customer_status.level_will_expire_in_days_prompt"|translate }}</span></td>
+                        </tr>
+
                         <tr>
                             <td style="width: 270px;max-width: 50%;"><b>{{ 'customer_status.active_points' | translate }}:</b></td>
                             <td>{{ status.points | roundPoints }}</td>

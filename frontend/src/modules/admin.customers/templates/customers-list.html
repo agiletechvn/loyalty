@@ -35,7 +35,7 @@
                     <span ng-bind="row.email"></span>
                 </td>
                 <td data-title="'customer.gender'|translate" sortable="'gender'">
-                    <span ng-bind="row.gender || ('global.not_set'|translate)"></span>
+                    <span ng-bind="(row.gender) ? ('customer.'+row.gender|translate) : ('global.not_set'|translate)"></span>
                 </td>
                 <td data-title="'customer.birth_date'|translate">
                     <span ng-bind="row.birthDate ? (row.birthDate|date : 'yyyy-MM-dd') : (global.not_set | translate)"></span>

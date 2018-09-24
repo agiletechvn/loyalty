@@ -1,3 +1,5 @@
+import StaticPagesDirective from "../../component/global/pages/StaticPagesDirective";
+
 export default class SegmentCriterionDirective {
     constructor() {
         this.restrict = 'E';
@@ -8,7 +10,7 @@ export default class SegmentCriterionDirective {
             validate: '='
         };
         this.template = '<ng-include src="$parent.getTemplateUrl()"/>';
-        this.controller = ['$scope', '$element', '$compile', '$timeout', ($scope, $element, $compile, $timeout) => {
+        this.controller = ['$scope', '$element', '$compile', '$timeout', '$filter', 'CustomerService', 'ParamsMap', ($scope, $element, $compile, $timeout, $filter, CustomerService, ParamsMap) => {
             $scope.segment = $scope.$parent.segmentModel;
             $scope.skusConfig = {
                 delimiter: ',',
@@ -62,9 +64,48 @@ export default class SegmentCriterionDirective {
                     value: 'registration'
                 }
             ];
+
+            $scope.customerListConfig = {
+                valueField: 'customerId',
+                preload: true,
+                render: {
+                    option: (item, escape) => {
+                        return '<div>'+(item.email ? escape(item.email) : '')+' ('+escape(item.phone)+')</div>';
+                    },
+                    item: (item, escape) => {
+                        return '<div>'+(item.email ? escape(item.email) : '')+' ('+escape(item.phone)+')</div>';
+                    }
+                },
+                plugins: ['remove_button'],
+                sortField: 'email',
+                searchField: ['phone', 'email'],
+                placeholder: $filter('translate')('global.start_typing_an_email_or_phone'),
+                onChange: () => {
+                    $scope.clientSearch = 0;
+                },
+                load: (query, callback) => {
+                    if (!query.length) return callback();
+
+                    $scope.clientSearch = 1;
+
+                    CustomerService.getCustomers(ParamsMap.params({
+                        'filter[emailOrPhone]': query,
+                        'filter[silenceQuery]': true
+                    }))
+                        .then(
+                            res => {
+                                $scope.clientSearch = 0;
+                                callback(res)
+                            },
+                            () => {
+                                callback();
+                            }
+                        );
+                }
+            };
+
             $scope.egSkus = ['SKU123'];
             $scope.egMaker = ['Example'];
-
 
             $scope.addLabel = () => {
                 if (!$scope.segment.labels) {
@@ -113,3 +154,6 @@ export default class SegmentCriterionDirective {
         }];
     }
 }
+
+StaticPagesDirective.$inject = ['$scope', '$element', '$compile', '$timeout', '$filter', 'CustomerService', 'ParamsMap'];
+

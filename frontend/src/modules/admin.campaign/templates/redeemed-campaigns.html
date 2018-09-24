@@ -51,7 +51,12 @@
         </td>
         <td data-title="'campaign.delivered'|translate" filter="{used: 'campaignsUsageSelectOptions'}">
           <checkbox ng-model="row.used"
-                    ng-click="CampaignCtrl.updateCampaignUsage(row.customerId, row.campaignId, row.coupon.code, row.used)"/>
+                    ng-click="CampaignCtrl.updateCampaignUsage(row.customerId, row.campaignId, row.coupon.code, row.used)"
+                    ng-if="row.campaign.reward != 'cashback' && row.canBeUsed"
+          />
+          <span ng-if="row.campaign.reward == 'cashback'">---</span>
+          <span ng-if="!row.canBeUsed && row.used == true">{{'campaign.usage_types.true'|translate}}</span>
+          <span ng-if="!row.canBeUsed && row.used != true">{{'campaign.usage_types.false'|translate}}</span>
         </td>
       </tr>
     </table>

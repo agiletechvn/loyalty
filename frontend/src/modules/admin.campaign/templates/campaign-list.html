@@ -150,6 +150,15 @@
                     <span class="prompt">{{ "campaign.without_spending_points_prompt" | translate }} </span>
                 </div>
             </div>
+            <div class="row" ng-if="buyCampaignManually.reward !== 'percentage_discount_code' && buyCampaignManually.reward !== 'cashback'">
+                <div class="medium-3 columns">
+                    <label>{{ "campaign.quantity" | translate }} </label>
+                </div>
+                <div class="medium-9 columns">
+                    <input type="number" min="1" step="1" ng-model="buyCampaignManually.quantity"/>
+                    <span class="prompt">{{ "campaign.quantity_prompt" | translate }} </span>
+                </div>
+            </div>
             <div class="row">
                 <div class="columns small-12 text-center">
                     <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit"

@@ -188,6 +188,10 @@ export default class EarningRuleController {
             {
                 name: this.$filter('translate')('earning_rule.types.instant_reward'),
                 value: "instant_reward"
+            },
+            {
+                name: this.$filter('translate')('earning_rule.types.geolocation'),
+                value: "geolocation"
             }
         ];
 
@@ -285,17 +289,17 @@ export default class EarningRuleController {
     _getEarningRule() {
         let self = this;
         self.loaderStates.earningRuleDetails = true;
-
         if (self.earningRuleId) {
             self.EarningRuleService.getEarningRule(self.earningRuleId)
                 .then(
                     res => {
                         self.$scope.earningRule = res;
                         self.$scope.editableFields = self.EditableMap.humanizeCampaign(res);
+
                         if (self.$scope.editableFields.levels && self.$scope.editableFields.levels.length) {
                             let levels = self.$scope.editableFields.levels;
                             for (let i in levels) {
-                                let level = _.find(self.levels, {id: levels[i]});
+                                let  level = _.find(self.levels, {id: levels[i]});
                             }
 
                         }
@@ -345,6 +349,7 @@ export default class EarningRuleController {
 
     editEarningRule(editedEarningRule) {
         let self = this;
+
         self.EarningRuleService.putEarningRule(self.earningRuleId, self.EditableMap.newEarningRule(editedEarningRule, true))
             .then(
                 success => {

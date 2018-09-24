@@ -51,6 +51,14 @@
                         <td><b>{{ "campaign.brand_description"|translate }}:</b></td>
                         <td><span ng-bind="campaign.brandDescription || '---'"></span></td>
                     </tr>
+                    <tr ng-if="campaign.categories.length">
+                        <td><b>{{ "campaign.categories"|translate }}:</b></td>
+                        <td>
+                            <label class="label label-default" ng-repeat="l in campaign.categories track by $index">
+                                {{campaign.categoryNames && campaign.categoryNames[l] ? campaign.categoryNames[l] : l}}
+                            </label>
+                        </td>
+                    </tr>
                     <tr ng-if="campaign.reward && campaign.reward != 'cashback'">
                         <td><b>{{ "campaign.cost_in_points"|translate }}:</b></td>
                         <td><span ng-bind="campaign.costInPoints || '---'"></span></td>
@@ -63,11 +71,11 @@
                         <td><b>{{ "campaign.transaction_percentage_value"|translate }}:</b></td>
                         <td><span ng-bind="campaign.transactionPercentageValue || '---'"></span></td>
                     </tr>
-                    <tr ng-if="campaign.daysInactive && campaign.reward == 'percentage_discount_code'">
+                    <tr ng-if="campaign.daysInactive && campaign.reward !== 'cashback'">
                         <td><b>{{ "campaign.days_inactive"|translate }}:</b></td>
                         <td><span ng-bind="campaign.daysInactive || '---'"></span></td>
                     </tr>
-                    <tr ng-if="campaign.daysValid && campaign.reward == 'percentage_discount_code'">
+                    <tr ng-if="campaign.daysValid && campaign.reward !== 'cashback'">
                         <td><b>{{ "campaign.days_valid"|translate }}:</b></td>
                         <td><span ng-bind="campaign.daysValid || '---'"></span></td>
                     </tr>
@@ -174,6 +182,22 @@
                                 {{ label.key }}:{{ label.value }}
                             </label>
                         </td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ "campaign.featured"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.featured || '---'"></span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ "campaign.public"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.public || '---'"></span></td>
+                    </tr>
+                    <tr>
+                        <td><b>{{ "campaign.brand_name"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.brandName || '---'"></span></td>
+                    </tr>
+                    <tr ng-if="campaignBrandIconFilePath">
+                        <td><b>{{ "campaign.brand_icon" | translate }}:</b></td>
+                        <td><img ng-src="{{CampaignCtrl.generateBrandIconRoute()}}" style="width:300px"/></td>
                     </tr>
                     </tbody>
                 </table>

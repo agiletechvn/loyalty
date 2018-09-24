@@ -438,6 +438,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'transaction_count' :
                         delete criterium.posIds;
@@ -452,6 +454,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'purchase_period' :
                         delete criterium.min;
@@ -466,6 +470,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'bought_labels' :
                         delete criterium.min;
@@ -481,7 +487,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
-                        break;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'customer_with_labels_values' :
                         delete criterium.min;
@@ -497,6 +504,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'customer_has_labels' :
                         delete criterium.min;
@@ -512,6 +521,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'bought_makers' :
                         delete criterium.min;
@@ -527,6 +538,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'anniversary' :
                         delete criterium.min;
@@ -541,6 +554,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'last_purchase_n_days_before' :
                         delete criterium.min;
@@ -556,6 +571,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'bought_skus' :
                         delete criterium.min;
@@ -571,6 +588,8 @@ export default class EditableMap {
                         delete criterium.toAmount;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'transaction_amount' :
                         delete criterium.min;
@@ -585,6 +604,8 @@ export default class EditableMap {
                         delete criterium.max;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'average_transaction_amount' :
                         delete criterium.min;
@@ -599,6 +620,8 @@ export default class EditableMap {
                         delete criterium.max;
                         delete criterium.percent;
                         delete criterium.posId;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
                         break;
                     case 'transaction_percent_in_pos' :
                         delete criterium.min;
@@ -613,6 +636,25 @@ export default class EditableMap {
                         delete criterium.max;
                         delete criterium.fromAmount;
                         delete criterium.toAmount;
+                        delete criterium.customers;
+                        delete criterium.segmentedCustomers;
+                        break;
+                    case 'customer_list' :
+                        delete criterium.min;
+                        delete criterium.posIds;
+                        delete criterium.fromDate;
+                        delete criterium.toDate;
+                        delete criterium.labels;
+                        delete criterium.makers;
+                        delete criterium.anniversaryType;
+                        delete criterium.days;
+                        delete criterium.skuIds;
+                        delete criterium.max;
+                        delete criterium.fromAmount;
+                        delete criterium.toAmount;
+                        delete criterium.percent;
+                        delete criterium.posId;
+                        delete criterium.segmentedCustomers;
                         break;
                     default:
                         break;
@@ -739,6 +781,8 @@ export default class EditableMap {
             delete campaign.coupons;
             delete campaign.singleCoupon;
             delete campaign.unlimited;
+            delete campaign.daysInactive;
+            delete campaign.daysValid;
         }
 
         if (campaign.reward == 'percentage_discount_code') {
@@ -751,8 +795,6 @@ export default class EditableMap {
             delete campaign.unlimited;
         } else {
             delete campaign.transactionPercentageValue;
-            delete campaign.daysInactive;
-            delete campaign.daysValid;
         }
 
         delete campaign.couponsCsv;
@@ -764,6 +806,8 @@ export default class EditableMap {
         delete campaign.usersWhoUsedThisCampaignCount;
         delete campaign.visibleForCustomersCount;
         delete campaign.hasPhoto;
+        delete campaign.categoryNames;
+        delete campaign.brandIcon;
 
         return campaign;
     }
@@ -781,6 +825,19 @@ export default class EditableMap {
         }
 
         return labels;
+    }
+
+    humanizeCampaignCategory(data) {
+        let category = angular.copy(data);
+
+        return category;
+    }
+
+    campaignCategory(data) {
+        let category = angular.copy(data);
+
+        delete category.campaignCategoryId;
+        return category;
     }
 }
 

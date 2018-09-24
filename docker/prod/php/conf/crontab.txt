@@ -1,5 +1,9 @@
 * * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod oloy:segment:recreate > /var/www/openloyalty/var/logs/cron_ol_segment_recreate.log 2>&1"
 * * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod ol:points:transfers:expire > /var/www/openloyalty/var/logs/cron_ol_points_expire.log 2>&1"
-0 * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod ol:points:transfers:unlock > /var/www/openloyalty/var/logs/cron_ol_points_expire.log 2>&1"
-
-
+0 * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod ol:points:transfers:unlock > /var/www/openloyalty/var/logs/cron_ol_points_unlock.log 2>&1"
+* * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod oloy:user:level:recalculate > /var/www/openloyalty/var/logs/cron_ol_points_reset.log 2>&1"
+0 0 * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod oloy:points:notify:expiration > /var/www/openloyalty/var/logs/cron_ol_points_notify_expiration.log 2>&1"
+* * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod oloy:coupons:set_active > /var/www/openloyalty/var/logs/cron_ol_coupons_set_active.log 2>&1"
+* * * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod oloy:coupons:set_expired > /var/www/openloyalty/var/logs/cron_ol_coupons_set_expired.log 2>&1"
+0 0 * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod oloy:coupons:notify:expiration > /var/www/openloyalty/var/logs/cron_ol_coupons_notify_expiration.log 2>&1"
+0 0 * * * su www-data -c "/usr/local/bin/php /var/www/openloyalty/bin/console --env=prod oloy:level:notify:expiration > /var/www/openloyalty/var/logs/cron_ol_level_notify_expiration.log 2>&1"

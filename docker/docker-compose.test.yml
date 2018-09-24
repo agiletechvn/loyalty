@@ -29,7 +29,9 @@ services:
       - "8184:3003"
   elk:
     container_name: open_loyalty_elk
-    image: elasticsearch:2.2
+    build:
+      context: '../'
+      dockerfile: './docker/base/elasticsearch-dockerfile'
   db:
     container_name: open_loyalty_db
     image: postgres:9

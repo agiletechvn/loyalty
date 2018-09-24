@@ -74,7 +74,7 @@ test: run
 	$(DOCKER_COMPOSE) exec -T php bin/console doctrine:fixtures:load --env=test -n
 	$(DOCKER_COMPOSE) exec -T php bin/console assets:install --env=test
 	$(DOCKER_COMPOSE) exec -T php bin/console doctrine:schema:validate --env=test --skip-sync
-	$(DOCKER_COMPOSE) exec -T php vendor/phpunit/phpunit/phpunit -d memory_limit=-1 --stop-on-failure $(TEST_ARGS)
+	$(DOCKER_COMPOSE) exec -T php bash -c "SYMFONY_DEPRECATIONS_HELPER=disabled vendor/phpunit/phpunit/phpunit -d memory_limit=-1 $(TEST_ARGS)"
 
 # compatibility to pre docker-compose rules & aliases
 $(RUN_IMAGE): run

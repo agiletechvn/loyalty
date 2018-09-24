@@ -4,6 +4,64 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+
+### Notice
+Next version will be 3.0 with a few big features
+- multi language
+- dropping support for client cockpit
+- a new PWA Client Cockpit available in Enterprise version
+- API versioning
+- improved performance in Enterprise version
+- changed API endpoints
+
+The 3.0 version **will not be backward compatible** with version 2.10.0
+
+## [2.10.0] - 24-09-2018
+
+### Added
+- your points will expire soon (web hook)
+- you level will expire soon (web hook)
+- new level calculation mode
+- information about bought products in transfer points to avoid uneccesary calls
+- new logos in Settings -> Configuration
+- polish translation for backend validation
+- generating a manifest file from Settings -> Configuration
+- new web hook when a customer has been deactivated
+- added level name to the onCustomerLevelChangedAutomatically (web hook)
+- filter to /api/points/transfer to filter only active and expired points
+- filter to /api/points/transfer to filter points by expiration date
+- points transfer between customers (new feature)
+- brand icon for Reward Campaigns
+- categories for Reward Campaigns (new feature)
+- a new flag, feature for Reward Campaigns
+- coupon expiration (new feature)
+- your points will expire soon (web hook)
+- Earning Rule based on customer localization (new feature)
+- information how many points you need to earn to stay in the same level
+- added flag "public" to the Reward Campaign
+- buying many coupons at once (new feature)
+- an administrator can buy a campaign as a customer with or without using customer points (new feature)
+- resetting level after a certain time (new feature)
+- cancel coupon when a transaction has been fully returned (new feature)
+- using many coupons at once (new feature)
+- custom static segments (new feature)
+### Changed
+- import transfer points using customer email/phone number/loyalty card number
+- PUT /api/customer/{customer} is now a partial update, not full update
+- increased max_result_window for Elasticsearch to return more documents
+- removed column with template name from CSettings -> Emails table
+- removed redundant web hook onCustomerLevelChanged
+- logic how a customer will be downgraded or upgraded to next level
+- searching customers in POS by name or last name as a wildcard
+### Fixed
+- added missing translations
+- phone number validation (less restrict)
+- creating a new earning rule after changing it's type
+- matching transaction with customer using upper letters
+- table pagination
+- creating a reward campaign other than Cash Back
+- assign a new percent discount code to the customer
+
 ## [2.9.0] - 20-08-2018
 ### Added
 - configurable e-mail content for referring a friend

@@ -26,6 +26,12 @@
                             <checkbox ng-model="c.used" ng-click="CustomerCampaignCtrl.updateCouponUsage(c.campaignId, c.coupon.code, c.used)"></checkbox>
                             <span style="" class="coupon-used">{{'customer_campaign.coupon_used' | translate}}</span>
                             <span class="card-footer">{{ c.campaign.conditionsDescription }}</span>
+                            <span class="card-footer" ng-if="c.activeSince && !c.canBeUsed">
+                                {{ "customer_campaign.will_be_active_since" | translate: {date: (c.activeSince|date:'yyyy-MM-dd HH:mm')} }}
+                            </span>
+                            <span class="card-footer" ng-if="c.activeTo && c.canBeUsed">
+                                {{ "customer_campaign.will_be_active_till" | translate: {date: (c.activeTo|date:'yyyy-MM-dd HH:mm')} }}
+                            </span>
                         </div>
 
                     </div>

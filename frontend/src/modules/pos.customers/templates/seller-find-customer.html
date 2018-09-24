@@ -122,7 +122,7 @@
                             <span ng-bind="row.email"></span>
                         </td>
                         <td>
-                            <span ng-bind="row.gender"></span>
+                            <span ng-bind="(row.gender) ? ('customer.'+row.gender|translate) : ('global.not_set'|translate)"></span>
                         </td>
                         <td>
                             <span ng-bind="row.birthDate|date : 'yyyy-MM-dd'"></span>

@@ -59,6 +59,41 @@ export default class CampaignService {
     }
 
     /**
+    * Stores category in service
+    *
+    * @method setStoredCategories
+    * @param categories
+    */
+    setStoredCategories(categories) {
+        this.categories = categories;
+    }
+
+    /**
+    * Returns stored campaign categories
+    *
+    * @method getStoredCampaigns
+    * @returns {Object|null}
+    */
+    getStoredCategories() {
+        return this.categories;
+    }
+
+    /**
+    * Calls to post new category
+    *
+    * @method postCategory
+    * @param newCategory
+    * @returns {Promise}
+    */
+    postCategory(newCategory) {
+        let self = this;
+
+        return this.Restangular
+            .one('campaignCategory')
+            .customPOST({campaign_category: self.EditableMap.campaignCategory(newCategory)})
+    }
+
+    /**
      * Calls for campaign list
      *
      * @method getCampaigns
@@ -146,6 +181,54 @@ export default class CampaignService {
     }
 
     /**
+     * Calls for post brand icon to campaign
+     *
+     * @method postCampaignBrandIcon
+     * @param {Integer} campaignId
+     * @param {Object} data
+     * @returns {Promise}
+     */
+    postCampaignBrandIcon(campaignId, data) {
+        let fd = new FormData();
+
+        fd.append('brand_icon[file]', data);
+
+        return this.Restangular
+            .one('campaign', campaignId)
+            .one('brand_icon')
+            .withHttpConfig({transformRequest: angular.identity})
+            .customPOST(fd, '', undefined, {'Content-Type': undefined});
+    }
+
+    /**
+     * Calls for campain brand icon
+     *
+     * @method getCampaignBrandIcon
+     * @param {Integer} campaignId
+     * @returns {Promise}
+     */
+    getCampaignBrandIcon(campaignId) {
+        return this.Restangular
+            .one('campaign', campaignId)
+            .one('brand_icon')
+            .get()
+    }
+
+    /**
+     * Calls to remove campaign brand icon
+     *
+     * @method deleteCampaignBrandIcon
+     * @param {Integer} campaignId
+     * @returns {Promise}
+     */
+    deleteCampaignBrandIcon(campaignId) {
+        return this.Restangular
+            .one('campaign', campaignId)
+            .one('brand_icon')
+            .remove()
+    }
+
+    /**
      * Calls to set campaign state
      *
      * @method setCampaignState
@@ -224,11 +307,62 @@ export default class CampaignService {
             .customPOST(
                 {
                     withoutPoints: params.withoutPoints,
-                    transactionId: params.transactionId
+                    transactionId: params.transactionId,
+                    quantity: params.quantity
                 }
             )
     }
 
+    /**
+     * Calls for campaign categories
+     *
+     * @method getCategories
+     * @returns {Promise}
+     */
+    getCategories(params = {}) {
+        return this.Restangular.all('campaignCategory').getList(params);
+    }
+
+
+    /**
+     * Calls single category details
+     *
+     * @method getCategory
+     * @param {String} campaignCategoryId
+     * @returns {Promise}
+     */
+    getCategory(campaignCategoryId) {
+        return this.Restangular.one('campaignCategory', campaignCategoryId).get();
+    }
+
+    /**
+     * Calls for edit category
+     *
+     * @method putCategory
+     * @param {Object} editedCategory
+     * @returns {Promise}
+     */
+    putCategory(campaignCategoryId, editedCategory) {
+        let self = this;
+
+        return self.Restangular.one('campaignCategory', campaignCategoryId)
+            .customPUT({campaign_category: self.Restangular.stripRestangular(self.EditableMap.campaignCategory(editedCategory))});
+    }
+
+    /**
+    * Calls to set category state
+    *
+    * @method setCategoryState
+    * @param {Integer} campaignCategoryId
+    * @param {Boolean} active
+    * @returns {Promise}
+    */
+    setCategoryState(campaignCategoryId, active) {
+        return this.Restangular
+            .one('campaignCategory', campaignCategoryId)
+            .one('active')
+            .customPOST({active: active})
+    }
 }
 
 CampaignService.$inject = ['Restangular', 'EditableMap'];

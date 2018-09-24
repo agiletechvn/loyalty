@@ -539,6 +539,12 @@ export default class CustomerController {
         } else {
             delete self.$scope.editableFields.company;
         }
+        if (typeof self.$scope.editableFields.phone === 'undefined') {
+            self.$scope.editableFields.phone = '';
+        }
+        if (typeof self.$scope.editableFields.email === 'undefined') {
+            self.$scope.editableFields.email = '';
+        }
 
         let frontValidation = self.Validation.frontValidation(editedCustomer, validateFields);
         if (_.isEmpty(frontValidation)) {

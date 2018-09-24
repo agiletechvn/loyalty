@@ -56,7 +56,7 @@
                         </tr>
                         <tr>
                             <td><b>{{ "customer.gender"|translate }}:</b></td>
-                            <td><span ng-bind="customer.gender"></span></td>
+                            <td><span ng-bind="(customer.gender) ? ('customer.'+customer.gender|translate) : ('global.not_set'|translate)"></span></td>
                         </tr>
                         <tr>
                             <td><b>{{ "customer.created_at"|translate }}:</b></td>
@@ -219,6 +219,15 @@
                                     <td><b>{{ "customer.loyalty.total_points"|translate }}:</b></td>
                                     <td><span ng-bind="status.totalEarnedPoints|roundPoints"></span></td>
                                 </tr>
+                                <tr ng-if="status.pointsSinceLastLevelRecalculation !== undefined">
+                                    <td><b>{{ "customer.loyalty.total_points_since_last_level_recalculation"|translate }}:</b></td>
+                                    <td><span ng-bind="status.pointsSinceLastLevelRecalculation|roundPoints"></span></td>
+                                </tr>
+                                <tr ng-if="status.levelWillExpireInDays !== undefined">
+                                    <td><b>{{ "customer.loyalty.level_will_expire_in_days"|translate }}:</b></td>
+                                    <td><span ng-bind="status.levelWillExpireInDays"></span><span>{{ "customer.loyalty.level_will_expire_in_days_prompt"|translate }}</span></td>
+                                </tr>
+
                                 <tr>
                                     <td><b>{{ "customer.loyalty.active_points"|translate }}:</b></td>
                                     <td><span ng-bind="status.points|roundPoints"></span></td>
@@ -575,7 +584,7 @@
             </tr>
             <tr>
                 <td><b>{{ "customer.gender"|translate }}:</b></td>
-                <td><span ng-bind="customer.gender"></span></td>
+                <td><span>{{ 'customer.' + customer.gender | translate }}</span></td>
             </tr>
             <tr>
                 <td><b>{{ "customer.created_at"|translate }}:</b></td>

@@ -74,7 +74,7 @@
                             <span class="prompt">{{ "campaign.transaction_percentage_value_prompt" | translate }} </span>
                         </div>
                     </div>
-                    <div class="row" ng-if="newCampaign.reward == 'percentage_discount_code'">
+                    <div class="row" ng-if="newCampaign.reward !== 'cashback'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "campaign.days_inactive" | translate }}<span
                                     class="required">*</span></label>
@@ -85,7 +85,7 @@
                             <span class="prompt">{{ "campaign.days_inactive_prompt" | translate }} </span>
                         </div>
                     </div>
-                    <div class="row" ng-if="newCampaign.reward == 'percentage_discount_code'">
+                    <div class="row" ng-if="newCampaign.reward !== 'cashback'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "campaign.days_valid" | translate }}<span
                                     class="required">*</span></label>
@@ -206,6 +206,59 @@
                                     ng-click="CampaignCtrl.addLabel(false)">{{
                                 "campaign.add_label" | translate }}
                             </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.categories" | translate }} </label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.categories.errors">
+                            <selectize config="CampaignCtrl.categoriesConfig"
+                                       options="CampaignCtrl.categories"
+                                       ng-model="newCampaign.categories">
+                            </selectize>
+                            <span class="prompt">{{ "campaign.categories_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.featured" | translate }} </label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.featured.errors">
+                            <checkbox ng-model="newCampaign.featured"></checkbox>
+                            <span class="prompt">{{ "campaign.featured_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.public" | translate }} </label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.public.errors">
+                            <checkbox ng-model="newCampaign.public"></checkbox>
+                            <span class="prompt">{{ "campaign.public_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset">
+                    <legend>{{ "campaign.brand_info" | translate }}</legend>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.brand_name" | translate }} </label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.brandName.errors">
+                            <input type="text" ng-model="newCampaign.brandName">
+                            <span class="prompt">{{ "campaign.brand_name_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "campaign.brand_icon" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns"
+                             form-validation="brandIconFileValidate.file.errors">
+                            <div ng-show="!campaignBrandIconFilePath">
+                                <input type="file" file-model="$parent.$parent.campaignBrandIconFile" style="padding:9px">
+                            </div>
                         </div>
                     </div>
                 </fieldset>

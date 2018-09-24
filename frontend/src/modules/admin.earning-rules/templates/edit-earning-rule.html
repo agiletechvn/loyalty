@@ -25,7 +25,7 @@
                             <label>{{ "earning_rule.description" | translate }} <span
                                     class="required">*</span></label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.description.errors">
+                        <div class="medium-10 small-9 columns" form-validation="validate.desc.errors">
                             <textarea ng-model="editableFields.description" required></textarea>
                             <span class="prompt">{{ "earning_rule.description_prompt" | translate }}</span>
                         </div>
@@ -58,6 +58,40 @@
                                        config="EarningRuleCtrl.typeConfig"
                             ></selectize>
                             <span class="prompt">{{ "earning_rule.type_prompt" | translate }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="editableFields.type=='geolocation'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.latitude" | translate }}
+                                <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.latitude.errors">
+                            <input type="number"
+                                   ng-model="editableFields.latitude" required/>
+                            <span class="prompt">{{ "earning_rule.latitude_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="editableFields.type=='geolocation'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.longitude" | translate }}
+                                <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.longitude.errors">
+                            <input type="number"
+                                   ng-model="editableFields.longitude" required/>
+                            <span class="prompt">{{ "earning_rule.longitude_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="editableFields.type=='geolocation'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.radius" | translate }}
+                                <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.radius.errors">
+                            <input type="number"
+                                   ng-model="editableFields.radius" required/>
+                            <span class="prompt">{{ "earning_rule.radius_prompt" | translate }}</span>
                         </div>
                     </div>
                     <div class="row" ng-if="editableFields.type=='points'">
@@ -175,6 +209,8 @@
                             </button>
                         </div>
                     </div>
+
+
 
                     <div class="row" ng-if="editableFields.type=='multiply_by_product_labels'">
                         <div class="medium-2 small-3 columns">
@@ -305,7 +341,7 @@
                         </div>
                     </div>
                     <div class="row"
-                         ng-if="editableFields.type=='event' || editableFields.type=='custom_event' || editableFields.type=='referral' || editableFields.type=='product_purchase'">
+                         ng-if="editableFields.type=='event' || editableFields.type=='geolocation' || editableFields.type=='custom_event' || editableFields.type=='referral' || editableFields.type=='product_purchase'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.points_amount" | translate }} <span
                                     class="required">*</span></label>

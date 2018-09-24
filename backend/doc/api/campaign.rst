@@ -37,6 +37,8 @@ Definition
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[active]                               | request        |  Set 1 if active, otherwise 0                                              |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
+| campaign[categories]                           | request        | *(optional)* Array of category IDs.                                        |
++------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[costInPoints]                         | request        |  How many points it costs                                                  |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[target]                               | request        |  Set ``level`` to choose target from defined levels.                       |
@@ -57,6 +59,14 @@ Definition
 | campaign[limitPerUser]                         | request        |  Customer campaign usage limit. *(required only if ``unlimited=0``)*       |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[coupons]                              | request        |  Array of coupon codes.                                                    |
++------------------------------------------------+----------------+----------------------------------------------------------------------------+
+| campaign[daysInactive]                         | request        |  Number of days, while coupon will not be active after purchase            |
+|                                                |                |  0 means "active immediately"                                              |
+|                                                |                |  Required for all rewards besides cashback                                 |
++------------------------------------------------+----------------+----------------------------------------------------------------------------+
+| campaign[daysValid]                            | request        |  Number of days, while coupon will be valid, after activation              |
+|                                                |                |  0 means "valid forever"                                                   |
+|                                                |                |  Required for all rewards besides cashback                                 |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[campaignVisibility][allTimeVisible]   | request        |  Set 1 if always visible, otherwise 0                                      |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
@@ -100,6 +110,8 @@ Example
         -d "campaign[singleCoupon]=0" \
         -d "campaign[limit]=10" \
         -d "campaign[limitPerUser]=1" \
+        -d "campaign[daysValid]=0" \
+        -d "campaign[daysInactive]=0" \
         -d "campaign[coupons][0]=testCoupon" \
         -d "campaign[coupons][1]=DiscountCoupon" \
         -d "campaign[campaignVisibility][allTimeVisible]=0" \
@@ -179,6 +191,8 @@ Exemplary Response
           "limit": {},
           "limitPerUser": {},
           "coupons": {},
+          "daysInactive": {},
+          "daysValid": {},
           "campaignVisibility": {
             "children": {
               "allTimeVisible": {},
@@ -230,6 +244,8 @@ Definition
 +-------------------------------------+----------------+----------------------------------------------------+
 | format                              | query          | *(optional)* Format of descriptions [html].        |
 |                                     |                | Default is RAW.                                    |
++-------------------------------------+----------------+----------------------------------------------------+
+| categoryId[]                        | query          | *(optional)* Array of category Ids                 |
 +-------------------------------------+----------------+----------------------------------------------------+
 
 To see the first page of all campaigns use the below method:
@@ -292,6 +308,8 @@ Exemplary Response
           "unlimited": false,
           "limit": 10,
           "limitPerUser": 2,
+          "daysValid": 0,
+          "daysInactive": 0,
           "campaignActivity": {
             "allTimeActive": false,
             "activeFrom": "2016-01-01T00:00:00+0100",
@@ -338,6 +356,8 @@ Exemplary Response
           "unlimited": false,
           "limit": 10,
           "limitPerUser": 2,
+          "daysValid": 0,
+          "daysInactive": 0,
           "campaignActivity": {
             "allTimeActive": false,
             "activeFrom": "2016-01-01T00:00:00+0100",
@@ -382,6 +402,8 @@ Exemplary Response
           "unlimited": false,
           "limit": 10,
           "limitPerUser": 1,
+          "daysValid": 0,
+          "daysInactive": 0,
           "campaignActivity": {
             "allTimeActive": false,
             "activeFrom": "2017-09-05T10:59:00+0200",
@@ -410,7 +432,7 @@ Exemplary Response
 Update a campaign
 -----------------
 
-To fully update a campaign user you will need to call the ``/api/campaign/<campaign>`` endpoint with the ``PUT`` method.
+To fully update a campaign you will need to call the ``/api/campaign/<campaign>`` endpoint with the ``PUT`` method.
 
 Definition
 ^^^^^^^^^^
@@ -446,6 +468,8 @@ Definition
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[labels]                               | request        | *(optional)* Informational labels in format "key:value;key1:value1"        |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
+| campaign[categories]                           | request        | *(optional)* Array of category IDs.                                        |
++------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[levels]                               | request        |  Array of level IDs. *(required only if ``target=level``)*                 |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[segments]                             | request        |  Array of segment IDs. *(required only if ``target=segment``)*             |
@@ -459,6 +483,14 @@ Definition
 | campaign[limitPerUser]                         | request        |  Customer campaign usage limit. *(required only if ``unlimited=0``)*       |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[coupons]                              | request        |  Array of coupon codes.                                                    |
++------------------------------------------------+----------------+----------------------------------------------------------------------------+
+| campaign[daysInactive]                         | request        |  Number of days, while coupon will not be active after purchase            |
+|                                                |                |  0 means "active immediately"                                              |
+|                                                |                |  Required for all rewards besides cashback                                 |
++------------------------------------------------+----------------+----------------------------------------------------------------------------+
+| campaign[daysValid]                            | request        |  Number of days, while coupon will be valid, after activation              |
+|                                                |                |  0 means "valid forever"                                                   |
+|                                                |                |  Required for all rewards besides cashback                                 |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
 | campaign[campaignVisibility][allTimeVisible]   | request        |  Set 1 if always visible, otherwise 0                                      |
 +------------------------------------------------+----------------+----------------------------------------------------------------------------+
@@ -504,6 +536,8 @@ Example
         -d "campaign[singleCoupon]=0" \
         -d "campaign[limit]=10" \
         -d "campaign[limitPerUser]=1" \
+        -d "campaign[daysInactive]=0" \
+        -d "campaign[daysValid]=1" \
         -d "campaign[coupons][0]=testCoupon" \
         -d "campaign[coupons][1]=DiscountCoupon" \
         -d "campaign[campaignVisibility][allTimeVisible]=0" \
@@ -565,7 +599,7 @@ Definition
 +---------------+----------------+----------------------------------------------------+
 | format        | query          | *(optional)* Format of descriptions [html].        |
 |               |                | Default is RAW.                                    |
-+-------------------------------------+----------------+------------------------------+
++---------------+----------------+----------------------------------------------------+
 
 Example
 ^^^^^^^
@@ -619,6 +653,8 @@ Exemplary Response
       "unlimited": false,
       "limit": 10,
       "limitPerUser": 1,
+      "daysValid": 1,
+      "daysInactive": 0,
       "campaignActivity": {
         "allTimeActive": false,
         "activeFrom": "2017-09-05T10:59:00+0200",
@@ -666,6 +702,13 @@ Definition
 +-------------------------------------+----------------+---------------------------------------------------+
 | <customer>                          | query          | Customer ID                                       |
 +-------------------------------------+----------------+---------------------------------------------------+
+| isFeatured                          | query          | *(optional)* Filter by featured tag               |
++-------------------------------------+----------------+---------------------------------------------------+
+| hasSegment                          | query          | *(optional)* 1 to return only campaigns offered   |
+|                                     |                | exclusively to some segments, 0 for campaigns     |
+|                                     |                | offered only to all segments; omit to return all  |
+|                                     |                | campaigns                                         |
++-------------------------------------+----------------+---------------------------------------------------+
 | page                                | query          | *(optional)* Start from page, by default 1        |
 +-------------------------------------+----------------+---------------------------------------------------+
 | perPage                             | query          | *(optional)* Number of items to display per page, |
@@ -675,6 +718,8 @@ Definition
 +-------------------------------------+----------------+---------------------------------------------------+
 | direction                           | query          | *(optional)* Direction of sorting [ASC, DESC],    |
 |                                     |                | by default = ASC                                  |
++-------------------------------------+----------------+---------------------------------------------------+
+| categoryId[]                        | query          | *(optional)* Array of category Ids                |
 +-------------------------------------+----------------+---------------------------------------------------+
 
 Example
@@ -731,6 +776,8 @@ Exemplary Response
           "unlimited": false,
           "limit": 10,
           "limitPerUser": 2,
+          "daysValid": 0,
+          "daysInactive": 0,
           "campaignActivity": {
             "allTimeActive": false,
             "activeFrom": "2016-01-01T00:00:00+0100",
@@ -776,15 +823,23 @@ Definition
 
     POST /api/admin/customer/<customer>/campaign/<campaign>/buy
 
-+---------------+----------------+--------------------------------------+
-| Parameter     | Parameter type | Description                          |
-+===============+================+======================================+
-| Authorization | header         | Token received during authentication |
-+---------------+----------------+--------------------------------------+
-| <customer>    | query          | Customer ID                          |
-+---------------+----------------+--------------------------------------+
-| <campaign>    | query          | Campaign ID                          |
-+---------------+----------------+--------------------------------------+
++---------------+----------------+---------------------------------------+
+| Parameter     | Parameter type | Description                           |
++===============+================+=======================================+
+| Authorization | header         | Token received during authentication  |
++---------------+----------------+---------------------------------------+
+| <customer>    | query          | Customer ID                           |
++---------------+----------------+---------------------------------------+
+| <campaign>    | query          | Campaign ID                           |
++---------------+----------------+---------------------------------------+
+| withoutPoints | query          | *(optional)* true|false - if set to   |
+|               |                | true, customer points will not        |
+|               |                | be used                               |
++---------------+----------------+---------------------------------------+
+| quantity      | query          | *(optional)* default 1 - number       |
+|               |                | of coupons to buy (not valid for      |
+|               |                | cashback and percentage_discount_code)|
++---------------+----------------+---------------------------------------+
 
 Example
 ^^^^^^^
@@ -825,9 +880,9 @@ Exemplary Response
 .. code-block:: json
 
     {
-      "coupon": {
+      "coupons": [{
         "code": "123"
-      }
+      }]
     }
 
 Check campaign visibility for the customers
@@ -1523,6 +1578,13 @@ Definition
 +-------------------------------------+----------------+---------------------------------------------------+
 | <customer>                          | query          | Customer ID                                       |
 +-------------------------------------+----------------+---------------------------------------------------+
+| isFeatured                          | query          | *(optional)* Filter by featured tag               |
++-------------------------------------+----------------+---------------------------------------------------+
+| hasSegment                          | query          | *(optional)* 1 to return only campaigns offered   |
+|                                     |                | exclusively to some segments, 0 for campaigns     |
+|                                     |                | offered only to all segments; omit to return all  |
+|                                     |                | campaigns                                         |
++-------------------------------------+----------------+---------------------------------------------------+
 | page                                | query          | *(optional)* Start from page, by default 1        |
 +-------------------------------------+----------------+---------------------------------------------------+
 | perPage                             | query          | *(optional)* Number of items to display per page, |
@@ -1636,15 +1698,19 @@ Definition
 
     POST /api/seller/customer/<customer>/campaign/<campaign>/buy
 
-+---------------+----------------+--------------------------------------+
-| Parameter     | Parameter type | Description                          |
-+===============+================+======================================+
-| Authorization | header         | Token received during authentication |
-+---------------+----------------+--------------------------------------+
-| <customer>    | query          | Customer ID                          |
-+---------------+----------------+--------------------------------------+
-| <campaign>    | query          | Campaign ID                          |
-+---------------+----------------+--------------------------------------+
++---------------+----------------+---------------------------------------+
+| Parameter     | Parameter type | Description                           |
++===============+================+=======================================+
+| Authorization | header         | Token received during authentication  |
++---------------+----------------+---------------------------------------+
+| <customer>    | query          | Customer ID                           |
++---------------+----------------+---------------------------------------+
+| <campaign>    | query          | Campaign ID                           |
++---------------+----------------+---------------------------------------+
+| quantity      | query          | *(optional)* default 1 - number       |
+|               |                | of coupons to buy (not valid for      |
+|               |                | cashback and percentage_discount_code)|
++---------------+----------------+---------------------------------------+
 
 Example
 ^^^^^^^
@@ -1689,7 +1755,7 @@ Exemplary Response
 .. code-block:: json
 
     {
-      "coupon": {
+      "coupons": [{
         "code": "123"
-      }
+      }]
     }

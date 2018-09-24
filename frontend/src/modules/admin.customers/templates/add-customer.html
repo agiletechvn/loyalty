@@ -36,11 +36,13 @@
                             <label>{{ "customer.gender" | translate }}</label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.gender.errors">
-                            <input type="radio" ng-model="newCustomer.gender" value="male" id="male" checked
-                                   ng-init="newCustomer.gender='male'">
+                            <input type="radio" ng-model="newCustomer.gender" value="male" id="male">
                             <label for="male">{{ "customer.male" | translate }}</label>
                             <input type="radio" ng-model="newCustomer.gender" value="female" id="female">
                             <label for="female">{{ "customer.female" | translate }}</label>
+                            <input type="radio" ng-model="newCustomer.gender" value="not_disclosed" id="not_disclosed" checked
+                                   ng-init="newCustomer.gender='not_disclosed'">
+                            <label for="not_disclosed">{{ "customer.not_disclosed" | translate }}</label>
                             <span class="prompt">{{ "customer.gender_prompt" | translate }}</span>
                         </div>
                     </div>

@@ -16,7 +16,9 @@ services:
         - .env
   elk:
     container_name: phpunit_open_loyalty_elk
-    image: elasticsearch:2.2
+    build:
+      context: '../'
+      dockerfile: './docker/base/elasticsearch-dockerfile'
   db:
     container_name: phpunit_open_loyalty_db
     image: postgres:9
