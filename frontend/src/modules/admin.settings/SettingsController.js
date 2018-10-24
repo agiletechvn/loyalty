@@ -48,23 +48,6 @@ export default class SettingsController {
             searchField: 'name',
             maxItems: 1,
         };
-        this.defaultFrontendTranslationsConfig = {
-            valueField: 'code',
-            labelField: 'name',
-            create: false,
-            sortField: 'name',
-            searchField: 'name',
-            maxItems: 1,
-            onChange: function (value) {
-                if (!this.defaultFrontendTranslationValue) {
-                    this.defaultFrontendTranslationValue = value;
-                }
-                if (this.defaultFrontendTranslationValue != value) {
-                    self.$scope.refresh = true;
-                }
-                this.defaultFrontendTranslationValue = value;
-            }
-        };
         this.customerStatusesEarningConfig = {
             valueField: 'code',
             labelField: 'name',

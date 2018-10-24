@@ -12,11 +12,38 @@
                 <fieldset class="fieldset">
                     <div class="row">
                         <div class="medium-2 small-3 columns">
+                            <label>{{ "admin.translations.code" | translate }} <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.code.errors">
+                            <input type="text" ng-model="newTranslations.code" required>
+                            <span class="prompt">{{ "admin.translations.code_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
                             <label>{{ "admin.translations.name" | translate }} <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.name.errors">
                             <input type="text" ng-model="newTranslations.name" required>
                             <span class="prompt">{{ "admin.translations.name_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "admin.translations.order" | translate }} <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.order.errors">
+                            <input type="number" ng-model="newTranslations.order" step="1">
+                            <span class="prompt">{{ "admin.translations.order_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "admin.translations.default" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.default.errors">
+                            <checkbox ng-model="newTranslations.default">
+                                <span class="prompt">{{ "admin.translations.default_prompt" | translate }}</span>
                         </div>
                     </div>
                     <div class="row">

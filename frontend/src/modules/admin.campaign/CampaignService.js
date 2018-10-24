@@ -135,12 +135,12 @@ export default class CampaignService {
     /**
      * Calls for post image to campaign
      *
-     * @method postCampaignImage
+     * @method postCampaignImages
      * @param {Integer} campaignId
      * @param {Object} data
      * @returns {Promise}
      */
-    postCampaignImage(campaignId, data) {
+    postCampaignImages(campaignId, data) {
         let fd = new FormData();
 
         fd.append('photo[file]', data);
@@ -153,16 +153,17 @@ export default class CampaignService {
     }
 
     /**
-     * Calls for campain image
+     * Calls for campain images
      *
-     * @method getCampaignImage
+     * @method getCampaignImages
      * @param {Integer} campaignId
+     * @param {Integer} photoId
      * @returns {Promise}
      */
-    getCampaignImage(campaignId) {
+    getCampaignImages(campaignId, photoId) {
         return this.Restangular
             .one('campaign', campaignId)
-            .one('photo')
+            .one('photo', photoId)
             .get()
     }
 
@@ -171,12 +172,13 @@ export default class CampaignService {
      *
      * @method deleteCampaignImage
      * @param {Integer} campaignId
+     * @param {Integer} photoId
      * @returns {Promise}
      */
-    deleteCampaignImage(campaignId) {
+    deleteCampaignImage(campaignId, photoId) {
         return this.Restangular
             .one('campaign', campaignId)
-            .one('photo')
+            .one('photo', photoId)
             .remove()
     }
 
@@ -362,6 +364,21 @@ export default class CampaignService {
             .one('campaignCategory', campaignCategoryId)
             .one('active')
             .customPOST({active: active})
+    }
+
+    /**
+     * Calls for get earninig rule
+     *
+     * @method getConnectTypeEarningRule
+     * @param {String} earningRuleType
+     * @returns {Promise}
+     */
+    getConnectTypeEarningRule(earningRuleType) {
+        let params = {
+            "type": earningRuleType,
+            "paginated": 0
+        };
+        return this.Restangular.all('earningRule').getList(params);
     }
 }
 

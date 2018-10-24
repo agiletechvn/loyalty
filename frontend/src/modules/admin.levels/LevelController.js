@@ -17,7 +17,25 @@ export default class LevelController {
         this.$filter = $filter;
         this.$timeout = $timeout;
         this.config = DataService.getConfig();
+        this.DataService = DataService;
         this.$scope.fileValidate = {};
+        // If 'required: true' it will only
+        // be required on default language
+        this.$scope.translatableFields = [
+            {
+                key: 'name',
+                label: 'level.name',
+                prompt: 'level.name_prompt',
+                required: true
+            },
+            {
+                key: 'description',
+                label: 'level.description',
+                prompt: 'level.description_prompt',
+                required: false
+            }
+        ];
+        this.$scope.availableFrontendTranslations = this.DataService.getAvailableFrontendTranslations();
         this.active = [
             {
                 name: this.$filter('translate')('global.active'),

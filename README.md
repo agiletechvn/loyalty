@@ -48,7 +48,7 @@ Then, please execute following commands:
 vagrant up
 vagrant ssh
 docker-compose -f docker/docker-compose.yml up -d
-docker-compose -f docker/docker-compose.yml exec php phing setup
+docker-compose -f docker/docker-compose.yml --user=www-data exec php phing setup
 ```
 
 That's all. Now you can go to admin panel [openloyalty.localhost:8182](http://openloyalty.localhost:8182).
@@ -87,7 +87,7 @@ docker-compose -f docker/docker-compose.dev.yml up
 Remember about setup database using bellow command:
 
 ```
-docker-compose -f docker/docker-compose.dev.yml exec php phing setup
+docker-compose -f docker/docker-compose.dev.yml --user=www-data exec php phing setup
 ```
 
 After starting Open Loyalty in developer mode it's exposes services under slightly different URLs:

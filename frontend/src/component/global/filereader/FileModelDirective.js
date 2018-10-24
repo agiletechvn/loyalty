@@ -15,14 +15,18 @@ export default class FileModelDirective {
             let modelSetter = model.assign;
             let input = element.find('input[type="file"]');
 
+            scope.fieldName = attrs.name;
+
             scope.openFileDialog = () => {
                 input.trigger('click');
             };
 
             input.bind('change', () => {
                 scope.$apply(() => {
-                    modelSetter(scope, input[0].files[0]);
-                    scope.fileName = input[0].files[0].name;
+                    if (input[0].files[0]) {
+                        modelSetter(scope, input[0].files[0]);
+                        scope.fileName = input[0].files[0].name;
+                    }
                 });
             });
         }
@@ -34,3 +38,4 @@ export default class FileModelDirective {
 }
 
 FileModelDirective.create.$inject = ['$parse'];
+

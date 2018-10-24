@@ -6,7 +6,7 @@
     <target name="none">
         <echo>By default I do nothing! Add -l to see all available tasks</echo>
     </target>
-    <target name="migrate" description="Migrate database schema" depends="generate-jwt-keys">
+    <target name="migrate" description="Migrate database schema">
         <property name="env" value="prod" />
         <exec command="bin/console doctrine:schema:update --env=${env} -n --force" checkreturn="true" passthru="true"/>
         <exec command="bin/console oloy:user:projections:index:create --drop-old -n --env=${env}" checkreturn="true" passthru="true"/>
@@ -36,7 +36,7 @@
     <target name="basic-setup" description="Setup everything and load only required data" depends="generate-jwt-keys">
         <phingcall target="prepare-for-tests">
             <property name="env" value="prod" />
-            <property name="fixtures" value="--fixtures=src/OpenLoyalty/Bundle/SettingsBundle/DataFixtures/ORM/LoadSettingsData.php --fixtures=src/OpenLoyalty/Bundle/UserBundle/DataFixtures/ORM/LoadRoleData.php --fixtures=src/OpenLoyalty/Bundle/EmailSettingsBundle/DataFixtures/ORM/LoadEmailsData.php --fixtures=src/OpenLoyalty/Bundle/UserBundle/DataFixtures/ORM/LoadAdminData.php" />
+            <property name="fixtures" value="--fixtures=vendor/divante-ltd/open-loyalty-framework/src/OpenLoyalty/Bundle/SettingsBundle/DataFixtures/ORM/LoadSettingsData.php --fixtures=vendor/divante-ltd/open-loyalty-framework/src/OpenLoyalty/Bundle/UserBundle/DataFixtures/ORM/LoadRoleData.php --fixtures=vendor/divante-ltd/open-loyalty-framework/src/OpenLoyalty/Bundle/EmailSettingsBundle/DataFixtures/ORM/LoadEmailsData.php --fixtures=vendor/divante-ltd/open-loyalty-framework/src/OpenLoyalty/Bundle/UserBundle/DataFixtures/ORM/LoadAdminData.php" />
         </phingcall>
     </target>
     <target name="fix-code" description="Fix code">
@@ -99,5 +99,15 @@
                 <echo>JWT tokens already exist in app/var/jwt/!</echo>
             </else>
         </if>
+    </target>
+    <target name="migrate_2.10_to_3.0" description="Migrate application from 2.10 to 3.0">
+        <property name="env" value="prod" />
+        <exec command="bin/console oloy:translation:upgrade_to_3 --force --env=${env}" checkreturn="true" passthru="true"/>
+        <exec command="bin/console doctrine:schema:update --force --env=${env}" checkreturn="true" passthru="true"/>
+        <exec command="bin/console oloy:translation:migrate2database english.json en --force --setAsDefault --env=${env}" checkreturn="true" passthru="true"/>
+        <exec command="bin/console oloy:translation:migrate2database polish.json pl --force --env=${env}" checkreturn="true" passthru="true"/>
+        <phingcall target="migrate">
+            <property name="env" value="${env}" />
+        </phingcall>
     </target>
 </project>

@@ -34,15 +34,16 @@ parameters:
     frontend_password_reset_url: '%env(frontend_password_reset_url)%'
     frontend_activate_account_url: '%env(frontend_activate_account_url)%'
     frontend_customer_panel_url: '%env(frontend_customer_panel_url)%'
+    frontend_invitation_url: '%env(frontend_invitation_url)%'
 
     env(frontend_password_reset_url): 'localhost:8182/#!/password/reset'
     env(frontend_activate_account_url): '#!/customer/panel/customer/registration/activate'
+    env(frontend_invitation_url): '#!/register/'
     env(frontend_customer_panel_url): 'http://localhost:8183/'
     loyalty_program_name: OpenLoyalty
     ecommerce_address: http://ecommerce.local
 
     es_max_result_window_size: 2000000
-    fallback_frontend_translations_file: english.json
 
     campaign_photos_adapter: campaign_photos_local
     campaign_photos_adapter_env: CAMPAIGN_PHOTOS_ADAPTER

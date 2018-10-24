@@ -165,6 +165,9 @@ form {
     border: 1px solid $gray;
     position: relative;
     padding: 60px 10px 15px;
+    &.togglable {
+      padding-top: 29px;
+    }
     &.default {
       background-color: transparent;
       border: 0;
@@ -572,9 +575,110 @@ section.footer {
 }
 
 .campainFileWrapper {
-  display:inline-block;
+  display: inline-block;
   img {
-    width:300px;
-    display:inline-block;
+    width: 300px;
+    display: inline-block;
   }
 }
+
+.fieldset-toggle-button {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  z-index: 1;
+  &:after{
+          font-family: 'Flaticon';
+      border: 0 !important;
+      content: "\f177" !important;
+      top: 14px !important;
+      right: 20px !important;
+      font-size: $sidebar-chevron-size;
+  }
+  &.isActive{
+    &:after {
+      content: "\f176" !important;
+    }
+  }
+}
+
+.togglable-content {
+  padding-top: 31px;
+}
+
+
+
+
+.campaign-photos{
+  display: flex;
+  .single-photo{
+    position: relative;
+    float: left;
+    display: inline-block;
+    width: 180px;
+    height: 180px;
+
+    &:hover{
+      .button {
+        opacity: 1;
+        background: $septenary;
+        color: white;
+      }
+    }
+
+    .button {
+      border-radius: 0;
+      border-top-right-radius: 3px;
+      opacity: 0.4;
+      padding: 7px 9px;
+      background: transparent;
+      color: #d2d2d2;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 14px;
+    }
+
+    .img-wrapper{
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          left: 0;
+          text-align: center;
+          padding: 10px;
+          margin-right: 20px;
+          margin-bottom: 20px;
+          background: #FFF;
+          box-shadow: 0 0 4px #c3c3c3;
+          border-radius: 3px;
+
+          .thumb{
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img {
+              position: relative;
+              top: 0;
+              left: 0;
+              max-width: 100%;
+              max-height: 100%;
+            }
+          }
+    }
+
+    @media screen and (max-width: 1024px) {
+      width: 50%;
+
+      .button {
+        opacity: 1;
+        background: $septenary;
+        color: white;
+      }
+    }
+
+  }
+
+}
+

@@ -192,6 +192,10 @@ export default class EarningRuleController {
             {
                 name: this.$filter('translate')('earning_rule.types.geolocation'),
                 value: "geolocation"
+            },
+            {
+                name: this.$filter('translate')('earning_rule.types.qrcode'),
+                value: "qrcode"
             }
         ];
 

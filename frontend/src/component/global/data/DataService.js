@@ -29,6 +29,14 @@ export default class DataService {
             {
                 name: 'EUR',
                 code: 'eur'
+            },
+            {
+                name: 'HKD',
+                code: 'hkd'
+            },
+            {
+                name: 'PESO',
+                code: 'cop'
             }
         ];
         this.stoppableEarningRulesType = [
@@ -174,7 +182,7 @@ export default class DataService {
                             translations.push({
                                 _id: index,
                                 name: res[4].choices[i].name,
-                                code: res[4].choices[i].key
+                                code: res[4].choices[i].code
                             });
                             ++index;
                         }
@@ -286,7 +294,9 @@ export default class DataService {
                             methods.push({
                                 _id: index,
                                 name: res[11].choices[i].name,
-                                code: res[11].choices[i].key
+                                code: res[11].choices[i].code,
+                                default: res[11].choices[i].default,
+                                order: res[11].choices[i].order
                             });
                             ++index;
                         }

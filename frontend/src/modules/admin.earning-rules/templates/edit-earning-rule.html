@@ -67,7 +67,7 @@
                                 <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.latitude.errors">
-                            <input type="number"
+                            <input type="text"
                                    ng-model="editableFields.latitude" required/>
                             <span class="prompt">{{ "earning_rule.latitude_prompt" | translate }}</span>
                         </div>
@@ -78,7 +78,7 @@
                                 <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.longitude.errors">
-                            <input type="number"
+                            <input type="text"
                                    ng-model="editableFields.longitude" required/>
                             <span class="prompt">{{ "earning_rule.longitude_prompt" | translate }}</span>
                         </div>
@@ -295,6 +295,17 @@
                             <span class="prompt">{{ "earning_rule.event_name_prompt" | translate }}</span>
                         </div>
                     </div>
+                    <div class="row" ng-if="editableFields.type=='qrcode'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.code" | translate }}
+                                <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.code.errors">
+                            <input type="text" ng-model="editableFields.code" required>
+                            <span class="prompt">{{ "earning_rule.code_prompt" | translate }}</span>
+                            <div><img ng-show="editableFields.code" ng-src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{editableFields.code}}" style="display: inline-block;"/></div>
+                        </div>
+                    </div>
                     <div class="row" ng-if="editableFields.type=='custom_event'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.custom_event_name" | translate }}<span
@@ -341,7 +352,7 @@
                         </div>
                     </div>
                     <div class="row"
-                         ng-if="editableFields.type=='event' || editableFields.type=='geolocation' || editableFields.type=='custom_event' || editableFields.type=='referral' || editableFields.type=='product_purchase'">
+                         ng-if="editableFields.type=='event' || editableFields.type=='geolocation' || editableFields.type=='custom_event' || editableFields.type=='referral' || editableFields.type=='product_purchase' || editableFields.type=='qrcode'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.points_amount" | translate }} <span
                                     class="required">*</span></label>
@@ -351,7 +362,7 @@
                             <span class="prompt">{{ "earning_rule.points_amount_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="editableFields.type=='custom_event'">
+                    <div class="row" ng-if="editableFields.type=='custom_event' || editableFields.type=='qrcode'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.limit.active" | translate }}</label>
                         </div>
@@ -361,7 +372,7 @@
                             <span class="prompt">{{ "earning_rule.limit.active_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="editableFields.type=='custom_event' && editableFields.limit.active">
+                    <div class="row" ng-if="(editableFields.type=='custom_event' || editableFields.type=='qrcode') && editableFields.limit.active">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.limit.period" | translate }}</label>
                         </div>
@@ -373,7 +384,7 @@
                             <span class="prompt">{{ "earning_rule.limit.period_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="editableFields.type=='custom_event' && editableFields.limit.active">
+                    <div class="row" ng-if="(editableFields.type=='custom_event' || editableFields.type=='qrcode') && editableFields.limit.active">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.limit.limit" | translate }}</label>
                         </div>

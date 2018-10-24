@@ -21,6 +21,24 @@
                     </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
+                            <label>{{ "admin.translations.order" | translate }} <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.order.errors">
+                            <input type="number" ng-model="editableFields.order" step="1">
+                            <span class="prompt">{{ "admin.translations.order_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "admin.translations.default" | translate }}</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.default.errors">
+                            <checkbox ng-model="editableFields.default">
+                            <span class="prompt">{{ "admin.translations.default_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
                             <label>{{ "admin.translations.content" | translate }} <span
                                     class="required">*</span></label>
                         </div>

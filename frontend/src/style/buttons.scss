@@ -58,7 +58,25 @@
 .box {
   .action-buttons {
     button {
-      margin-top:8px!important;
+      margin-top: 8px!important;
     }
   }
+}
+
+.icon-button {
+  cursor: pointer;
+  color: $sp-gray;
+  padding: 10px 14px;
+  font-size: 22px;
+  vertical-align: top;
+  &:focus {
+    outline: none;
+  }
+  &:hover{
+    color: $septenary;
+  }
+}
+
+.input-file{
+  width: auto;
 }

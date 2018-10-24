@@ -40,20 +40,6 @@
                     </div>
                     <div class="row">
                         <div class="small-3 medium-2 columns">
-                            <label>{{ "settings.lang" | translate }}<span class="required">*</span></label>
-                        </div>
-                        <div class="small-9 medium-10 columns"
-                             form-validation="validate.defaultFrontendTranslations.errors">
-                            <selectize ng-model="settings.defaultFrontendTranslations"
-                                       options="availableFrontendTranslations"
-                                       config="SettingsCtrl.defaultFrontendTranslationsConfig"
-                                       required
-                            ></selectize>
-                            <span class="prompt">{{ "settings.defaultTranslations_prompt"|translate}}</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-3 medium-2 columns">
                             <label>{{ "settings.program_name" | translate }}<span class="required">*</span></label>
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.programName.errors">

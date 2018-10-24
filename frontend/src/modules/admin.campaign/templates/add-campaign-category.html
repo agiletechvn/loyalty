@@ -9,17 +9,18 @@
     <div class="box-content">
         <div class="row">
             <div class="columns medium-12">
+                <admin-fieldset-block ng-repeat="language in availableFrontendTranslations | orderBy: 'order'" fieldset-label="{{ ('campaign.category.basic_info' | translate) + ' (' + language.name + ')' }}" togglable="true" togglable-active="{{ language.default }}">
+                    <admin-fieldset-row
+                            ng-repeat="field in translatableCategoryFields"
+                            row-label="{{ field.label }}"
+                            row-prompt="{{ field.prompt }}"
+                            is-required="{{ language.default && field.required }}"
+                            input-model="newCategory.translations[language.code][field.key]"
+                            validate-by="validate.translations[language.code][field.key].errors">
+                    </admin-fieldset-row>
+                </admin-fieldset-block>
                 <fieldset class="fieldset">
-                    <legend>{{ "campaign.category.basic_info" | translate }}</legend>
-                    <div class="row">
-                        <div class="medium-2 small-3 columns">
-                            <label>{{ "campaign.category.name" | translate }} <span class="required">*</span></label>
-                        </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.name.errors">
-                            <input type="text" ng-model="newCategory.name" required>
-                            <span class="prompt">{{ "campaign.category.name_prompt" | translate }} </span>
-                        </div>
-                    </div>
+                    <legend>{{ "campaign.category.basic_info_details" | translate }}</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "campaign.category.sort_order" | translate }} <span

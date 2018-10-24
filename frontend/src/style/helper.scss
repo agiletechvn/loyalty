@@ -26,6 +26,10 @@
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
   }
+  .upload-group {
+    max-width: 100px;
+    overflow: hidden;
+  }
 }
 
 button, select, input, textarea, .button {
@@ -152,17 +156,18 @@ input[data-datepicker] {
   input, select, textarea {
     border-color: $septenary !important;
   }
-  span.error-msg {
-    clear: both;
-    font-size: 13px;
-    color: $septenary;
-    display: block;
-    position: relative;
-    top: -12px;
-  }
   .selectize-control {
     margin-bottom: 8px !important;
   }
+}
+
+span.error-msg {
+  clear: both;
+  font-size: 13px;
+  color: $septenary;
+  display: block;
+  position: relative;
+  top: -12px;
 }
 
 .segment-or {
@@ -384,4 +389,16 @@ canvas.chart {
     color: #aaa;
     font-size: 0.8em;
   }
+}
+
+.uppercase{
+  text-transform: uppercase;
+}
+
+.CodeMirror, .CodeMirror-scroll {
+  min-height: 110px !important;
+}
+
+.CodeMirror, .editor-toolbar, .editor-statusbar{
+  max-width: 410px;
 }

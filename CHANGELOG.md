@@ -4,17 +4,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 15-010-2018
 
-### Notice
-Next version will be 3.0 with a few big features
-- multi language
-- dropping support for client cockpit
-- a new PWA Client Cockpit available in Enterprise version
-- API versioning
-- improved performance in Enterprise version
-- changed API endpoints
-
-The 3.0 version **will not be backward compatible** with version 2.10.0
+### Added
+- multi photos for reward campaigns (new feature)
+- segments, levels and POS limits now available in the Geolocation Earning Rule (new feature)
+- Custom Reward Campaign that allows to link with Custom Earning Rule or QRCode Earning rule and reward customer with points (new feature)
+- QRCode Earning Rule (new feature)
+- new currency HDK to the settings
+- multi language for Levels, Reward Campaigns, Reward Campaigns Category (new feature)
+- new API endpoint /api/settings/css allowing to get custom CSS rules for Client Cockpit
+### Changed
+- importing transaction with POS information is now simplified, you can define posIdentifier or posId
+- size of textareas has been decreased
+### Fixed
+- data in Elastic Search was not always up to date
+- unable to add a points transfer when customer databases was large
+- a phone number was not copied from customer to transaction while matching transaction with customer
+- customer could register twice with the same phone number when activation method is SMS
+- a negative radius value in Geolocation Earning Rule caused 500 error
+- while creating Reward Campaign there was only first 10 reward categories to choose, now unlimited
+- buying a campaign when a customer has no phone number caused 500 error
+- fixed typos
+- missing translations
 
 ## [2.10.0] - 24-09-2018
 

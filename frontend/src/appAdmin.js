@@ -48,6 +48,7 @@ import EditableMap from './component/global/map/EditableMap';
 import ParamsMap from './component/global/map/ParamsMap';
 import Validation from './component/global/validation/Validation';
 
+import ToggleControlDirective from './component/global/toggleControl/ToggleControlDirective';
 import ModalDirective from './component/global/modal/ModalDirective';
 import CheckboxDirective from './component/global/checkbox/CheckboxDirective';
 import DatepickerDirective from './component/global/datepicker/DatepickerDirective';
@@ -70,6 +71,9 @@ import StaticPagesDirective from './component/global/pages/StaticPagesDirective'
 import FileModelDirective from './component/global/filereader/FileModelDirective';
 import BoxLoaderDirective from './component/global/boxLoader/BoxLoaderDirective';
 import SpinnerLoaderDirective from './component/global/spinnerLoader/SpinnerLoaderDirective';
+
+import AdminFieldsetBlockDirective from './component/admin/adminFieldsetBlock/AdminFieldsetBlockDirective';
+import AdminFieldsetRowDirective from './component/admin/adminFieldsetRow/AdminFieldsetRowDirective';
 
 import DebugController from './component/global/debug/DebugController';
 
@@ -298,6 +302,7 @@ angular.module('OpenLoyalty', [
     .filter('isEmpty', () => new Filters.IsEmptyFilter())
     .filter('roundPoints', () => new Filters.RoundPoints())
 
+    .directive('toggleControl', () => new ToggleControlDirective())
     .directive('modal', () => new ModalDirective())
     .directive('datepicker', () => new DatepickerDirective())
     .directive('formValidation', () => new FormValidationDirective())
@@ -308,7 +313,8 @@ angular.module('OpenLoyalty', [
     .directive('fileModel', FileModelDirective.create)
     .directive('boxLoader', BoxLoaderDirective.create)
     .directive('spinnerLoader', SpinnerLoaderDirective.create)
-
+    .directive('adminFieldsetRow', () => new AdminFieldsetRowDirective())
+    .directive('adminFieldsetBlock', () => new AdminFieldsetBlockDirective())
 
     .service('EditableMap', EditableMap)
     .service('ParamsMap', ParamsMap)

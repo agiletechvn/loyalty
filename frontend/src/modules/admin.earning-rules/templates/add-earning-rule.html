@@ -235,7 +235,7 @@
                                 <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.latitude.errors">
-                            <input type="number"
+                            <input type="text"
                                    ng-model="newEarningRule.latitude"/>
                             <span class="prompt">{{ "earning_rule.latitude_prompt" | translate }}</span>
                         </div>
@@ -246,7 +246,7 @@
                                 <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.longitude.errors">
-                            <input type="number"
+                            <input type="text"
                                    ng-model="newEarningRule.longitude"/>
                             <span class="prompt">{{ "earning_rule.longitude_prompt" | translate }}</span>
                         </div>
@@ -260,6 +260,16 @@
                             <input type="number"
                                    ng-model="newEarningRule.radius"/>
                             <span class="prompt">{{ "earning_rule.radius_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="newEarningRule.type=='qrcode'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "earning_rule.code" | translate }}
+                                <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.code.errors">
+                            <input type="text" ng-model="newEarningRule.code" required>
+                            <span class="prompt">{{ "earning_rule.code_prompt" | translate }}</span>
                         </div>
                     </div>
                     <div class="row" ng-if="newEarningRule.type=='custom_event'">
@@ -285,7 +295,7 @@
                         </div>
                     </div>
                     <div class="row"
-                         ng-if="newEarningRule.type=='event' || newEarningRule.type=='geolocation' || newEarningRule.type=='custom_event' || newEarningRule.type=='product_purchase'">
+                         ng-if="newEarningRule.type=='event' || newEarningRule.type=='geolocation' || newEarningRule.type=='custom_event' || newEarningRule.type=='product_purchase' || newEarningRule.type=='qrcode'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.points_amount" | translate }} <span
                                     class="required">*</span></label>
@@ -305,7 +315,7 @@
                         <span class="prompt">{{ "earning_rule.points_amount_prompt" | translate }}</span>
                     </div>
                 </div>
-                    <div class="row" ng-if="newEarningRule.type=='custom_event'">
+                    <div class="row" ng-if="newEarningRule.type=='custom_event'||newEarningRule.type=='qrcode'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.limit.active" | translate }}</label>
                         </div>
@@ -315,7 +325,7 @@
                             <span class="prompt">{{ "earning_rule.limit.active_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="newEarningRule.type=='custom_event' && newEarningRule.limit.active">
+                    <div class="row" ng-if="(newEarningRule.type=='custom_event'||newEarningRule.type=='qrcode') && newEarningRule.limit.active">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.limit.period" | translate }}</label>
                         </div>
@@ -327,7 +337,7 @@
                             <span class="prompt">{{ "earning_rule.limit.period_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="newEarningRule.type=='custom_event' && newEarningRule.limit.active">
+                    <div class="row" ng-if="(newEarningRule.type=='custom_event'||newEarningRule.type=='qrcode') && newEarningRule.limit.active">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.limit.limit" | translate }}</label>
                         </div>

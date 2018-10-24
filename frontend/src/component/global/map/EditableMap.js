@@ -1,10 +1,13 @@
 import moment from 'moment';
 
 export default class EditableMap {
+
     constructor($filter, DataService) {
         this.config = window.OpenLoyaltyConfig;
         this.$filter = $filter;
         this.DataService = DataService;
+
+        this.availableTranslations = this.DataService.getAvailableFrontendTranslations();
     }
 
     customer(data, ignoreSellerId) {
@@ -126,8 +129,6 @@ export default class EditableMap {
 
         return {
             conditionValue: self.$filter('commaToDot')(data.conditionValue),
-            description: data.description,
-            name: data.name,
             minOrder: data.minOrder,
             active: data.active,
             reward: {
@@ -135,12 +136,18 @@ export default class EditableMap {
                 value: self.$filter('commaToDot')(data.reward.value),
                 code: data.reward.code
             },
-            specialRewards: specialRewards
+            specialRewards: specialRewards,
+            translations: data.translations
         }
     }
 
+
     humanizeLevel(data) {
         let self = this;
+
+        if (data.translations) {
+            data.translations = self.convertTranslations(data.translations);
+        }
 
         if (data.reward) {
             data.reward.value = self.$filter('percent')(self.$filter('commaToDot')(data.reward.value));
@@ -171,6 +178,7 @@ export default class EditableMap {
 
     newEarningRule(data, deleteType) {
         let res = _.clone(data);
+
         delete res.usageUrl;
         delete res.hasPhoto;
 
@@ -334,6 +342,19 @@ export default class EditableMap {
             delete res.type;
         }
 
+        if(data.type === "geolocation")
+        {
+            res.latitude = data.latitude;
+            res.longitude = data.longitude;
+
+            delete res.excludedLabels;
+            delete res.includedLabels;
+            delete res.labels;
+
+            return res;
+        }
+
+
         return _.pickBy(res);
     }
 
@@ -345,6 +366,10 @@ export default class EditableMap {
 
     humanizeEarningRuleFields(data) {
         let self = this;
+
+        if (data.translations) {
+            data.translations = self.convertTranslations(data.translations);
+        }
 
         if (data.startAt) {
             data.startAt = moment(data.startAt).format(self.config.dateTimeFormat)
@@ -413,9 +438,11 @@ export default class EditableMap {
                 delete criterium.criterionId;
                 if (criterium.posIds) {
                     let ids = [];
+
                     _.each(criterium.posIds, pos => {
                         ids.push(pos.posId);
                     });
+
                     criterium.posIds = ids;
                 }
                 if (criterium.fromDate && criterium.toDate) {
@@ -712,6 +739,9 @@ export default class EditableMap {
         let self = this;
         let campaign = angular.copy(data);
 
+        if (campaign.translations) {
+            campaign.translations = self.convertTranslations(campaign.translations);
+        }
 
         if (campaign.campaignActivity) {
             campaign.campaignActivity.activeTo = moment(campaign.campaignActivity.activeTo).format(self.config.dateTimeFormat);
@@ -736,7 +766,7 @@ export default class EditableMap {
 
     campaign(data) {
         let self = this;
-        let campaign = angular.copy(data);
+        let campaign = _.omit(angular.copy(data), ['name', 'shortDescription', 'usageInstruction', 'conditionsDescription', 'brandDescription', 'brandName']);
 
         campaign.labels = this.convertLabels(campaign);
 
@@ -785,6 +815,23 @@ export default class EditableMap {
             delete campaign.daysValid;
         }
 
+        if (campaign.reward == 'custom_campaign_code') {
+            delete campaign.costInPoints;
+            delete campaign.limit;
+            delete campaign.limitPerUser;
+            delete campaign.coupons;
+            delete campaign.singleCoupon;
+            delete campaign.unlimited;
+            delete campaign.daysInactive;
+            delete campaign.daysValid;
+            if (campaign.connectType == 'none') {
+                delete campaign.earningRuleId;
+            }
+        } else {
+            delete campaign.connectType;
+            delete campaign.earningRuleId;
+        }
+
         if (campaign.reward == 'percentage_discount_code') {
             delete campaign.costInPoints;
             delete campaign.campaignVisibility;
@@ -808,6 +855,7 @@ export default class EditableMap {
         delete campaign.hasPhoto;
         delete campaign.categoryNames;
         delete campaign.brandIcon;
+        delete campaign.earningRule;
 
         return campaign;
     }
@@ -827,14 +875,37 @@ export default class EditableMap {
         return labels;
     }
 
+    convertTranslations(translations) {
+        const newTranslations = {};
+
+        _.each(translations, translation => {
+            if (!this.availableTranslations.some(t => t.code === translation.locale)) {
+                return;
+            }
+            newTranslations[translation.locale] = {};
+            _.each(translation, (value, key) => {
+                if (key !== 'locale' && key !== 'id') {
+                    newTranslations[translation.locale][key] = value;
+                }
+            });
+        });
+
+        return newTranslations;
+    }
+
     humanizeCampaignCategory(data) {
+        let self = this;
         let category = angular.copy(data);
+
+        if (category.translations) {
+            category.translations = self.convertTranslations(category.translations);
+        }
 
         return category;
     }
 
     campaignCategory(data) {
-        let category = angular.copy(data);
+        let category = _.omit(angular.copy(data), ['name']);
 
         delete category.campaignCategoryId;
         return category;

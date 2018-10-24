@@ -36,6 +36,12 @@ export default class CampaignController {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$timeout = $timeout;
+        this.campaignFiles = [{
+            id: 0,
+            file: {},
+            error: '',
+            visible: true
+        }];
 
         this.SegmentService = SegmentService;
         this.LevelService = LevelService;
@@ -115,6 +121,10 @@ export default class CampaignController {
             {
                 label: $filter('translate')('campaign.percentage_discount_code'),
                 value: 'percentage_discount_code'
+            },
+            {
+                label: $filter('translate')('campaign.custom_campaign_code'),
+                value: 'custom_campaign_code'
             }
         ];
 
@@ -124,6 +134,37 @@ export default class CampaignController {
         this.$filter = $filter;
         this._selectizeConfigs();
     }
+
+    /**
+     * adding another file input to form
+     * @param {Integer} event
+     * @method addFileInput
+     */
+    addFileInput(event) {
+        event.preventDefault();
+        let keys = Object.keys(this.$scope.CampaignCtrl.campaignFiles);
+        this.$scope.CampaignCtrl.campaignFiles.push({
+            id: keys.length,
+            file: {},
+            error: '',
+            visible: true
+        });
+    };
+
+    /**
+     * removing file input from form
+     * @param {Integer} event
+     * @param {Integer} id
+     * @method removeFileInput
+     */
+    removeFileInput(event, id) {
+        event.preventDefault();
+        for (var i = 0; i < this.$scope.CampaignCtrl.campaignFiles.length; i++) {
+            if (this.$scope.CampaignCtrl.campaignFiles[i].id == id) {
+                this.$scope.CampaignCtrl.campaignFiles.splice(i, 1);
+            }
+        }
+    };
 
     /**
      * Initial method
@@ -150,7 +191,7 @@ export default class CampaignController {
         this.$scope.buyCampaignManually = {};
         this.$scope.showCompany = false;
         this.$scope.showAddress = false;
-        this.$scope.fileValidate = this.CampaignService.storedFileError;
+        this.$scope.fileValidate = [];
         this.$scope.dateFrom = null;
         this.$scope.dateTo = null;
         this.$scope.exportDateFrom = null;
@@ -160,10 +201,36 @@ export default class CampaignController {
         this.$scope.brandIconFileValidate = null;
         this.$scope.campaignBrandIconFilePath = false;
         this.$scope.campaignBrandIconFile = null;
+        this.$scope.campaignPhotos = [];
         this.segments = null;
         this.levels = null;
         this.campaignCategoryId = this.$stateParams.campaignCategoryId || null;
         this.$scope.newCategory = {};
+        // If 'required: true' it will only
+        // be required on default language
+        this.$scope.translatableFields = [
+            {
+                key: 'name',
+                label: 'campaign.name',
+                prompt: 'campaign.name_prompt',
+                required: true
+            },
+            {
+                key: 'shortDescription',
+                label: 'campaign.short_description',
+                prompt: 'campaign.short_description_prompt',
+                required: false
+            }
+        ];
+        this.$scope.availableFrontendTranslations = this.DataService.getAvailableFrontendTranslations();
+        this.$scope.translatableCategoryFields = [
+            {
+              key: 'name',
+              label: 'campaign.name',
+              prompt: 'campaign.name_prompt',
+              required: true
+            }
+        ];
         this.config = this.DataService.getConfig();
         this.target = [
             {
@@ -214,11 +281,43 @@ export default class CampaignController {
             {
                 name: this.$filter('translate')('campaign.percentage_discount_code'),
                 type: 'percentage_discount_code'
+            },
+            {
+                name: this.$filter('translate')('campaign.custom_campaign_code'),
+                type: 'custom_campaign_code'
+            }
+        ];
+        this.connectType = [
+            {
+                name: this.$filter('translate')('campaign.connect_type.none'),
+                type: 'none'
+            },
+            {
+                name: this.$filter('translate')('campaign.connect_type.qrcode_earning_rule'),
+                type: 'qrcode'
+            },
+            {
+                name: this.$filter('translate')('campaign.connect_type.geolocation_earning_rule'),
+                type: 'geolocation'
             }
         ];
         this.egCoupon = ['Example_coupon'];
         this.rewardConfig = {
             valueField: 'type',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            maxItems: 1,
+        };
+        this.connectTypeConfig = {
+            valueField: 'type',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            maxItems: 1,
+        };
+        this.earningRuleIdConfig = {
+            valueField: 'earningRuleId',
             labelField: 'name',
             create: false,
             sortField: 'name',
@@ -271,7 +370,7 @@ export default class CampaignController {
             }
         };
 
-        let categoryPromise = this.CampaignService.getCategories()
+        let categoryPromise = this.CampaignService.getCategories({'perPage': 1000})
             .then(
                 res => {
                     this.categories = res;
@@ -330,6 +429,42 @@ export default class CampaignController {
                 return dfd.promise;
             }
         });
+    }
+
+    /**
+    * get connect type earning rule
+    *
+    * @param {String} connectType
+    * @method getConnectTypeEarningRule
+    */
+    getConnectTypeEarningRule(connectType) {
+        let self = this;
+        self.earningRuleId = null;
+
+        function deleteEarningRuleIdFieldData() {
+            if (self.$scope.newCampaign && self.$scope.newCampaign.earningRuleId) {
+                self.$scope.newCampaign.earningRuleId = null;
+            }
+            if (self.$scope.editableFields && self.$scope.editableFields.earningRuleId) {
+                self.$scope.editableFields.earningRuleId = null;
+            }
+        }
+
+        if (connectType == 'none') {
+            deleteEarningRuleIdFieldData();
+        } else {
+            self.CampaignService.getConnectTypeEarningRule(connectType)
+                .then(
+                    res => {
+                        self.earningRuleId = res;
+                    },
+                    () => {
+                        deleteEarningRuleIdFieldData();
+                        let message = self.$filter('translate')('xhr.get_earning_rule.error');
+                        self.Flash.create('danger', message);
+                    }
+                );
+        }
     }
 
     /**
@@ -536,15 +671,20 @@ export default class CampaignController {
      *
      * @method deletePhoto
      */
-    deletePhoto() {
+    deletePhoto(photoId) {
         let self = this;
 
-        this.CampaignService.deleteCampaignImage(this.$stateParams.campaignId)
+        this.CampaignService.deleteCampaignImage(this.$stateParams.campaignId, photoId)
             .then(
                 res => {
-                    self.$scope.campaignFilePath = false;
                     let message = self.$filter('translate')('xhr.delete_campaign_image.success');
                     self.Flash.create('success', message);
+                    
+                        angular.forEach(self.$scope.campaign.photos, function (value, key) {
+                            if( self.$scope.campaign.photos[key].photoId.id === photoId){
+                                self.$scope.campaign.photos.splice([key], 1);
+                            }
+                        });
                 }
             )
             .catch(
@@ -554,6 +694,7 @@ export default class CampaignController {
                     self.Flash.create('danger', message);
                 }
             )
+            
     }
 
     /**
@@ -622,28 +763,33 @@ export default class CampaignController {
             flashMessageType = 'warning';
         }
 
-        function postCampaignImage() {
-            return self.CampaignService.postCampaignImage(campaignId, self.$scope.campaignFile)
+        function postCampaignImages(item, key) {
+
+            return self.CampaignService.postCampaignImages(campaignId, item.file)
                 .then(
                     res2 => {
+                        self.$scope.CampaignCtrl.campaignFiles[key].file = '';
+                        self.$scope.CampaignCtrl.campaignFiles[key].visible = false;
                     }
                 )
                 .catch(
                     err => {
-                        self.$scope.fileValidate = self.Validation.mapSymfonyValidation(err.data);
-                        self.CampaignService.storedFileError = self.$scope.fileValidate;
-
-                        let message = self.$filter('translate')('xhr.'+method+'_campaign_image.warning');
-                        self.Flash.create(flashMessageType, message);
+                        let inputError = self.Validation.mapSymfonyValidation(err.data);
+                        self.$scope.fileValidate[key] = { error: inputError.file.errors[0] };
+                        self.$scope.CampaignCtrl.campaignFiles[key].error = inputError.file.errors[0];
+                        let message = self.$filter('translate')('xhr.put_campaign.error');
+                        self.Flash.create('danger', message);
+                        self.loaderStates.coverLoader = false;
                     }
-                )
+                );
+
+
         }
 
         function postCampaignBrandIcon() {
             return self.CampaignService.postCampaignBrandIcon(campaignId, self.$scope.campaignBrandIconFile)
                 .then(
-                    res2 => {
-                    }
+                    res2 => {}
                 )
                 .catch(
                     err => {
@@ -656,9 +802,15 @@ export default class CampaignController {
             }
 
         var queries = [];
-        if (self.$scope.campaignFile) {
-            self.$scope.fileValidate = null;
-            queries.push(postCampaignImage());
+        if (self.$scope.CampaignCtrl.campaignFiles) {
+            self.$scope.fileValidate = [];
+            angular.forEach(self.$scope.CampaignCtrl.campaignFiles, function (item, key) {
+
+                if (item.file.name) {
+                    queries.push(postCampaignImages(item, key))
+                }
+
+            })
         }
 
         if (self.$scope.campaignBrandIconFile) {
@@ -669,7 +821,7 @@ export default class CampaignController {
         if (queries.length>0) {
             self.$q.all(queries).then(function() {
                 var failed = false;
-                if (self.$scope.campaignFile && self.$scope.fileValidate) {
+                if (self.$scope.CampaignCtrl.campaignFiles && self.$scope.fileValidate.length) {
                     failed = true;
                 }
                 if (self.$scope.campaignBrandIconFile && self.$scope.brandIconFileValidate) {
@@ -769,6 +921,16 @@ export default class CampaignController {
     }
 
     /**
+     * Generating Campaing photo route
+     *
+     * @method generateCampaignPhotoRoute
+     * @returns {string}
+     */
+    generateCampaignPhotoRoute(photoId) {
+        return this.DataService.getConfig().apiUrl + '/campaign/' + this.$stateParams.campaignId + '/photo/' + photoId
+    }
+
+    /**
      * Generating brand icon route
      *
      * @method generateBrandIconRoute
@@ -792,6 +954,7 @@ export default class CampaignController {
                 res => {
                     self.$scope.campaign = res;
                     self.$scope.editableFields = self.EditableMap.humanizeCampaign(res);
+                   
                     if (self.$scope.editableFields.levels && self.$scope.editableFields.levels.length) {
                         let levels = self.$scope.editableFields.levels;
                         for (let i in levels) {
@@ -816,6 +979,10 @@ export default class CampaignController {
                         self.$scope.campaignBrandIconFilePath = true;
                         self.$scope.hasCampaignBrandIconFilePath = true;
                     }
+
+                    if (self.$scope.editableFields.connectType) {
+                        self.getConnectTypeEarningRule(self.$scope.editableFields.connectType);
+                    }
                 },
                 () => {
                     let message = self.$filter('translate')('xhr.get_campaign.error');
@@ -824,18 +991,10 @@ export default class CampaignController {
                 }
             );
 
-        self.CampaignService.getCampaignImage(self.campaignId)
-            .then(
-                res => {
-                    self.$scope.campaignFilePath = true;
-                }
-            )
-            .catch(
-                err => {
-                    self.$scope.campaignFilePath = false;
-                }
-            );
+
+
     }
+
 
     /**
      * Obtain all category data

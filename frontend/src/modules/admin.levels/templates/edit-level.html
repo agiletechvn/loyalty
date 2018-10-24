@@ -9,18 +9,19 @@
         <div class="box-content">
             <div class="row">
                 <div class="medium-12 columns">
-                    <fieldset class="fieldset">
-                        
-                        <legend>{{ "level.basic_info" | translate }}</legend>
-                        <div class="row">
-                            <div class="medium-2 small-3 columns">
-                                <label>{{ "level.name" | translate }} <span class="required">*</span></label>
-                            </div>
-                            <div class="medium-10 small-9 columns" form-validation="validate.name.errors">
-                                <input type="text" ng-model="editableFields.name" required>
-                                <span class="prompt">{{ "level.name_prompt" | translate }} </span>
-                            </div>
-                        </div>
+
+                    <admin-fieldset-block ng-repeat="language in availableFrontendTranslations | orderBy: 'order'" fieldset-label="{{ ('level.basic_info' | translate) + ' (' + language.name + ')' }}" togglable="true" togglable-active="{{ language.default }}">
+                        <admin-fieldset-row
+                            ng-repeat="field in translatableFields" 
+                            row-label="{{ field.label }}" 
+                            row-prompt="{{ field.prompt }}" 
+                            is-required="{{ language.default && field.required }}" 
+                            input-model="editableFields.translations[language.code][field.key]" 
+                            validate-by="validate.translations[language.code][field.key].errors">
+                        </admin-fieldset-row>
+                    </admin-fieldset-block>
+
+                    <admin-fieldset-block fieldset-label="level.reward_details">
                         <div class="row">
                             <div class="medium-2 small-3 columns">
                                 <label>{{ "level.active" | translate }}</label>
@@ -32,15 +33,7 @@
                                 <span class="prompt">{{ "level.active_prompt" | translate }} </span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="medium-2 small-3 columns">
-                                <label>{{ "level.description" | translate }}</label>
-                            </div>
-                            <div class="medium-10 small-9 columns" form-validation="validate.description.errors">
-                                <input type="text" ng-model="editableFields.description"/>
-                                <span class="prompt">{{ "level.description_prompt" | translate }} </span>
-                            </div>
-                        </div>
+
                         <div class="row">
                             <div class="medium-2 small-3 columns">
                                 <label>{{ "level.condition_value" | translate }} <span
@@ -52,6 +45,7 @@
                                 <span class="prompt">{{ "level.condition_value_prompt" | translate }} </span>
                             </div>
                         </div>
+                        
                         <div class="row">
                             <div class="medium-2 small-3 columns">
                                 <label>{{ "level.min_order" | translate }}</label>
@@ -62,11 +56,7 @@
                                 <span class="prompt">{{ "level.min_order_prompt" | translate }} </span>
                             </div>
                         </div>
-                    </fieldset>
 
-                    <fieldset class="fieldset">
-                        
-                        <legend>{{ "level.reward_details" | translate }}</legend>
                         <div class="row">
                             <div class="medium-2 small-3 columns">
                                 <label>{{ "level.reward_name" | translate }} <span class="required">*</span></label>
@@ -76,6 +66,7 @@
                                 <span class="prompt">{{ "level.reward_name_prompt" | translate }} </span>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="medium-2 small-3 columns">
                                 <label>{{ "level.reward_value" | translate }} <span
@@ -87,6 +78,7 @@
                                 <span class="prompt">{{ "level.reward_value_prompt" | translate }} </span>
                             </div>
                         </div>
+                        
                         <div class="row">
                             <div class="medium-2 small-3 columns">
                                 <label>{{ "level.reward_code" | translate }} <span class="required">*</span></label>
@@ -96,12 +88,11 @@
                                 <span class="prompt">{{ "level.reward_code_prompt" | translate }} </span>
                             </div>
                         </div>
-                    </fieldset>
+                    </admin-fieldset-block>
                 </div>
+
                 <div class="medium-12 columns">
-                    <fieldset class="fieldset">
-                        
-                        <legend>{{ "level.special_reward_details" | translate }}</legend>
+                    <admin-fieldset-block fieldset-label="level.special_reward_details">
                         <div class="" style="position:relative"
                              ng-repeat="special in editableFields.specialRewards">
                             <div class="segment-and" ng-show="$index!=0">
@@ -193,7 +184,7 @@
                                 {{ "level.add_special_reward" | translate }}
                             </button>
                         </div>
-                    </fieldset>
+                    </admin-fieldset-block>
 
                     <fieldset class="fieldset">
                         <legend>{{ "level.photo" | translate }}</legend>
@@ -218,6 +209,7 @@
                             </div>
                         </div>
                     </fieldset>
+
                 </div>
             </div>
         </div>

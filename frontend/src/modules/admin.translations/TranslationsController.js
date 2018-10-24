@@ -116,7 +116,10 @@ export default class TranslationsController {
         let self = this;
         self.TranslationsService.putTranslation(self.translationId, {
             name: self.$scope.editableFields.name,
-            content: self.$scope.editableFields.content
+            content: self.$scope.editableFields.content,
+            code: self.translationId,
+            order: self.$scope.editableFields.order,
+            default: self.$scope.editableFields.default,
         })
             .then(
                 res => {
@@ -137,16 +140,41 @@ export default class TranslationsController {
             )
     }
 
+    removeTranslations(code) {
+        let self = this;
+        self.TranslationsService.deleteTranslation(code)
+            .then(
+                res => {
+                    let message = self.$filter('translate')('xhr.delete_translations.success');
+                    self.Flash.create('success', message);
+                    self.getData();
+                    window.location.reload(true);
+                },
+                res => {
+                    self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                    let message = self.$filter('translate')('xhr.delete_translations.error');
+                    self.Flash.create('danger', message);
+                }
+            )
+    }
+
     addTranslations(newTranslations) {
         let self = this;
 
-        self.TranslationsService.postTranslation({name: newTranslations.name, content: newTranslations.content})
+        self.TranslationsService.postTranslation({
+            name: newTranslations.name,
+            content: newTranslations.content,
+            code: newTranslations.code,
+            order: newTranslations.order,
+            default: newTranslations.default,
+        })
             .then(
                 res => {
                     let message = self.$filter('translate')('xhr.post_translations.success');
                     self.Flash.create('success', message);
                     self.$state.go('admin.translations');
                     this.DataService.getAvailableData();
+                    window.location.reload(true);
                 },
                 res => {
                     self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);

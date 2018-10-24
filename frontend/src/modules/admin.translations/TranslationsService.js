@@ -22,6 +22,11 @@ export default class TranslationsService {
 
         return self.Restangular.one('admin').one('translations').customPOST({translation: translation});
     }
+    deleteTranslation(code) {
+        let self = this;
+
+        return self.Restangular.one('admin').one('translations').one(code).customDELETE();
+    }
 
 }
 
