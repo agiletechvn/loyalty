@@ -10,6 +10,7 @@ export default class EarningRuleController {
         this.PosService = PosService;
         this.$state = $state;
         this.Flash = Flash;
+        this.AuthService = AuthService;
         this.$scope.editableFields = {};
         this.earningRuleId = $stateParams.earningRuleId || null;
         this.NgTableParams = NgTableParams;
@@ -212,14 +213,14 @@ export default class EarningRuleController {
                 }
             );
 
-        let levelPromise = this.LevelService.getLevels()
+        let levelPromise = this.LevelService.getLevels({perPage: 1000})
             .then(
                 res => {
                     this.levels = res;
                 }
             );
 
-        let posPromise = this.PosService.getPosList()
+        let posPromise = this.PosService.getPosList({perPage: 1000})
             .then(
                 res => {
                     this.pos = res;
@@ -276,6 +277,61 @@ export default class EarningRuleController {
         if ((type == 'event' || type == 'custom_event' || type == 'referral') && this.$scope.newEarningRule) {
             this.$scope.newEarningRule.eventName = null;
         }
+        if (type !== 'instant_reward')
+        {
+            this.$scope.newEarningRule.rewardCampaignId = null;
+            this.$scope.newEarningRule.lastExecutedRule = null;
+        }
+        if (type !== 'geolocation')
+        {
+            this.$scope.newEarningRule.latitude = null;
+            this.$scope.newEarningRule.longitude = null;
+            this.$scope.newEarningRule.radius = null;
+            this.$scope.newEarningRule.pointsAmount = null;
+        }
+        if (type !== 'points')
+        {
+            this.$scope.newEarningRule.pointValue = null;
+            this.$scope.newEarningRule.excludedSKUs = null;
+            this.$scope.newEarningRule.labelsInclusionType = null;
+            this.$scope.newEarningRule.excludedLabels = null;
+            this.$scope.newEarningRule.includedLabels = null;
+            this.$scope.newEarningRule.excludeDeliveryCost = null;
+            this.$scope.newEarningRule.minOrderValue = null;
+        }
+        if (type !== 'event')
+        {
+            this.$scope.newEarningRule.pointsAmount = null;
+            this.$scope.newEarningRule.eventName = null;
+        }
+        if (type !== 'custom_event')
+        {
+            this.$scope.newEarningRule.pointsAmount = null;
+            this.$scope.newEarningRule.limit = null;
+            this.$scope.newEarningRule.eventName = null;
+        }
+        if (type !== 'referral')
+        {
+               this.$scope.newEarningRule.eventName = null;
+               this.$scope.newEarningRule.rewardType = null;
+               this.$scope.newEarningRule.pointsAmount = null;
+        }
+        if (type !== 'product_purchase')
+        {
+            this.$scope.newEarningRule.skuIds = null;
+            this.$scope.newEarningRule.pointsAmount = null;
+        }
+        if (type !== 'multiply_for_product')
+        {
+            this.$scope.newEarningRule.skuIds = null;
+            this.$scope.newEarningRule.multiplier = null;
+            this.$scope.newEarningRule.labels = null;
+        }
+        if (type !== 'multiply_by_product_labels')
+        {
+            this.$scope.newEarningRule.labelMultipliers = null;
+        }
+
     }
 
     getEarningRuleData() {

@@ -3,8 +3,7 @@
 <div class="heading" ng-init="TranslationsCtrl.getData()">
     <h1>{{ "admin.translations.heading" | translate }}</h1>
     <div class="action-buttons">
-
-        <button class="medium button button-septenary-colorized" ui-sref="admin.translations_add">
+        <button ng-show="TranslationsCtrl.AuthService.hasPermission('SETTINGS', 'MODIFY')" class="medium button button-septenary-colorized" ui-sref="admin.translations_add">
             {{ "admin.translations.add" | translate }}
         </button>
     </div>
@@ -32,12 +31,12 @@
                     <span ng-if="row.default" ng-bind="'global.yes'|translate"></span>
                 </td>
                 <td data-title="'admin.translations.actions'|translate">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="TranslationsCtrl.AuthService.hasPermission('SETTINGS', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.translations_edit({translationId: row.code})"
                             style="margin-bottom:5px;">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>
-                    <button ng-if="!row.default" type="button" class="button button-septenary tiny"
+                    <button ng-show="!row.default && TranslationsCtrl.AuthService.hasPermission('SETTINGS', 'MODIFY')" type="button" class="button button-septenary tiny"
                             ng-click="translations[$index].showRemoveModal=true"
                             style="margin-bottom:5px;">
                         <i class="fa fa-remove" aria-hidden="true"></i>

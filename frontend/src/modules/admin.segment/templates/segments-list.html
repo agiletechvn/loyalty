@@ -3,7 +3,7 @@
 <div class="heading" ng-init="SegmentCtrl.getData()">
     <h1>{{ "segment.heading" | translate }}</h1>
     <div class="action-buttons">
-        <button class="medium button button-septenary-colorized" ui-sref="admin.add-segment">
+        <button ng-show="SegmentCtrl.AuthService.hasPermission('SEGMENT', 'MODIFY')" class="medium button button-septenary-colorized" ui-sref="admin.add-segment">
             {{ "segment.add" | translate }}
         </button>
     </div>
@@ -30,30 +30,40 @@
                 <td data-title="'segment.users'|translate" sortable="'customersCount'">
                     <span ng-bind="row.customersCount"></span>
 
-                    <button class="button button-primary tiny pull-right"
+                    <button ng-show="SegmentCtrl.AuthService.hasPermission('CUSTOMER', 'VIEW')" class="button button-primary tiny pull-right"
                             ui-sref="admin.segment-users({segmentId: row.segmentId, segmentName: row.name})">
                         {{ "global.show" | translate }}
                     </button>
                 </td>
                 <td data-title="'segment.active'|translate">
-                    <button class="button button-default tiny" ng-if="!row.active" class="switch-active"
-                            ng-model="row.active"
-                            ng-click="SegmentCtrl.setSegmentState(!row.active, row.segmentId)">
-                        {{ "global.inactive" | translate }}
-                    </button>
-                    <button class="button button-septenary-colorized tiny" ng-if="row.active" class="switch-active"
-                            ng-model="row.active"
-                            ng-click="SegmentCtrl.setSegmentState(!row.active, row.segmentId)">
-                        {{ "global.active" | translate }}
-                    </button>
+                    <span ng-show="SegmentCtrl.AuthService.hasPermission('SEGMENT', 'MODIFY')">
+                        <button class="button button-default tiny" ng-if="!row.active" class="switch-active"
+                                                        ng-model="row.active"
+                                                        ng-click="SegmentCtrl.setSegmentState(!row.active, row.segmentId)">
+                            {{ "global.inactive" | translate }}
+                        </button>
+                        <button class="button button-septenary-colorized tiny" ng-if="row.active" class="switch-active"
+                                ng-model="row.active"
+                                ng-click="SegmentCtrl.setSegmentState(!row.active, row.segmentId)">
+                            {{ "global.active" | translate }}
+                        </button>
+                    </span>
+                    <span ng-show="!SegmentCtrl.AuthService.hasPermission('SEGMENT', 'MODIFY')">
+                        <span ng-if="!row.active">
+                            {{ "global.inactive" | translate }}
+                        </span>
+                        <span ng-if="row.active">
+                            {{ "global.active" | translate }}
+                        </span>
+                    </span>
                 </td>
                 <td data-title="'segment.actions'|translate">
-                    <button class="button button-septenary tiny"
+                    <button ng-show="SegmentCtrl.AuthService.hasPermission('SEGMENT', 'MODIFY')" class="button button-septenary tiny"
                             ng-click="segments[$index].showRemoveModal=true"><i class="fa fa-times"></i></button>
-                    <button class="button button-secondary tiny"
+                    <button ng-show="SegmentCtrl.AuthService.hasPermission('SEGMENT', 'MODIFY')" class="button button-secondary tiny"
                             ui-sref="admin.edit-segment({segmentId: row.segmentId})"><i class="fa fa-pencil"></i>
                     </button>
-                    <button class="button button-secondary tiny"
+                    <button ng-show="SegmentCtrl.AuthService.hasPermission('SEGMENT_EXPORT', 'VIEW') && SegmentCtrl.AuthService.hasPermission('CUSTOMER', 'VIEW')" class="button button-secondary tiny"
                             ng-click="SegmentCtrl.getSegmentCsvData(row.segmentId, row.name)"><i
                             class="fa fa-download "></i>
                     </button>

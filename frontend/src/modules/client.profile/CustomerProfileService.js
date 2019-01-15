@@ -4,6 +4,10 @@ export default class CustomerProfileService {
         this.EditableMap = EditableMap;
     }
 
+    getSettings() {
+        return this.Restangular.one('settings').one('public').get();
+    }
+
     getCustomer(id) {
         return this.Restangular.one('customer', id).get();
     }

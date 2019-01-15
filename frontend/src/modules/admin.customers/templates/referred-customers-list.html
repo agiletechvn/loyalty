@@ -34,6 +34,9 @@
                 <td data-title="'customer.referred.recipient_email'|translate" sortable="'recipientEmail'" filter="{recipientEmail: 'text'}">
                     <span ng-bind="row.recipientEmail || ('global.not_set'|translate)"></span>
                 </td>
+                <td data-title="'customer.referred.recipient_phone'|translate" sortable="'recipientPhone'" filter="{recipientPhone: 'text'}">
+                    <span ng-bind="row.recipientPhone || ('global.not_set'|translate)"></span>
+                </td>
                 <td data-title="'customer.referred.status'|translate" sortable="'status'" filter="{status: 'statusSelect'}">
                     <span>{{'customer.referred.statuses.'+row.status|translate}}</span>
                 </td>

@@ -21,6 +21,11 @@ export default class EditableMap {
             data.address = {}
         }
 
+        let birthDate = moment(data.birthDate).format(self.config.dateFormat);
+        if (birthDate === 'Invalid date') {
+            birthDate = '';
+        }
+
         if (data.plainPassword) {
             return {
                 address: {
@@ -36,7 +41,7 @@ export default class EditableMap {
                     name: data.company.name,
                     nip: data.company.nip
                 },
-                birthDate: moment(data.birthDate).format(self.config.dateFormat),
+                birthDate: birthDate,
                 email: data.email,
                 firstName: data.firstName,
                 gender: data.gender,
@@ -63,7 +68,7 @@ export default class EditableMap {
                     name: data.company.name,
                     nip: data.company.nip
                 },
-                birthDate: moment(data.birthDate).format(self.config.dateFormat),
+                birthDate: birthDate,
                 email: data.email,
                 firstName: data.firstName,
                 gender: data.gender,
@@ -98,6 +103,9 @@ export default class EditableMap {
         let self = this;
         if (data.birthDate) {
             data.birthDate = moment(data.birthDate).format(self.config.dateFormat);
+            if (data.birthDate === 'Invalid date') {
+                data.birthDate = '';
+            }
         }
         if (data.address) {
             data.address = _.pickBy(data.address);
@@ -107,7 +115,12 @@ export default class EditableMap {
     }
 
     humanizeUser(data) {
-        return data;
+        let res = _.clone(data);
+        let roles = res.roles;
+        let dataArray = Object.keys(roles).map(val => roles[val].id);
+        res.roles = dataArray;
+
+        return _.pickBy(res);
     }
 
     level(data) {
@@ -342,18 +355,11 @@ export default class EditableMap {
             delete res.type;
         }
 
-        if(data.type === "geolocation")
+        if (data.type === "geolocation")
         {
-            res.latitude = data.latitude;
-            res.longitude = data.longitude;
-
-            delete res.excludedLabels;
-            delete res.includedLabels;
-            delete res.labels;
-
-            return res;
+            res.latitude = data.latitude ? data.latitude.toString() : null;
+            res.longitude = data.longitude ? data.longitude.toString() : null;
         }
-
 
         return _.pickBy(res);
     }
@@ -372,7 +378,7 @@ export default class EditableMap {
         }
 
         if (data.startAt) {
-            data.startAt = moment(data.startAt).format(self.config.dateTimeFormat)
+            data.startAt = moment(data.startAt).format(self.config.dateTimeForhumanizeEarningRuleFieldsmat)
         }
         if (data.endAt) {
             data.endAt = moment(data.endAt).format(self.config.dateTimeFormat)
@@ -427,6 +433,20 @@ export default class EditableMap {
 
         return _.pickBy(pos)
     }
+
+
+    role(data) {
+        let res = _.clone(data);
+        delete res.role;
+        delete res.id;
+
+        _.each(res.permissions, role => {
+            delete role.id;  
+        });
+
+        return _.pickBy(res);
+    }
+
 
     segment(data) {
         let self = this;

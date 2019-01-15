@@ -49,9 +49,9 @@ export default class CustomerCampaignController {
         }
     }
 
-    updateCouponUsage(campaignId, code, used) {
+    updateCouponUsage(campaignId, code, couponId, used) {
         let self = this;
-        self.CustomerCampaignService.postUsage(campaignId, code, used).then(
+        self.CustomerCampaignService.postUsage(campaignId, code, couponId, used).then(
             res => {
             },
             res => {

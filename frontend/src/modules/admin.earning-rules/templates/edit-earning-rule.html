@@ -25,7 +25,7 @@
                             <label>{{ "earning_rule.description" | translate }} <span
                                     class="required">*</span></label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.desc.errors">
+                        <div class="medium-10 small-9 columns" form-validation="validate.description.errors">
                             <textarea ng-model="editableFields.description" required></textarea>
                             <span class="prompt">{{ "earning_rule.description_prompt" | translate }}</span>
                         </div>
@@ -362,19 +362,18 @@
                             <span class="prompt">{{ "earning_rule.points_amount_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="editableFields.type=='custom_event' || editableFields.type=='qrcode'">
+                    <div class="row" ng-if="editableFields.type=='custom_event' || editableFields.type=='qrcode' || editableFields.type=='geolocation'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.limit.active" | translate }}</label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.active.errors">
-                            <input type="checkbox"
-                                   ng-model="editableFields.limit.active"/>
+                            <checkbox ng-model="editableFields.limit.active"></checkbox>
                             <span class="prompt">{{ "earning_rule.limit.active_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="(editableFields.type=='custom_event' || editableFields.type=='qrcode') && editableFields.limit.active">
+                    <div class="row" ng-if="(editableFields.type=='custom_event' || editableFields.type=='qrcode' || editableFields.type=='geolocation') && editableFields.limit.active">
                         <div class="medium-2 small-3 columns">
-                            <label>{{ "earning_rule.limit.period" | translate }}</label>
+                            <label>{{ "earning_rule.limit.period" | translate }} <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.limit.period.errors">
                             <selectize config="EarningRuleCtrl.availableEarningRuleLimitPeriodsConfig"
@@ -384,9 +383,9 @@
                             <span class="prompt">{{ "earning_rule.limit.period_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="(editableFields.type=='custom_event' || editableFields.type=='qrcode') && editableFields.limit.active">
+                    <div class="row" ng-if="(editableFields.type=='custom_event' || editableFields.type=='qrcode' || editableFields.type=='geolocation') && editableFields.limit.active">
                         <div class="medium-2 small-3 columns">
-                            <label>{{ "earning_rule.limit.limit" | translate }}</label>
+                            <label>{{ "earning_rule.limit.limit" | translate }} <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.limit.limit.errors">
                             <input type="number"
@@ -465,7 +464,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset">
+                <fieldset class="fieldset" ng-show="editableFields.type != 'event' || editableFields.eventName != 'oloy.account.created'">
                     <legend>Target</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">

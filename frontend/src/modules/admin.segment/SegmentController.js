@@ -5,6 +5,7 @@ export default class SegmentController {
         }
         this.$scope = $scope;
         this.SegmentService = SegmentService;
+        this.AuthService = AuthService;
         this.$state = $state;
         this.Flash = Flash;
         this.$scope.newSegment = {parts: [{criteria: []}]};

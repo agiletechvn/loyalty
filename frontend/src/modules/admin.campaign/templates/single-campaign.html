@@ -10,7 +10,7 @@
             <div class="box-title">
                 <h1>{{ "campaign.basic_info"|translate }}
                     <div class="action-buttons float-right">
-                        <button class="tiny button button-primary"
+                        <button ng-show="CampaignCtrl.AuthService.hasPermission('REWARD_CAMPAIGN', 'MODIFY')" class="tiny button button-primary"
                                 style="margin-top: 8px;"
                                 ui-sref="admin.edit-campaign({campaignId: campaign.id})">
                             <i class="fa fa-pencil" style="padding:0!important"></i>
@@ -44,7 +44,11 @@
                     </tr>
                     <tr>
                         <td><b>{{ "campaign.short_description"|translate }}:</b></td>
-                        <td><span ng-bind="campaign.shortDescription || '---'"></span></td>
+                        <td><span markdown-to-html="campaign.shortDescription || '---'"></span></td>
+                    </tr>
+                    <tr ng-if="campaign.reward === 'gift_code'">
+                        <td><b>{{ "campaign.fulfillment_tracking"|translate }}:</b></td>
+                        <td><span ng-bind="campaign.fulfillmentTracking || '---'"></span></td>
                     </tr>
                     <tr>
                         <td><b>{{ "campaign.more_information_link"|translate }}:</b></td>
@@ -56,12 +60,19 @@
                         </td>
                     </tr>
                     <tr>
+                        <td><b>{{ "campaign.push_notification_text"|translate }}:</b></td>
+                        <td>
+                            {{campaign.pushNotificationText}}
+                            <span ng-if="!campaign.pushNotificationText">---</span>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><b>{{ "campaign.conditions_description"|translate }}:</b></td>
-                        <td><span ng-bind="campaign.conditionsDescription || '---'"></span></td>
+                        <td><span markdown-to-html="campaign.conditionsDescription || '---'"></span></td>
                     </tr>
                     <tr>
                         <td><b>{{ "campaign.brand_description"|translate }}:</b></td>
-                        <td><span ng-bind="campaign.brandDescription || '---'"></span></td>
+                        <td><span markdown-to-html="campaign.brandDescription || '---'"></span></td>
                     </tr>
                     <tr ng-if="campaign.categories.length">
                         <td><b>{{ "campaign.categories"|translate }}:</b></td>
@@ -149,7 +160,7 @@
                     <tr ng-if="campaign.reward && campaign.reward != 'cashback' && campaign.reward !== 'custom_campaign_code'">
                         <td><b>{{ "campaign.usage_instruction"|translate }}:</b></td>
                         <td>
-                            <span ng-bind="campaign.usageInstruction || '---'"></span>
+                            <span markdown-to-html="campaign.usageInstruction || '---'"></span>
                         </td>
                     </tr>
                     <tr ng-if="campaign.reward && campaign.reward != 'cashback'">

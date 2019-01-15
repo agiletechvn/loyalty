@@ -28,9 +28,11 @@ php-7.1:
     - bin/console doctrine:schema:update --env=test -n --force
     - bin/console broadway:event-store:schema:drop
     - bin/console broadway:event-store:schema:init
+    - bin/console broadway:snapshoting:schema:drop -n
+    - bin/console broadway:snapshoting:schema:init -n
     - bin/console doctrine:fixtures:load --env=test -n
     - bin/console assets:install --env=test
-    - bin/console security:check
     - bin/console doctrine:schema:validate --env=test --skip-sync
-    - vendor/phpunit/phpunit/phpunit
-    - bin/php-cs-fixer fix --dry-run --diff src
+    #- bin/console security:check
+    - export SYMFONY_DEPRECATIONS_HELPER=disabled; vendor/phpunit/phpunit/phpunit
+    - bin/php-cs-fixer fix --verbose --show-progress=estimating --dry-run --diff --rules=@Symfony,-yoda_style,-single_blank_line_before_namespace,compact_nullable_typehint src

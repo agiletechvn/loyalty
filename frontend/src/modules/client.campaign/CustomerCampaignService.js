@@ -17,8 +17,17 @@ export default class CustomerCampaignService {
         return this.Restangular.one('customer').one('campaign').one(campaignId).one('buy').post();
     }
 
-    postUsage(campaignId, code, usage) {
-        return this.Restangular.one('customer').one('campaign').one(campaignId).one('coupon').one(code).customPOST({used: usage});
+    postUsage(campaignId, code, couponId, usage) {
+        return this.Restangular.one('customer').one('campaign').one('coupons').one('mark_as_used').customPOST({
+            'coupons': [
+                {
+                    used: usage,
+                    campaignId: campaignId,
+                    code: code,
+                    couponId: couponId
+                }
+            ]
+        });
     }
 
     /**

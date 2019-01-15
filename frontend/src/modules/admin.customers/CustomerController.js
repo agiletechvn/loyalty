@@ -3,6 +3,7 @@ export default class CustomerController {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             $state.go('admin-login')
         }
+
         this.$scope = $scope;
         this.TransferService = TransferService;
         this.transferTypeConfig = this.TransferService.getTransferTypeConfig();
@@ -539,11 +540,17 @@ export default class CustomerController {
         } else {
             delete self.$scope.editableFields.company;
         }
-        if (typeof self.$scope.editableFields.phone === 'undefined') {
-            self.$scope.editableFields.phone = '';
-        }
-        if (typeof self.$scope.editableFields.email === 'undefined') {
-            self.$scope.editableFields.email = '';
+
+        // sets as an empty string if data has been removed
+        for (let property in editedCustomer) {
+            if (editedCustomer.hasOwnProperty(property)) {
+                if (typeof self.$scope.editableFields[property] === 'undefined' ||
+                    self.$scope.editableFields[property] === ''
+                ) {
+                    editedCustomer[property] = '';
+                    self.$scope.editableFields[property] = '';
+                }
+            }
         }
 
         let frontValidation = self.Validation.frontValidation(editedCustomer, validateFields);
@@ -717,9 +724,9 @@ export default class CustomerController {
             )
     }
 
-    updateCouponUsage(customerId, campaignId, code, used) {
+    updateCouponUsage(customerId, campaignId, code, couponId, used) {
         let self = this;
-        self.CustomerService.postUsage(customerId, campaignId, code, used).then(
+        self.CustomerService.postUsage(customerId, campaignId, code, couponId, used).then(
             res => {
                 self.getRewardsData();
             },

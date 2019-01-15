@@ -35,7 +35,7 @@
                     <span ng-bind="row.createdAt|date : 'yyyy-MM-dd HH:mm'"></span>
                 </td>
                 <td data-title="'customer.actions'|translate">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="CampaignCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.edit-customer({customerId: row.customerId})" style="margin-bottom:5px;">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>

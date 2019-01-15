@@ -24,6 +24,15 @@ export default class SettingsController {
         this.$scope.validate = {};
         this.$scope.fileValidate = this.SettingsService.storedFileError;
         this.$scope.uploadsUrl = window.OpenLoyaltyConfig.apiUrl.replace('/api', '').replace('/app_dev.php', '');
+        this.pointsExpireAfterOptions = this.DataService.getPointExpireAfter();
+        this.pointExpireAfterConfig = {
+            valueField: 'value',
+            labelField: 'label',
+            create: false,
+            sortField: 'value',
+            searchField: 'value',
+            maxItems: 1,
+        };
         this.currencyConfig = {
             valueField: 'code',
             labelField: 'name',

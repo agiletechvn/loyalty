@@ -25,6 +25,7 @@ export default class UserService {
         data.lastName = edited.lastName;
         data.email = edited.email;
         data.phone = edited.phone;
+        data.roles = edited.roles;
         if (full) {
             data.plainPassword = edited.plainPassword;
             data.apiKey = edited.apiKey;
@@ -42,6 +43,7 @@ export default class UserService {
         data.lastName = user.lastName;
         data.email = user.email;
         data.phone = user.phone;
+        data.roles = user.roles;
         data.plainPassword = user.plainPassword;
         data.apiKey = user.apiKey;
         data.external = user.external;

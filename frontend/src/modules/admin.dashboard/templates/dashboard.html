@@ -96,7 +96,7 @@
 </div>
 
 
-<div class="client-list box">
+<div ng-show="DashboardCtrl.AuthService.hasPermission('LEVEL', 'VIEW')" class="client-list box">
     <div class="box-title">
         <h1 class="text-left">{{ "level.list" | translate }}</h1>
     </div>
@@ -125,7 +125,7 @@
                     </button>
                 </td>
                 <td data-title="'level.active'|translate" sortable="'active'">
-                        <span>
+                        <span ng-show="DashboardCtrl.AuthService.hasPermission('LEVEL', 'MODIFY')">
                             <button
                                     ng-if="row.active"
                                     class="tiny button button-septenary-colorized"
@@ -141,6 +141,14 @@
                                 {{'global.inactive'|translate}}
                             </button>
                         </span>
+                        <span ng-show="!DashboardCtrl.AuthService.hasPermission('LEVEL', 'MODIFY')">
+                            <span ng-if="row.active">
+                                {{'global.active'|translate}}
+                            </span>
+                            <span ng-if="!row.active">
+                                {{'global.inactive'|translate}}
+                            </span>
+                        </span>
                 </td>
                 <td data-title="'level.special_rewards'|translate">
                         <span ng-if="row.specialRewards.length">
@@ -155,7 +163,7 @@
                         </span>
                 </td>
                 <td data-title="'Actions'">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="DashboardCtrl.AuthService.hasPermission('LEVEL', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.edit-level({levelId: row.id})">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>

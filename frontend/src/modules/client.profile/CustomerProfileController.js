@@ -74,6 +74,25 @@ export default class CustomerProfileController {
         }
     }
 
+    getSettingsData() {
+        let self = this;
+        self.CustomerProfileService.getSettings()
+            .then(
+                res => {
+                    self.$scope.settings = res.settings;
+                    this.getData()
+                },
+                () => {
+                    self.$scope.settings = {
+                        "allowCustomersProfileEdits": false
+                    };
+                    this.getData()
+                    let message = self.$filter('translate')('xhr.get_settings.error');
+                    self.Flash.create('danger', message);
+                }
+            );
+    }
+
     getData() {
         let self = this;
         self.CustomerProfileService.getCustomer(self.id)

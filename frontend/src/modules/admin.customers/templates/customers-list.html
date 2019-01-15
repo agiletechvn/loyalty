@@ -3,10 +3,10 @@
 <div class="heading" ng-init="CustomerCtrl.getData()">
     <h1>{{ "customer.heading" | translate }}</h1>
     <div class="action-buttons">
-        <button class="medium button button-septenary-colorized" ui-sref="admin.add-customer">
+        <button ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" class="medium button button-septenary-colorized" ui-sref="admin.add-customer">
             {{ "customer.add" | translate }}
         </button>
-        <button class="medium button button-septenary-colorized" ng-click="importCustomerModal=true">
+        <button ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" class="medium button button-septenary-colorized" ng-click="importCustomerModal=true">
             {{ "customer.import" | translate }}
         </button>
     </div>
@@ -71,7 +71,7 @@
                     <span ng-if="row.manuallyAssignedLevelId" ng-bind="'global.yes'|translate"></span>
                 </td>
                 <td data-title="'customer.actions'|translate">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.edit-customer({customerId: row.id})">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>
@@ -79,15 +79,15 @@
                             ui-sref="admin.single-customer({customerId: row.id})">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
-                    <button ng-if="row.active" type="button" class="button button-septenary tiny"
+                    <button ng-show="row.active && CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" type="button" class="button button-septenary tiny"
                             ng-click="customers[$index].showRemoveModal=true">
                         <i class="fa fa-remove" aria-hidden="true"></i>
                     </button>
-                    <button ng-if="!row.active" type="button" class="button button-septenary tiny"
+                    <button ng-show="!row.active && CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" type="button" class="button button-septenary tiny"
                             ng-click="customers[$index].showActivateModal=true">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                     </button>
-                    <button ng-if="row.manuallyAssignedLevelId" type="button"
+                    <button ng-show="row.manuallyAssignedLevelId && CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" type="button"
                             class="tiny button button-septenary-colorized"
                             ng-click="CustomerCtrl.removeManuallyLevel(row.id, true)">
                         <i class="fa fa-unlink" aria-hidden="true"></i>

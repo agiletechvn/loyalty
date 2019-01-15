@@ -3,7 +3,7 @@
 <div class="heading" ng-init="PosCtrl.getData()">
     <h1>{{ "pos.heading" | translate }}</h1>
     <div class="action-buttons">
-        <button class="medium button button-septenary-colorized" ui-sref="admin.add-pos">
+        <button ng-show="PosCtrl.AuthService.hasPermission('POS', 'MODIFY')" class="medium button button-septenary-colorized" ui-sref="admin.add-pos">
             {{ "pos.add" | translate }}
         </button>
     </div>
@@ -40,7 +40,7 @@
                     <span ng-bind="row.transactionsCount"></span>
                 </td>
                 <td data-title="'pos.actions'|translate">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="PosCtrl.AuthService.hasPermission('POS', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.edit-pos({posId: row.posId})">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>

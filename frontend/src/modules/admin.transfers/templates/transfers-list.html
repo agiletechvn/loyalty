@@ -1,12 +1,13 @@
+<script src="../TransferController.js"></script>
 <box-loader loading="TransferCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="1000"></box-loader>
 
 <div class="heading" ng-init="TransferCtrl.getData()">
     <h1>{{ "transfer.heading" | translate }}</h1>
     <div class="action-buttons">
-        <button class="medium button button-septenary-colorized" ng-click="TransferCtrl.openTransferModal()">
+        <button ng-show="TransferCtrl.AuthService.hasPermission('POINT_TRANSFER', 'MODIFY')" class="medium button button-septenary-colorized" ng-click="TransferCtrl.openTransferModal()">
             {{ "transfer.add_transfer" | translate }}
         </button>
-        <button class="medium button button-septenary-colorized" ng-click="TransferCtrl.openImportModal()">
+        <button ng-show="TransferCtrl.AuthService.hasPermission('POINT_TRANSFER', 'MODIFY')" class="medium button button-septenary-colorized" ng-click="TransferCtrl.openImportModal()">
             {{ "transfer.import" | translate }}
         </button>
     </div>
@@ -65,7 +66,7 @@
                             ng-click="transfers[$index].showModal=true">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
-                    <button type="button" ng-disabled="row.type=='spending' || row.type=='p2p_spending' || row.type=='p2p_adding' || row.state=='canceled'"
+                    <button ng-if="TransferCtrl.AuthService.hasPermission('POINT_TRANSFER', 'MODIFY')"  type="button" ng-disabled="row.type=='spending' || row.type=='p2p_spending' || row.type=='p2p_adding' || row.state=='canceled'"
                             class="button  button-septenary tiny" ng-click="transfers[$index].showRemoveModal=true">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>

@@ -1,5 +1,5 @@
 export default class UserController {
-    constructor($scope, $state, $stateParams, AuthService, UserService, Flash, EditableMap, NgTableParams, ParamsMap, $q, LevelService, Validation, $filter, DataService, PosService, TransferService) {
+    constructor($scope, $state, $stateParams, AuthService, UserService, RolesService, Flash, EditableMap, NgTableParams, ParamsMap, $q, LevelService, Validation, $filter, DataService, PosService, TransferService) {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             $state.go('admin-login')
         }
@@ -9,17 +9,20 @@ export default class UserController {
         this.UserService = UserService;
         this.Flash = Flash;
         this.EditableMap = EditableMap;
+        this.AuthService = AuthService;
         this.NgTableParams = NgTableParams;
         this.ParamsMap = ParamsMap;
         this.$state = $state;
         this.$q = $q;
         this.LevelService = LevelService;
+        this.RolesService = RolesService
         this.Validation = Validation;
         this.$filter = $filter;
         this.config = DataService.getConfig();
         this.userId = $stateParams.userId || null;
         this.loggedUserId = AuthService.getLoggedUserId();
         this.$scope.showMoreFields = this.loggedUserId != this.userId;
+        this.availableRoles = null;
         this.active = [
             {
                 name: this.$filter('translate')('global.active'),
@@ -38,11 +41,30 @@ export default class UserController {
             maxItems: 1
         };
 
+        this.rolesConfig = {
+            valueField: 'id',
+            labelField: 'name',
+            create: false,
+            plugins: ['remove_button'],
+            sortField: 'name',
+            maxItems: 1,
+            allowEmptyOption: true
+        };
+
         this.loaderStates = {
             userList: true,
             userDetails: true,
             coverLoader: true
         }
+
+        let rolesPromise = this.RolesService.getRolesList()
+            .then(
+                res => {
+                    this.availableRoles = res.roles;
+                }
+            );
+
+        this.dataPromise = this.$q.all([rolesPromise]);
     }
 
     getUserData() {
@@ -114,6 +136,15 @@ export default class UserController {
         let self = this;
         let validateFields = angular.copy(self.$scope.frontValidate);
 
+        //because of support single item field
+        if (editedUser.roles) {
+            editedUser.roles = new Array(String(editedUser.roles));
+        }
+
+        if (editedUser.roles && editedUser.roles[0] === '') {
+            delete editedUser.roles;
+        }
+
         let frontValidation = self.Validation.frontValidation(editedUser, validateFields);
         if (_.isEmpty(frontValidation)) {
             self.UserService.putUser(editedUser, self.loggedUserId != self.userId)
@@ -138,8 +169,12 @@ export default class UserController {
 
     create(newUser) {
         let self = this;
-        console.log(newUser);
         let validateFields = angular.copy(self.$scope.frontValidate);
+
+        //because of support single item field
+        if (newUser.roles) {
+            newUser.roles = new Array(String(newUser.roles));
+        }
 
         let frontValidation = self.Validation.frontValidation(newUser, validateFields);
         if (_.isEmpty(frontValidation)) {
@@ -164,4 +199,4 @@ export default class UserController {
     }
 }
 
-UserController.$inject = ['$scope', '$state', '$stateParams', 'AuthService', 'UserService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'LevelService', 'Validation', '$filter', 'DataService', 'PosService', 'TransferService'];
+UserController.$inject = ['$scope', '$state', '$stateParams', 'AuthService', 'UserService', 'RolesService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'LevelService', 'Validation', '$filter', 'DataService', 'PosService', 'TransferService'];

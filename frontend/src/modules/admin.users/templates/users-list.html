@@ -3,7 +3,7 @@
 <div class="heading" ng-init="UserCtrl.getData()">
     <h1>{{ "users.heading" | translate }}</h1>
     <div class="action-buttons">
-        <button class="medium button button-septenary-colorized" ui-sref="admin.add-user">
+        <button ng-show="UserCtrl.AuthService.hasPermission('ADMIN', 'MODIFY')" class="medium button button-septenary-colorized" ui-sref="admin.add-user">
             {{ "users.add" | translate }}
         </button>
     </div>
@@ -34,7 +34,7 @@
                     <span ng-bind="row.external ? ('global.yes' | translate) : ('global.no' | translate)"></span>
                 </td>
                 <td data-title="'users.actions'|translate">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="UserCtrl.AuthService.hasPermission('ADMIN', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.edit-user({userId: row.id})">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>

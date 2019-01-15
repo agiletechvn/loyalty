@@ -78,6 +78,7 @@ export default class AdminDataController {
         let frontValidation = self.Validation.frontValidation(edited, validateFields);
 
         if (_.isEmpty(frontValidation)) {
+            edited.id = undefined;
             self.AdminDataService.putAdminData(edited)
                 .then(
                     res => {

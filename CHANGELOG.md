@@ -4,7 +4,103 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [3.0.0] - 15-010-2018
+## [3.1.0] - 14-01-2019
+
+Note! In this version introduced a few features that breaks backward-compatibility.
+Note2! Check UPGRADE-3.1.md to see how to upgrade.
+
+### Added
+- Added Snapshots for Event Sourcing to increase performance
+- Added new options for expiring points in Settings -> Configuration (all time active / after x number of days / at the end of the month / at the end of the year) (new feature)
+- Added User Guide at https://open-loyalty.readthedocs.io
+- Added new ACL for administration panel (new feature) (BC break)
+- Added return "Voucher" for a customer during registration a return transaction (new feature)
+- Added information about active and used points to the export in levels
+- GET /api/admin/customer/{customerId}/status added information about points going to expire in next month
+- GET /api/seller/customer/{customerId}/status added information about points going to expire in next month
+- GET /api/customer/{customerId}/status added information about points going to expire in next month
+- Added option "Fulfillment Tracking Process" to the Reward Campaign so an administration is able to change reward status (ordered / delivered / canceled / shipped) (new feature)
+- Added usage datetime of coupon in the GET /api/campaign/bought
+- Added an option at Settings -> Configuration to disable edit customer profile by himself except password change (new feature)
+- Added new filters "isFeatured", "hasSegment", "categoryId[]", "format" to GET /api/campaign/public/available
+- Added an integration with Pushy to send push notifications (new feature)
+- Added missing configuration to notify a customer a X number of days before level expires using Webhooks
+- GET /api/admin/customer/{customerId}/status added information about points expiration per day
+- GET /api/seller/customer/{customerId}/status added information about points expiration per day
+- GET /api/customer/{customerId}/status added information about points points expiration per day
+- Added limitation by POS, segments and levels in the Earning Rule with type "Geolocation"
+- Added sending information about rewards that became available for a customer using push notifications (new feature)
+- Added new types of "Usage limit active" for "Custom event rule" in Earning rule
+- Added an configuration (simple/advanced) in the app/config/parameters.yml to change password requirements
+- Added an configuration in the app/config/parameters.yml to change the length of activation code sent using SMS activation method
+- Added upload avatar for a customer profile (new feature)
+- Added support for IE 11 for an administration panel
+- Added POST /api/customer/earnRule/{eventName} to call "Custom event" Earning Rule with customer JWT Token
+- Added migration mechanism using Doctrine Migrations (new feature)
+
+### Changed
+- Prevent from registering a return transaction for non-existing transaction by documentNumber field
+- Prevent marking coupon as Unused by a customer
+- Changed Nginx version to 1.14.1 
+- PUT /api/customer/{customer} works now as a partial update instead of full update (BC break)
+- Earning Rule with type "Geolocation" accepts now coordinates with five digits after decimal point
+- Increased php-fpm start processes to 5, min processes to 3 and max processes to 20
+- Increased php-fpm memory limit to 512MB
+- PHP-FPM is now configurable using docker/prod/php/conf/php-fpm-pool.conf
+- Changed translation in Settings - Notify user from "Days to level recalculation" to "Days before level recalculation to notify user"
+- Updated the documentation how to add a new segment
+- Disabled remove already redeemed coupons by a customer from Reward Campaign
+- Renamed GET /api/campaign/public/featured to GET /api/campaign/public/available
+- Removed filter "isPublic" from GET /api/campaign/public/available
+- Changed how projections to the Elasticsearch works by making them independent of each other
+- Changed ol__setings table by adding a unique constraint for setting_key column
+- Changed invitation process when SMS activation method is enabled POST /api/invitations/invite (BC break)
+- Changed crons by adding flock
+- Changed default sorting to "order" for categories of Reward Campaign in the administration panel
+- Removed "program_name" parameter from app/config/parameters.yml
+
+### Fixed
+- Fixed calling API endpoints starting with /api/customer by an administrator using X-AUTH-TOKEN
+- Fixed marking coupon as Used / Unused by an administrator
+- Fixed calculating level based on "Active points"
+- Fixed calculating level based on "Total points earned since last level recalculation"
+- Fixed automatically assign a birth date to the customer during update
+- Fixed PUT /api/customer/{customer} so it won't remove labels accidentally
+- Fixed translate level name on GET /api/customer/status?_locale={locale} according to the locale passed in the query parameter
+- Fixed 500 error while registering a new transaction when at least one Earning Rule has set option "All time active"
+- Fixed that an administrator see only "Example_coupon" on the Reward Campaign's edit page
+- Fixed adding points manually so it now has an impact on customer level
+- Fixed 500 error when now level with condition value equal zero is defined
+- Fixed activating and expiring coupons
+- Fixed 500 error during creating Reward Campaign with type "Instant Reward"
+- Fixed removing a language from the configuration
+- Fixed logo size on the administration panel sites
+- Fixed adding a new customer by an administrator in specific system configuration
+- Fixed using Earning Rule with type "QR code"
+- Fixed changing type of Earning Rule during creating a new one
+- Fixed forgot password when customers phone number was changed
+- Fixed usageLeftForCustomer value in GET /api/customer/campaign/available for single coupon
+- Fixed filtering by date in redeemed rewards table
+- Fixed remove field value while edit Reward Campaign in the administration panel
+- Fixed sorting GET /api/admin/customer/{customer}/campaign/available using sort=campaignVisibility.visibleFrom
+- Fixed GET /admin/analytics/points to show a correct number of spent points in loyalty program
+- Fixed 500 error while buy reward campaign in POST /api/admin/customer/{customer}/campaign/{campaign}/buy
+- Fixed crons for expire or activate coupons
+- Fixed 500 error when a transaction missed a required documentNumber field POST /api/transaction
+- Fixed supervisord in the production docker image
+- Fixed edit customer profile automatically set a manual level and disabled level change
+- Fixed selectbox shows only 10 segments while create Reward Campaign or Earning Rule
+- Fixed missing markdown for shortDescription in the Reward Campaign
+- Fixed unable to extend section with default language
+- Fixed showing a customer in the more than one level list at the same time GET /api/level/{levelId}/customers
+- Fixed import transaction using the same documentNumber more then once
+- Fixed mark coupon as used by an administrator POST /api/admin/campaign/coupons/mark_as_used (BC break)
+- Fixed 500 error while import transactions without or with invalid posId
+- Fixed Earning Rule with type "Account created" that was never called
+- Fixed "Timezone" setting at Settings -> Configuration
+- Fixed value of "usageLeftForCustomer" in GET /api/customer/campaign/available when single coupon used
+
+## [3.0.0] - 15-10-2018
 
 ### Added
 - multi photos for reward campaigns (new feature)

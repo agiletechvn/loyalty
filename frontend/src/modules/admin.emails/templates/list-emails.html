@@ -17,7 +17,7 @@
                     <span ng-bind="row.subject || ('global.not_set'|translate)"></span>
                 </td>
                 <td data-title="'admin.emails.edit'|translate">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="EmailsCtrl.AuthService.hasPermission('SETTINGS', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.emails_edit({emailId: row.id})"
                             style="margin-bottom:5px;">
                         <i class="fa fa-pencil" aria-hidden="true"></i>

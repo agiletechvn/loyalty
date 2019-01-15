@@ -7,6 +7,7 @@ export default class TransactionController {
             AuthService.logout();
         }
         this.TransactionService = TransactionService;
+        this.AuthService = AuthService;
         this.CustomerService = CustomerService;
         this.Validation = Validation;
         this.ParamsMap = ParamsMap;

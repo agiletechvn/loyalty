@@ -4,7 +4,7 @@
     <h1>{{ "earning_rule.heading" | translate }}</h1>
     <div class="action-buttons">
 
-        <button class="medium button button-septenary-colorized" ui-sref="admin.add-earning-rule">
+        <button ng-show="EarningRuleCtrl.AuthService.hasPermission('EARNING_RULE', 'MODIFY')" class="medium button button-septenary-colorized" ui-sref="admin.add-earning-rule">
             {{ "earning_rule.add" | translate }}
         </button>
     </div>
@@ -25,7 +25,7 @@
                     <span ng-bind="row.description"></span>
                 </td>
                 <td data-title="'earning_rule.active'|translate" sortable="'active'">
-                        <span>
+                        <span ng-show="EarningRuleCtrl.AuthService.hasPermission('EARNING_RULE', 'MODIFY')">
                             <button
                                     ng-if="row.active"
                                     class="tiny button button-septenary-colorized"
@@ -40,6 +40,14 @@
                             >
                                 {{'global.inactive'|translate}}
                             </button>
+                        </span>
+                        <span ng-show="!EarningRuleCtrl.AuthService.hasPermission('EARNING_RULE', 'MODIFY')">
+                            <span ng-if="row.active">
+                                {{'global.active'|translate}}
+                            </span>
+                            <span ng-if="!row.active">
+                                {{'global.inactive'|translate}}
+                            </span>
                         </span>
                 </td>
                 <td data-title="'earning_rule.start_at'|translate" sortable="'startAt'">
@@ -58,7 +66,7 @@
                             ng-click="earningRules[$index].showModal=true">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="EarningRuleCtrl.AuthService.hasPermission('EARNING_RULE', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.edit-earning-rule({earningRuleId: row.earningRuleId})"
                             style="margin-bottom:5px;">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -194,11 +202,11 @@
             <td><b>{{ "earning_rule.multiplier" | translate }}</b></td>
             <td><span>{{ rule.multiplier }}</span></td>
         </tr>
-        <tr>
+        <tr ng-show="rule.type != 'event' || rule.eventName != 'oloy.account.created'">
             <td><b>{{ "earning_rule.segments" | translate }}</b></td>
             <td><label class="label label-default" ng-repeat="(key, value) in rule.segmentNames">{{ value }}</label></td>
         </tr>
-        <tr>
+        <tr ng-show="rule.type != 'event' || rule.eventName != 'oloy.account.created'">
             <td><b>{{ "earning_rule.levels" | translate }}</b></td>
             <td><label class="label label-default" ng-repeat="(key, value) in rule.levelNames">{{ value }}</label></td>
         </tr>

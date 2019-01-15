@@ -6,6 +6,7 @@ export default class TranslationsController {
         this.TranslationsService = TranslationsService;
         this.TranslationService = TranslationService;
         this.$translate = $translate;
+        this.AuthService = AuthService;
         this.$scope = $scope;
         this.$state = $state;
         this.Flash = Flash;

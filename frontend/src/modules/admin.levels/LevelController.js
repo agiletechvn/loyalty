@@ -6,6 +6,7 @@ export default class LevelController {
         this.$scope = $scope;
         this.LevelService = LevelService;
         this.$state = $state;
+        this.AuthService = AuthService;
         this.Flash = Flash;
         this.levelId = $stateParams.levelId || null;
         this.levelName = $stateParams.levelName || null;

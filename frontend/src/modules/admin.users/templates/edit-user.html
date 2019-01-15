@@ -39,6 +39,19 @@
                     </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
+                            <label>{{ "users.roles" | translate }}<span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="validate.roles.errors">
+                            <selectize 
+                                config="UserCtrl.rolesConfig" 
+                                options="UserCtrl.availableRoles" 
+                                ng-model="editableFields.roles">
+                            </selectize>
+                            <span class="prompt">{{ "users.roles_prompt" | translate }} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-2 small-3 columns">
                             <label>{{ "users.phone" | translate }}</label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.phone.errors">

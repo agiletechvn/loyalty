@@ -42,6 +42,15 @@
                             <span class="prompt">{{ "admin.emails.prompt" | translate }}</span>
                         </div>
                     </div>
+                    <div class="row" ng-if="editableFields.entity.key === 'OpenLoyaltyUserBundle:email:reward_redeemed.html.twig'">
+                        <div class="medium-2 small-3 columns">
+                            <label>{{ "admin.emails.receiver_email" | translate }} <span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns">
+                            <input type="text" ng-model="editableFields.entity.receiver_email" required>
+                            <span class="prompt">{{ "admin.emails.prompt" | translate }}</span>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "admin.emails.variables" | translate }} <span class="required">*</span></label>

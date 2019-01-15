@@ -316,6 +316,33 @@ export default class CampaignService {
     }
 
     /**
+     * Calls for delivery statuses
+     *
+     * @method getDeliveryStatuses
+     * @returns {Promise}
+     */
+    getDeliveryStatuses() {
+        return this.Restangular.one('settings').one('choices').one('deliveryStatus').get();
+    }
+
+
+    /**
+     * Change delivery status
+     *
+     * @method putDeliveryStatus
+     * @param {Object} deliveryStatus
+     * @param {Integer} customerId
+     * @param {Integer} couponId
+     * @returns {Promise}
+     */
+    putDeliveryStatus(deliveryStatus, customerId, couponId) {
+        let self = this;
+
+        return self.Restangular.one('admin').one('customer', customerId).one('bought').one('coupon', couponId).one('changeDeliveryStatus')
+            .customPUT({ deliveryStatus: { status: deliveryStatus} });
+    }
+
+    /**
      * Calls for campaign categories
      *
      * @method getCategories

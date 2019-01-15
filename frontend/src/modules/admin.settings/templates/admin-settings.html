@@ -77,7 +77,7 @@
                             <div ng-show="conditionsFilePath" class="campainFileWrapper">
                                 <span class="prompt">{{ conditionsFileUrl }}</span>
                                 <button class="button button-septenary-colorized text-uppercase" style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
-                                    type="button" ng-click="SettingsCtrl.deleteConditionsFile()">
+                                        type="button" ng-click="SettingsCtrl.deleteConditionsFile()">
                                     {{ "global.remove" | translate }}
                                 </button>
                             </div>
@@ -121,19 +121,23 @@
                     </div>
                     <div class="row">
                         <div class="small-3 medium-2 columns">
-                            <label>{{ "settings.all_time_active" | translate }}</label>
+                            <label>{{ "settings.point_will_expire_after" | translate }}</label>
                         </div>
-                        <div class="small-9 medium-10 columns" form-validation="validate.allTimeActive.errors">
-                            <checkbox ng-model="settings.allTimeActive"></checkbox>
-                            <span class="prompt">{{ "settings.all_time_active_prompt"|translate}}</span>
+                        <div class="small-9 medium-10 columns" form-validation="validate.pointsDaysExpiryAfter.errors">
+                            <selectize
+                                    ng-model="settings.pointsDaysExpiryAfter"
+                                    options="SettingsCtrl.pointsExpireAfterOptions"
+                                    config="SettingsCtrl.pointExpireAfterConfig"
+                                    required>
+                            </selectize>
                         </div>
                     </div>
-                    <div class="row" ng-show="!settings.allTimeActive">
+                    <div class="row" ng-show="settings.pointsDaysExpiryAfter === 'after_x_days'">
                         <div class="small-3 medium-2 columns">
-                            <label>{{ "settings.points_days_active" | translate }}<span class="required" ng-show="!settings.allTimeActive">*</span></label>
+                            <label>{{ "settings.points_days_active" | translate }}<span class="required">*</span></label>
                         </div>
-                        <div class="small-9 medium-10 columns" form-validation="validate.pointsDaysActive.errors">
-                            <input ng-model="settings.pointsDaysActive" type="number" required>
+                        <div class="small-9 medium-10 columns" form-validation="validate.pointsDaysActiveCount.errors">
+                            <input ng-model="settings.pointsDaysActiveCount" type="number" required>
                             <span class="prompt">{{ "settings.points_days_active_prompt"|translate}}</span>
                         </div>
                     </div>
@@ -166,8 +170,17 @@
                     </div>
                     <div class="row">
                         <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.allow_customers_profile_edits" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.allowCustomersProfileEdits.errors">
+                            <checkbox ng-model="settings.allowCustomersProfileEdits"></checkbox>
+                            <span class="prompt">{{ "settings.allow_customers_profile_edits_prompt"|translate}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
                             <label>{{ "settings.expire_points_notification_days" | translate }}<span class="required"
-                                    ng-show="!settings.allTimeNotLocked">*</span></label>
+                                                                                                     ng-show="!settings.allTimeNotLocked">*</span></label>
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.expirePointsNotificationDays.errors">
                             <input ng-model="settings.expirePointsNotificationDays" type="number" required>
@@ -183,14 +196,22 @@
                             <span class="prompt">{{ "settings.expire_coupons_notification_days_prompt"|translate}}</span>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.expire_levels_notification_days" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns" form-validation="validate.expireLevelsNotificationDays.errors">
+                            <input ng-model="settings.expireLevelsNotificationDays" type="number" required>
+                            <span class="prompt">{{ "settings.expire_levels_notification_days_prompt"|translate}}</span>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="small-3 medium-2 columns">
                             <label>{{ "settings.tier_assign_type" | translate }}<span class="required">*</span></label>
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.tierAssignType.errors">
                             <selectize ng-model="settings.tierAssignType" options="SettingsCtrl.tiers" config="SettingsCtrl.tierConfig"
-                                required></selectize>
+                                       required></selectize>
                             <span class="prompt">{{ "settings.tier_assign_type_prompt"|translate}}</span>
                         </div>
                     </div>
@@ -222,6 +243,7 @@
                         </div>
                     </div>
                 </fieldset>
+
                 <fieldset class="fieldset" ng-if="settings.tierAssignType === 'points'">
                     <legend>{{"settings.level_downgrade.title"|translate}}</legend>
                     <div class="row">
@@ -230,7 +252,7 @@
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.levelDowngradeMode.errors">
                             <selectize config="SettingsCtrl.downgradeModeConfig" options="SettingsCtrl.downgradeModes"
-                                ng-model="settings.levelDowngradeMode"></selectize>
+                                       ng-model="settings.levelDowngradeMode"></selectize>
                             <span class="prompt">{{ "settings.level_downgrade.mode_prompt"|translate}}</span>
                         </div>
                     </div>
@@ -249,7 +271,7 @@
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.levelDowngradeBase.errors">
                             <selectize config="SettingsCtrl.downgradeBaseConfig" options="SettingsCtrl.downgradeBases"
-                                ng-model="settings.levelDowngradeBase"></selectize>
+                                       ng-model="settings.levelDowngradeBase"></selectize>
                             <span class="prompt">{{ "settings.level_downgrade.base_prompt"|translate}}</span>
                         </div>
                     </div>
@@ -261,6 +283,7 @@
                         </div>
                     </div>
                 </fieldset>
+
                 <fieldset class="fieldset">
                     <legend>{{"settings.template"|translate}}</legend>
                     <div class="row">
@@ -292,7 +315,7 @@
                             <div ng-show="logoFilePath" class="campainFileWrapper">
                                 <img ng-src="{{SettingsCtrl.generateLogoRoute()}}" style="display: inline-block; background-color: #ccc;" />
                                 <button class="button button-septenary-colorized text-uppercase" style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
-                                    type="button" ng-click="SettingsCtrl.deleteLogo()">
+                                        type="button" ng-click="SettingsCtrl.deleteLogo()">
                                     {{ "global.remove" | translate }}
                                 </button>
                             </div>
@@ -309,7 +332,7 @@
                             <div ng-show="bigLogoFilePath" class="campainFileWrapper">
                                 <img ng-src="{{SettingsCtrl.generateBigLogoRoute()}}" style="display: inline-block; background-color: #ccc;" />
                                 <button class="button button-septenary-colorized text-uppercase" style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
-                                    type="button" ng-click="SettingsCtrl.deleteBigLogo()">
+                                        type="button" ng-click="SettingsCtrl.deleteBigLogo()">
                                     {{ "global.remove" | translate }}
                                 </button>
                             </div>
@@ -326,7 +349,7 @@
                             <div ng-show="smallLogoFilePath" class="campainFileWrapper">
                                 <img ng-src="{{SettingsCtrl.generateSmallLogoRoute()}}" style="display: inline-block; background-color: #ccc;" />
                                 <button class="button button-septenary-colorized text-uppercase" style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
-                                    type="button" ng-click="SettingsCtrl.deleteSmallLogo()">
+                                        type="button" ng-click="SettingsCtrl.deleteSmallLogo()">
                                     {{ "global.remove" | translate }}
                                 </button>
                             </div>
@@ -343,16 +366,16 @@
                             <div ng-show="heroImageFilePath" class="campainFileWrapper">
                                 <img ng-src="{{SettingsCtrl.generateHeroImageRoute()}}" style="display: inline-block; background-color: #ccc;" />
                                 <button class="button button-septenary-colorized text-uppercase" style="margin-bottom:0; padding:0.95em; vertical-align: top; display: inline-block;"
-                                    type="button" ng-click="SettingsCtrl.deleteHeroImage()">
+                                        type="button" ng-click="SettingsCtrl.deleteHeroImage()">
                                     {{ "global.remove" | translate }}
                                 </button>
                             </div>
                         </div>
                     </div>
                 </fieldset>
+
                 <fieldset class="fieldset">
                     <legend>{{"settings.statuses"|translate}}</legend>
-
 
                     <div class="row">
                         <div class="small-3 medium-2 columns">
@@ -360,11 +383,10 @@
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.customerStatusesEarning.errors">
                             <selectize ng-model="settings.customerStatusesEarning" options="availableCustomerStatuses"
-                                config="SettingsCtrl.customerStatusesEarningConfig" required></selectize>
+                                       config="SettingsCtrl.customerStatusesEarningConfig" required></selectize>
                             <span class="prompt">{{ "settings.customerStatusesEarning_prompt"|translate}}</span>
                         </div>
                     </div>
-
 
                     <div class="row">
                         <div class="small-3 medium-2 columns">
@@ -372,7 +394,7 @@
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.customerStatusesSpending.errors">
                             <selectize ng-model="settings.customerStatusesSpending" options="availableCustomerStatuses"
-                                config="SettingsCtrl.customerStatusesSpendingConfig" required></selectize>
+                                       config="SettingsCtrl.customerStatusesSpendingConfig" required></selectize>
                             <span class="prompt">{{ "settings.customerStatusesSpending_prompt"|translate}}</span>
                         </div>
                     </div>
@@ -386,7 +408,7 @@
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.accountActivationMethod.errors">
                             <selectize ng-model="settings.accountActivationMethod" options="availableAccountActivationMethods"
-                                config="SettingsCtrl.accountActivationMethodsConfig" required></selectize>
+                                       config="SettingsCtrl.accountActivationMethodsConfig" required></selectize>
                             <span class="prompt">{{ "settings.account_activation_method_prompt"|translate}}</span>
                         </div>
                     </div>
@@ -394,7 +416,7 @@
                     <div class="row" ng-repeat="config in smsGatewayConfig" ng-show="settings.accountActivationMethod == 'sms'">
                         <div class="small-3 medium-2 columns">
                             <label>{{ "settings."+config.name | translate }}<span ng-if="settings.accountActivationMethod == 'sms'"
-                                    class="required">*</span></label>
+                                                                                  class="required">*</span></label>
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate[config.name].errors" ng-if="config.type == 'text'">
                             <input type="text" ng-model="settings[config.name]" ng-required="settings.accountActivationMethod == 'sms'">
@@ -444,6 +466,19 @@
                                 <input type="number" ng-model="settings[vendor][field.name]" ng-required="settings.marketingVendorsValue == vendor">
                                 <span class="prompt">{{ "settings."+vendor+"."+field.name+"_prompt"|translate}}</span>
                             </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset">
+                    <legend>{{"settings.push_notification"|translate}}</legend>
+                    <div class="row">
+                        <div class="small-3 medium-2 columns">
+                            <label>{{ "settings.pushy_secret_key" | translate }}</label>
+                        </div>
+                        <div class="small-9 medium-10 columns">
+                            <input type="text" ng-model="settings.pushySecretKey" required>
+                            <span class="prompt">{{ "settings.pushy_secret_key_prompt"|translate}}</span>
                         </div>
                     </div>
                 </fieldset>

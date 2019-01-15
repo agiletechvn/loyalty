@@ -3,7 +3,7 @@
 <div class="heading" ng-init="CampaignCtrl.getCategoryData()">
     <h1>{{ "campaign.category.heading" | translate }}</h1>
     <div class="action-buttons">
-        <button class="medium button button-septenary-colorized" ui-sref="admin.add-campaign-category">
+        <button ng-show="CampaignCtrl.AuthService.hasPermission('REWARD_CAMPAIGN', 'MODIFY')" class="medium button button-septenary-colorized" ui-sref="admin.add-campaign-category">
             {{ "campaign.category.add" | translate }}
         </button>
     </div>
@@ -25,7 +25,7 @@
                     <span ng-bind="row.sortOrder"></span>
                 </td>
                 <td data-title="'campaign.category.active'|translate" sortable="'active'">
-                        <span>
+                        <span ng-show="CampaignCtrl.AuthService.hasPermission('REWARD_CAMPAIGN', 'MODIFY')">
                             <button
                                     ng-if="row.active"
                                     class="tiny button button-septenary-colorized"
@@ -41,9 +41,17 @@
                                 {{'global.inactive'|translate}}
                             </button>
                         </span>
+                        <span ng-show="!CampaignCtrl.AuthService.hasPermission('REWARD_CAMPAIGN', 'MODIFY')">
+                            <span ng-if="row.active">
+                                {{'global.active'|translate}}
+                            </span>
+                            <span ng-if="!row.active">
+                                {{'global.inactive'|translate}}
+                            </span>
+                        </span>
                 </td>
                 <td data-title="'Actions'">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="CampaignCtrl.AuthService.hasPermission('REWARD_CAMPAIGN', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.edit-campaign-category({campaignCategoryId: row.campaignCategoryId})">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>

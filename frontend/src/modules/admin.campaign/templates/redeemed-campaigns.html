@@ -1,6 +1,6 @@
 <box-loader loading="CampaignCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="500"></box-loader>
 
-<div class="heading" ng-init="CampaignCtrl.getRedeemedCampaigns()">
+<div class="heading" ng-init="CampaignCtrl.getRedeemedCampaigns(); CampaignCtrl.getDeliveryStatuses()">
     <h1>{{ "campaign.redeemed_heading" | translate }}</h1>
     &nbsp;
     <button class="medium button button-septenary-colorized" ng-click="exportBoughtCampaignsReport=true">
@@ -20,8 +20,12 @@
            template-pagination="templatePagination.html">
       <tr ng-repeat="row in $data">
         <td data-title="'campaign.reward_redeem_date'|translate" sortable="'purchasedAt'" filter="{ purchasedAt: 'rewards-by-date'}">
-          <span ng-bind="row.purchasedAt|date : 'yyyy-MM-dd HH:mm'"></span>
+          <span ng-bind="row.purchasedAt|date : 'yyyy-MM-dd HH:mm:ss'"></span>
         </td>
+          <td data-title="'campaign.usage_date'|translate" sortable="'usageDate'" filter="{ usageDate: 'rewards-by-usage-date'}">
+              <span ng-if="row.usageDate" ng-bind="row.usageDate|date : 'yyyy-MM-dd HH:mm:ss'"></span>
+              <span ng-if="!row.usageDate">---</span>
+          </td>
         <td data-title="'campaign.cost_in_points'|translate">
           <span>{{row.costInPoints}}</span>
         </td>
@@ -49,14 +53,31 @@
         <td data-title="'campaign.current_points_amount'|translate">
           <span>{{row.currentPointsAmount}}</span>
         </td>
+        <td data-title="'campaign.delivery_status'|translate" filter="{deliveryStatus: 'deliveryStatusesSelectOptions'}" sortable="'deliveryStatus'">
+          <selectize
+            ng-if="row.campaignType === 'gift_code' && row.used"
+            config="CampaignCtrl.statusConfig"
+            options="CampaignCtrl.deliveryStatusesHumanized" 
+            ng-model="row.deliveryStatus.status"
+            class="m-w100"
+            ng-change="CampaignCtrl.setDeliveryStatus(row.deliveryStatus.status, row.customerId, row.coupon.id)"
+          >
+          </selectize>
+          <span ng-if="row.deliveryStatus.status !== '' && ((row.campaignType === 'gift_code' && !row.used) || row.campaignType !== 'gift_code')">
+              {{'campaign.delivery_statuses.'+row.deliveryStatus.status|translate}}
+          </span>
+        </td>
         <td data-title="'campaign.delivered'|translate" filter="{used: 'campaignsUsageSelectOptions'}">
           <checkbox ng-model="row.used"
-                    ng-click="CampaignCtrl.updateCampaignUsage(row.customerId, row.campaignId, row.coupon.code, row.used)"
-                    ng-if="row.campaign.reward != 'cashback' && row.canBeUsed"
+                    ng-click="CampaignCtrl.updateCampaignUsage(row.customerId, row.campaignId, row.coupon.code, row.coupon.id, row.used)"
+                    ng-if="row.campaign.reward != 'cashback'"
           />
           <span ng-if="row.campaign.reward == 'cashback'">---</span>
-          <span ng-if="!row.canBeUsed && row.used == true">{{'campaign.usage_types.true'|translate}}</span>
-          <span ng-if="!row.canBeUsed && row.used != true">{{'campaign.usage_types.false'|translate}}</span>
+        </td>
+        <td data-title="'campaign.actions'|translate">
+            <button type="button" class="button  button-quinary tiny" ng-click="redeemedCampaigns[$index].showModal=true">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
         </td>
       </tr>
     </table>
@@ -83,12 +104,66 @@
     </form>
 </modal>
 
+<modal ng-repeat="row in redeemedCampaigns" show='redeemedCampaigns[$index].showModal'
+       modalId="{{row.coupon.id}}" modal-title="'campaign.details' | translate">
+    <table class="default">
+        <tbody>
+            <tr>
+                <td><b>{{ "campaign.customer_name" | translate }}:</b></td>
+                <td><span ng-bind="row.customerName || '---'"></span></td>
+            </tr>
+            <tr>
+                <td><b>{{ "campaign.customer_lastname" | translate }}:</b></td>
+                <td><span ng-bind="row.customerLastname || '---'"></span></td>
+            </tr>
+
+            <tr>
+                <td><b>{{ "campaign.campaign_shipping_address.street" | translate }}:</b></td>
+                <td><span ng-bind="row.campaignShippingAddress.street || '---'"></span></td>
+            </tr>
+            <tr>
+                <td><b>{{ "campaign.campaign_shipping_address.house_number" | translate }}:</b></td>
+                <td><span ng-bind="row.campaignShippingAddress.address1 || '---'"></span></td>
+            </tr>
+            <tr>
+                <td><b>{{ "campaign.campaign_shipping_address.building_number" | translate }}:</b></td>
+                <td><span ng-bind="row.campaignShippingAddress.address2 || '---'"></span></td>
+            </tr>
+            <tr>
+                <td><b>{{ "campaign.campaign_shipping_address.voivodeship" | translate }}:</b></td>
+                <td><span ng-bind="row.campaignShippingAddress.province || '---'"></span></td>
+            </tr>
+            <tr>
+                <td><b>{{ "campaign.campaign_shipping_address.city" | translate }}:</b></td>
+                <td><span ng-bind="row.campaignShippingAddress.city || '---'"></span></td>
+            </tr>
+            <tr>
+                <td><b>{{ "campaign.campaign_shipping_address.postal_code" | translate }}:</b></td>
+                <td><span ng-bind="row.campaignShippingAddress.postal || '---'"></span></td>
+            </tr>
+            <tr>
+                <td><b>{{ "campaign.campaign_shipping_address.country" | translate }}:</b></td>
+                <td><span ng-bind="row.campaignShippingAddress.country || '---'"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</modal>
+
 <script type="text/ng-template" id="ng-table/filters/campaignsUsageSelectOptions.html">
   <selectize ng-disabled="$filterRow.disabled" options="CampaignCtrl.campaignsUsageSelectOptions"
              config="CampaignCtrl.campaignUsageSelectConfig" ng-model="params.filter()[name]">
   </selectize>
 </script>
+<script type="text/ng-template" id="ng-table/filters/deliveryStatusesSelectOptions.html">
+  <selectize ng-disabled="$filterRow.disabled" options="CampaignCtrl.deliveryStatusesSelectOptions"
+              config="CampaignCtrl.deliveryStatusSelectConfig" ng-model="params.filter()[name]">
+  </selectize>
+</script>
 <script type="text/ng-template" id="ng-table/filters/rewards-by-date.html">
+    <label>{{'campaign.date_from'|translate}} <input class="form-control date-picker" datepicker type="text" ng-model="params.filter()[name+'From']"/></label>
+    <label>{{'campaign.date_to'|translate}} <input class="form-control date-picker" datepicker type="text" ng-model="params.filter()[name+'To']"/></label>
+</script>
+<script type="text/ng-template" id="ng-table/filters/rewards-by-usage-date.html">
     <label>{{'campaign.date_from'|translate}} <input class="form-control date-picker" datepicker type="text" ng-model="params.filter()[name+'From']"/></label>
     <label>{{'campaign.date_to'|translate}} <input class="form-control date-picker" datepicker type="text" ng-model="params.filter()[name+'To']"/></label>
 </script>

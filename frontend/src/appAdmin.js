@@ -32,6 +32,7 @@ import 'angular-loading-bar';
 import 'ace-angular';
 import 'simplemde/dist/simplemde.min.css';
 import 'ng-simplemde';
+import 'ng-showdown';
 
 
 // global styles
@@ -105,6 +106,7 @@ require('./modules/admin.transactions/module.js');
 require('./modules/admin.transfers/module.js');
 require('./modules/admin.translations/module.js');
 require('./modules/admin.users/module.js');
+require('./modules/admin.roles/module.js');
 require('./modules/admin.emails/module.js');
 require('./modules/admin.logs/module.js');
 
@@ -145,10 +147,12 @@ angular.module('OpenLoyalty', [
      'admin.transactions',
      'admin.transfers',
      'admin.translations',
+     'admin.roles',
      'admin.users',
      'admin.emails',
      'admin.logs',
-     'simplemde'
+     'simplemde',
+     'ng-showdown'
 ])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider, RestangularProvider, $translateProvider, $locationProvider, cfpLoadingBarProvider) {
         let config = window.OpenLoyaltyConfig;

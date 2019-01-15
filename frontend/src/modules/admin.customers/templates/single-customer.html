@@ -3,7 +3,7 @@
 <div class="heading" ng-init="CustomerCtrl.getCustomerData()">
     <h1>{{ customer.firstName + ' ' + customer.lastName }}</h1>
     <div class="action-buttons">
-        <button class="medium button button-septenary-colorized"
+        <button ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" class="medium button button-septenary-colorized"
                 ui-sref="admin.edit-customer({customerId: customer.id})">
             {{ "customer.edit" | translate }}
         </button>
@@ -38,7 +38,7 @@
             <div class="box-title">
                 <h1>{{ "customer.profile_details"|translate }}
                     <div class="action-buttons float-right">
-                        <button class="tiny button button-primary"
+                        <button ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" class="tiny button button-primary"
                                 style="margin-top: 8px;"
                                 ui-sref="admin.edit-customer({customerId: customer.id})">
                             <i class="fa fa-pencil" style="padding:0!important"></i>
@@ -82,7 +82,7 @@
                 <h1>
                     {{ "customer.agreements"|translate }}
                     <div class="action-buttons float-right">
-                        <button class="tiny button button-primary"
+                        <button ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" class="tiny button button-primary"
                                 style="margin-top: 8px;"
                                 ui-sref="admin.edit-customer({customerId: customer.id})">
                             <i class="fa fa-pencil" style="padding:0!important"></i>
@@ -116,7 +116,7 @@
             </div>
         </div>
 
-        <div class="box no-margin">
+        <div ng-show="CustomerCtrl.AuthService.hasPermission('SEGMENT', 'VIEW')" class="box no-margin">
             <div class="box-title">
                 <h1>
                     {{ "customer.segments"|translate }}
@@ -132,11 +132,11 @@
             </div>
         </div>
 
-        <div class="box no-margin">
+        <div ng-show="CustomerCtrl.AuthService.hasPermission('LEVEL', 'VIEW')" class="box no-margin">
             <div class="box-title">
                 <h1>{{ "customer.assigned_level"|translate }}
                     <div class="action-buttons float-right">
-                        <button class="tiny button button-septenary"
+                        <button ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" class="tiny button button-septenary"
                                 style="margin-top: 8px;"
                                 ng-click="CustomerCtrl.showAvailableLevelsModal=true">
                             <i class="fa fa-pencil" style="padding:0!important"></i>
@@ -182,7 +182,7 @@
                     <tr ng-if="customer.manuallyAssignedLevelId">
                         <td><b>{{ "level.assigned_manually"|translate }}:</b></td>
                         <td>
-                            <a class="tiny button button-septenary-colorized" style="margin-bottom:3px"
+                            <a ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" class="tiny button button-septenary-colorized" style="margin-bottom:3px"
                                ng-click="CustomerCtrl.removeManuallyLevel(customer.id, false)">
                                 {{ "global.unlink"|translate }}
                             </a>
@@ -193,11 +193,11 @@
             </div>
         </div>
 
-        <div class="box no-margin">
+        <div ng-show="CustomerCtrl.AuthService.hasPermission('POS', 'VIEW')" class="box no-margin">
             <div class="box-title">
                 <h1>{{ "customer.assigned_pos"|translate }}
                     <div class="action-buttons float-right">
-                        <button class="tiny button button-primary"
+                        <button ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')" class="tiny button button-primary"
                                 style="margin-top: 8px;"
                                 ng-click="CustomerCtrl.showAvailablePosModal=true">
                             <i class="fa fa-pencil" style="padding:0!important"></i>
@@ -223,7 +223,7 @@
                 </table>
             </div>
         </div>
-        <div class="box no-margin">
+        <div ng-show="CustomerCtrl.AuthService.hasPermission('SELLER', 'VIEW')" class="box no-margin">
             <div class="box-title">
                 <h1>
                     {{ "customer.assigned_seller"|translate }}
@@ -338,14 +338,14 @@
         <div class="row">
             <div class="column medium-12 small-12 medium-centered customer-tabs" style="margin-top: 20px;">
                 <ul class="tabs text-center" data-tabs id="example-tabs">
-                    <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">{{
+                    <li ng-show="CustomerCtrl.AuthService.hasPermission('TRANSACTION', 'VIEW')" class="tabs-title is-active"><a href="#panel1" aria-selected="true">{{
                         "customer.tabs.transactions"|translate }}</a></li>
-                    <li class="tabs-title"><a href="#panel2">{{ "customer.tabs.transfers"|translate }}</a></li>
-                    <li class="tabs-title"><a href="#panel3">{{ "customer.tabs.campaigns"|translate }}</a></li>
-                    <li class="tabs-title"><a href="#panel4">{{ "customer.tabs.rewards"|translate }}</a></li>
+                    <li ng-show="CustomerCtrl.AuthService.hasPermission('POINT_TRANSFER', 'VIEW')" class="tabs-title"><a href="#panel2">{{ "customer.tabs.transfers"|translate }}</a></li>
+                    <li ng-show="CustomerCtrl.AuthService.hasPermission('REWARD_CAMPAIGN', 'VIEW')" class="tabs-title"><a href="#panel3">{{ "customer.tabs.campaigns"|translate }}</a></li>
+                    <li ng-show="CustomerCtrl.AuthService.hasPermission('REWARD_CAMPAIGN', 'VIEW')" class="tabs-title"><a href="#panel4">{{ "customer.tabs.rewards"|translate }}</a></li>
                 </ul>
                 <div class="tabs-content" data-tabs-content="example-tabs">
-                    <div class="tabs-panel is-active" id="panel1">
+                    <div ng-show="CustomerCtrl.AuthService.hasPermission('TRANSACTION', 'VIEW')" class="tabs-panel is-active" id="panel1">
                         <table ng-table="CustomerCtrl.transactionsTableParams" class="default">
                             <tr ng-repeat="row in $data">
                                 <td data-title="'transaction.document_number'|translate">
@@ -388,7 +388,7 @@
                         </button>
 
                     </div>
-                    <div class="tabs-panel" id="panel2">
+                    <div ng-show="CustomerCtrl.AuthService.hasPermission('POINT_TRANSFER', 'VIEW')" class="tabs-panel" id="panel2">
                         <table ng-table="CustomerCtrl.transfersTableParams" class="default">
                             <tr ng-repeat="row in $data">
                                 <td data-title="'transfer.issuer.title'|translate">
@@ -417,8 +417,9 @@
                                 </td>
                                 <td data-title="'transfer.actions'|translate">
                                     <button type="button"
+                                            ng-show="CustomerCtrl.AuthService.hasPermission('POINT_TRANSFER', 'MODIFY')"
                                             ng-disabled="row.type=='spending' || row.type=='p2p_spending' || row.type=='p2p_adding' || row.state=='canceled'"
-                                            class="button  button-septenary tiny"
+                                            class="button button-septenary tiny"
                                             ng-click="customerTransfers[$index].showRemoveModal=true"
                                             style="margin-bottom:5px;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -434,12 +435,12 @@
                         <button class="button button-septenary-colorized medium"
                                 ui-sref="admin.single-customer.transfers">{{"customer.all_transfers"|translate}}
                         </button>
-                        <button class="button button-septenary-colorized medium"
+                        <button ng-show="CustomerCtrl.AuthService.hasPermission('CUSTOMER', 'MODIFY')"  class="button button-septenary-colorized medium"
                                 ng-click="CustomerCtrl.openTransferModal()">{{"customer.add_points_transfer"|translate}}
                         </button>
 
                     </div>
-                    <div class="tabs-panel" id="panel3">
+                    <div ng-show="CustomerCtrl.AuthService.hasPermission('REWARD_CAMPAIGN', 'VIEW')" class="tabs-panel" id="panel3">
                         <table ng-table="CustomerCtrl.availableCampaignsTableParams" class="default">
                             <tr ng-repeat="row in $data">
                                 <td data-title="'campaign.name'|translate">
@@ -482,7 +483,7 @@
                         </button>
 
                     </div>
-                    <div class="tabs-panel" id="panel4">
+                    <div ng-show="CustomerCtrl.AuthService.hasPermission('REWARD_CAMPAIGN', 'VIEW')" class="tabs-panel" id="panel4">
                         <table ng-table="CustomerCtrl.boughtCampaignsTableParams" class="default">
                             <tr ng-repeat="row in $data">
                                 <td data-title="'campaign.name'|translate">
@@ -508,11 +509,9 @@
                                     <span ng-if="row.campaign.reward == 'cashback'">---</span>
                                 </td>
                                 <td data-title="'campaign.coupon_used'|translate">
-                                    <checkbox ng-model="row.used" ng-if="row.campaign.reward != 'cashback' && row.canBeUsed"
-                                              ng-click="CustomerCtrl.updateCouponUsage(customer.id, row.campaignId, row.coupon.code, row.used)"/>
+                                    <checkbox ng-model="row.used" ng-if="row.campaign.reward != 'cashback'"
+                                              ng-click="CustomerCtrl.updateCouponUsage(customer.id, row.campaignId, row.coupon.code, row.coupon.id, row.used)"/>
                                     <span ng-if="row.campaign.reward == 'cashback'">---</span>
-                                    <span ng-if="!row.canBeUsed && row.used == true">{{'campaign.usage_types.true'|translate}}</span>
-                                    <span ng-if="!row.canBeUsed && row.used != true">{{'campaign.usage_types.false'|translate}}</span>
                                 </td>
                             </tr>
                             <tr ng-if="!$data.length">

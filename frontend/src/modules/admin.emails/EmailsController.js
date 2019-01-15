@@ -6,6 +6,7 @@ export default class EmailsController {
         this.EmailsService = EmailsService;
         this.$scope = $scope;
         this.$state = $state;
+        this.AuthService = AuthService;
         this.Flash = Flash;
         this.$scope.newEmail = {};
         this.$scope.editableFields = {};
@@ -103,7 +104,8 @@ export default class EmailsController {
             subject: editedEmail.entity.subject,
             content: editedEmail.entity.content,
             sender_name: editedEmail.entity.sender_name,
-            sender_email: editedEmail.entity.sender_email
+            sender_email: editedEmail.entity.sender_email,
+            receiver_email: editedEmail.entity.receiver_email
         })
             .then(
                 res => {

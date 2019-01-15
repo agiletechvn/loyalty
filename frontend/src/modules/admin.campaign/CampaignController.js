@@ -42,7 +42,8 @@ export default class CampaignController {
             error: '',
             visible: true
         }];
-
+        this.deliveryStatusesHumanized = [];
+        this.deliveryStatusesSelectOptions = [];
         this.SegmentService = SegmentService;
         this.LevelService = LevelService;
         this.AuthService = AuthService;
@@ -78,6 +79,31 @@ export default class CampaignController {
             maxItems: 1,
             allowEmptyOption: true
         };
+
+        this.fulfillmentTrackingSelectConfig = {
+            valueField: 'value',
+            labelField: 'label',
+            create: false,
+            sortField: 'label',
+            searchField: 'label',
+            maxItems: 1,
+            allowEmptyOption: true
+        };
+
+        this.fulfillmentTrackingSelectOptions = [
+            {
+                value: '',
+                label: $filter('translate')('campaign.campaign_type.all')
+            },
+            {
+                label: $filter('translate')('global.no'),
+                value: false
+            },
+            {
+                label: $filter('translate')('global.confirm'),
+                value: true
+            }
+        ];
 
         this.rewardSelectConfig = {
             valueField: 'value',
@@ -174,6 +200,7 @@ export default class CampaignController {
     $onInit() {
         this.$scope.clientSearch = 0;
         this.loaderStates = {
+            deliveryStatuses: true,
             campaignList: true,
             campaignDetails: true,
             campaignCustomerList: true,
@@ -214,12 +241,6 @@ export default class CampaignController {
                 label: 'campaign.name',
                 prompt: 'campaign.name_prompt',
                 required: true
-            },
-            {
-                key: 'shortDescription',
-                label: 'campaign.short_description',
-                prompt: 'campaign.short_description_prompt',
-                required: false
             }
         ];
         this.$scope.availableFrontendTranslations = this.DataService.getAvailableFrontendTranslations();
@@ -301,7 +322,6 @@ export default class CampaignController {
                 type: 'geolocation'
             }
         ];
-        this.egCoupon = ['Example_coupon'];
         this.rewardConfig = {
             valueField: 'type',
             labelField: 'name',
@@ -351,12 +371,18 @@ export default class CampaignController {
             sortField: 'name',
             maxItems: 1
         };
+        this.statusConfig = {
+            valueField: 'value',
+            labelField: 'label',
+            create: false,
+            maxItems: 1
+        };
         this.categoriesConfig = {
             valueField: 'campaignCategoryId',
             labelField: 'name',
             create: false,
             plugins: ['remove_button'],
-            sortField: 'name'
+            sortField: 'sortOrder'
         };
         this.couponsConfig = {
             delimiter: ',',
@@ -383,7 +409,7 @@ export default class CampaignController {
                 }
             );
 
-        let levelPromise = this.LevelService.getLevels()
+        let levelPromise = this.LevelService.getLevels({perPage: 1000})
             .then(
                 res => {
                     this.levels = res;
@@ -502,7 +528,7 @@ export default class CampaignController {
         self.categoryTableParams = new self.NgTableParams({
           count: self.config.perPage,
           sorting: {
-            sortOrder: 'desc'
+            order: 'desc'
           }
         }, {
           getData: function (params) {
@@ -653,6 +679,10 @@ export default class CampaignController {
     addCampaign(newCampaign) {
         let self = this;
 
+        if (newCampaign.reward !== 'gift_code') {
+            delete newCampaign['fulfillmentTracking'];
+        }
+
         self.CampaignService.postCampaign(newCampaign)
             .then(
                 res => {
@@ -730,6 +760,23 @@ export default class CampaignController {
      */
     editCampaign(editedCampaign) {
         let self = this;
+
+        // sets as an empty string if data has been removed
+        for (let property in editedCampaign) {
+            if (editedCampaign.hasOwnProperty(property)) {
+                if (typeof self.$scope.editableFields[property] === 'undefined' ||
+                    self.$scope.editableFields[property] === ''
+                ) {
+                    editedCampaign[property] = '';
+                    self.$scope.editableFields[property] = '';
+                }
+            }
+        }
+
+        if (editedCampaign.reward !== 'gift_code') {
+            delete editedCampaign['fulfillmentTracking'];
+            delete self.$scope.editableFields['fulfillmentTracking'];
+        }
 
         self.CampaignService.putCampaign(editedCampaign)
             .then(
@@ -1020,6 +1067,69 @@ export default class CampaignController {
             );
     }
 
+
+    /**
+     * Get delivery statuses
+     *
+     * @method _getDeliveryStatuses
+     * @private
+     */
+    getDeliveryStatuses() {
+        let self = this;
+
+        self.CampaignService.getDeliveryStatuses()
+            .then(
+                res => {
+                    self.$scope.deliveryStatuses = res.choices;
+                    this.deliveryStatusesSelectOptions.push({
+                        value: '',
+                        label: self.$filter('translate')('campaign.delivery_statuses.all')
+                    });
+                    for (var value of res.choices) {
+                        self.deliveryStatusesHumanized.push({
+                            value: value,
+                            label: self.$filter('translate')(`campaign.delivery_statuses.${value}`)
+                        });
+                        self.deliveryStatusesSelectOptions.push({
+                            value: value,
+                            label: self.$filter('translate')(`campaign.delivery_statuses.${value}`)
+                        });
+                    }
+                    self.loaderStates.deliveryStatuses = false;
+                },
+                () => {
+                    let message = self.$filter('translate')('xhr.get_delivery_statuses.error');
+                    self.Flash.create('danger', message);
+                    self.loaderStates.deliveryStatuses = false;
+                }
+            );
+    }
+    
+    /**
+    * Sets delivery status
+    *
+    * @param {Boolean} active
+    * @param {string} status
+    * @param {Integer} customerId
+    * @param {Integer} couponId
+    * @method setDeliveryStatus
+    */
+    setDeliveryStatus(status, customerId, couponId) {
+        let self = this;
+
+        self.CampaignService.putDeliveryStatus(status, customerId, couponId)
+            .then(
+                () => {
+                    let message = self.$filter('translate')('xhr.put_change_delivery_status.success');
+                    self.Flash.create('success', message);
+                },
+                () => {
+                    let message = self.$filter('translate')('xhr.put_change_delivery_status.error');
+                    self.Flash.create('danger', message);
+                }
+            )
+    }
+
     /**
      * Creates NgTable instances for redeemed campaigns page
      *
@@ -1036,10 +1146,21 @@ export default class CampaignController {
         }, {
             getData: function (params) {
                 let dfd = self.$q.defer();
+                let parsedParams = self.ParamsMap.params(params.url());
+
+                if (parsedParams.purchasedAtFrom) {
+                    parsedParams.purchasedAtFrom = new Date(decodeURIComponent(parsedParams.purchasedAtFrom));
+                }
+
+                if (parsedParams.purchasedAtTo) {
+                    parsedParams.purchasedAtTo = new Date(decodeURIComponent(parsedParams.purchasedAtTo));
+                }
+
                 self.loaderStates.redeemedCampaigns = true;
-                self.CampaignService.getRedeemedCampaignRewards(self.ParamsMap.params(params.url()))
+                self.CampaignService.getRedeemedCampaignRewards(parsedParams)
                     .then(
                         res => {
+                            self.$scope.redeemedCampaigns = res;
                             self.loaderStates.redeemedCampaigns = false;
                             self.loaderStates.coverLoader = false;
                             params.total(res.total);
@@ -1066,12 +1187,13 @@ export default class CampaignController {
      * @method updateCampaignUsage
      * @param {number} customerId
      * @param {number} campaignId
+     * @param {number} couponId
      * @param {string} code
      * @param {Boolean} used
      */
-    updateCampaignUsage(customerId, campaignId, code, used) {
+    updateCampaignUsage(customerId, campaignId, code, couponId, used) {
         let self = this;
-        self.CustomerService.postUsage(customerId, campaignId, code, used).then(
+        self.CustomerService.postUsage(customerId, campaignId, code, couponId, used).then(
             () => {
                 self.redeemedCampaignsTableParams.reload();
             },
@@ -1131,6 +1253,7 @@ export default class CampaignController {
         });
     }
 
+
     downloadFile(res, filename) {
         let self = this;
 
@@ -1148,8 +1271,8 @@ export default class CampaignController {
         self.$timeout(function() { link.dispatchEvent(new MouseEvent('click')); }, 2000);
     }
 
-    canBeBoughtManually(campaing) {
-        return campaing.active && campaing.reward !== 'cashback';
+    canBeBoughtManually(campaign) {
+        return campaign.active && campaign.reward !== 'cashback' && campaign.reward !== 'custom_campaign_code';
     }
 
     activateBuyCampaignManuallyModal(campaignId, name, transactionId, reward) {
@@ -1195,10 +1318,11 @@ export default class CampaignController {
         let self = this;
         this.$scope.clientSearch = 0; //0 - nothing, 1 - loading, 2 - nothing found
 
-        this.campaignsUsageSelectOptions = [{
-            value: '',
-            label: self.$filter('translate')('campaign.usage_types.both')
-        },
+        this.campaignsUsageSelectOptions = [
+            {
+                value: '',
+                label: self.$filter('translate')('campaign.usage_types.both')
+            },
             {
                 value: USAGE_TYPE_DELIVERED,
                 label: self.$filter('translate')('campaign.usage_types.' + USAGE_TYPE_DELIVERED)
@@ -1209,11 +1333,21 @@ export default class CampaignController {
             }
         ];
 
+
         this.campaignUsageSelectConfig = {
             valueField: 'value',
             labelField: 'label',
             create: false,
             sortField: 'label',
+            searchField: 'label',
+            maxItems: 1,
+            allowEmptyOption: true
+        };
+
+        this.deliveryStatusSelectConfig = {
+            valueField: 'value',
+            labelField: 'label',
+            create: false,
             searchField: 'label',
             maxItems: 1,
             allowEmptyOption: true

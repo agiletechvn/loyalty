@@ -4,6 +4,7 @@ export default class SellerController {
             AuthService.logout();
         }
         this.$scope = $scope;
+        this.AuthService = AuthService;
         this.SellerService = SellerService;
         this.$state = $state;
         this.Flash = Flash;
@@ -49,7 +50,7 @@ export default class SellerController {
             plainPassword: '@assert:not_blank',
             posId: '@assert:not_blank',
         };
-        this.posPromise = PosService.getPosList({})
+        this.posPromise = PosService.getPosList({perPage: 1000})
             .then(
                 res => {
                     $scope.pos = res;

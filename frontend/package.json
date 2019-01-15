@@ -94,6 +94,7 @@
     "moment": "^2.14.1",
     "motion-ui": "^1.2.2",
     "ng-jsoneditor": "^1.0.0",
+    "ng-showdown": "^1.1.0",
     "ng-simplemde": "^0.0.1",
     "ng-table": "^1.0.0",
     "pickadate": "^3.5.6",

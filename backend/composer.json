@@ -18,10 +18,7 @@
     },
     "require": {
         "php": ">=7.1",
-        "divante-ltd/open-loyalty-framework": "^3.0",
-        "phpdocumentor/reflection-docblock": "^3.2",
-        "phpdocumentor/type-resolver": "^0.3",
-        "symfony/symfony": "3.4.14"
+        "divante-ltd/open-loyalty-framework": "^3.1"
     },
     "scripts": {
         "post-install-cmd": [

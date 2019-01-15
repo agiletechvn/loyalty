@@ -3,7 +3,7 @@
 <div class="heading" ng-init="SellerCtrl.getData()">
     <h1>{{ "seller.heading" | translate }}</h1>
     <div class="action-buttons">
-        <button class="button button-primary medium button-septenary-colorized" ui-sref="admin.add-seller">{{
+        <button ng-show="SellerCtrl.AuthService.hasPermission('POS', 'MODIFY')" class="button button-primary medium button-septenary-colorized" ui-sref="admin.add-seller">{{
             "seller.add" | translate }}
         </button>
     </div>
@@ -39,7 +39,7 @@
                     <span ng-bind="row.posCity"></span>
                 </td>
                 <td data-title="'seller.active'|translate">
-                        <span>
+                        <span ng-show="SellerCtrl.AuthService.hasPermission('POS', 'MODIFY')">
                             <button
                                     ng-if="row.active"
                                     class="tiny button button-septenary-colorized"
@@ -55,12 +55,20 @@
 
                             </button>
                         </span>
+                        <span ng-show="!SellerCtrl.AuthService.hasPermission('POS', 'MODIFY')">
+                            <span ng-if="row.active">
+                                {{'global.active'|translate}}
+                            </span>
+                            <span ng-if="!row.active">
+                                {{'global.inactive'|translate}}
+                            </span>
+                        </span>
                 </td>
                 <td data-title="'seller.actions'|translate">
-                    <button class="button button-septenary tiny" ng-click="sellers[$index].showRemoveModal=true">
+                    <button ng-show="SellerCtrl.AuthService.hasPermission('POS', 'MODIFY')" class="button button-septenary tiny" ng-click="sellers[$index].showRemoveModal=true">
                         <i class="fa fa-times"></i>
                     </button>
-                    <button class="button button-secondary tiny"
+                    <button ng-show="SellerCtrl.AuthService.hasPermission('POS', 'MODIFY')" class="button button-secondary tiny"
                             ui-sref="admin.edit-seller({sellerId: row.sellerId})">
                         <i class="fa fa-pencil"></i>
                     </button>
@@ -81,7 +89,7 @@
                 </button>
 
                 <div class="spinner-loader-wrapper">
-                    <spinner-loader loading="SellerCtrl.loaderStates.removeSelle" class="inline"
+                    <spinner-loader loading="SellerCtrl.loaderStates.removeSeller" class="inline"
                                     delay="5"></spinner-loader>
                 </div>
             </div>

@@ -2,10 +2,10 @@
 <div class="heading" ng-init="TransactionCtrl.getData()">
     <h1>{{ "transaction.heading" | translate }}</h1>
     <div class="action-buttons">
-        <button class="medium button button-septenary-colorized" ng-click="linkTransactionModal=true">
+        <button ng-show="TransactionCtrl.AuthService.hasPermission('TRANSACTION', 'MODIFY')" class="medium button button-septenary-colorized" ng-click="linkTransactionModal=true">
             {{ "transaction.link" | translate }}
         </button>
-        <button class="medium button button-septenary-colorized" ng-click="importTransactionModal=true">
+        <button ng-show="TransactionCtrl.AuthService.hasPermission('TRANSACTION', 'MODIFY')" class="medium button button-septenary-colorized" ng-click="importTransactionModal=true">
             {{ "transaction.import" | translate }}
         </button>
     </div>
@@ -51,7 +51,7 @@
                     <span ng-bind="row.currency" style="text-transform: uppercase;"></span>
                 </td>
                 <td data-title="'transaction.actions'|translate">
-                    <button type="button" class="button  button-quinary tiny"
+                    <button ng-show="TransactionCtrl.AuthService.hasPermission('TRANSACTION', 'MODIFY')" type="button" class="button  button-quinary tiny"
                             ng-click="transactions[$index].showEditLabelsModal=true">
                         <i class="fa fa-edit" aria-hidden="true"></i>
                     </button>

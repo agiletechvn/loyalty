@@ -6,10 +6,9 @@ export default class Validation {
         if (!property) {
             return data
         }
-        if (data && data.hasOwnProperty(property)) {
-            data = data[property]
+        if (data && data.hasOwnProperty(property) && !data.hasOwnProperty('errors')) {
+            data = data[property];
         }
-
         for (let prop in data) {
             if (_.isEqual(data[prop], {})) {
                 delete data[prop];

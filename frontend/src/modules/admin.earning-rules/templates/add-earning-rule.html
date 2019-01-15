@@ -26,7 +26,7 @@
                             <label>{{ "earning_rule.description" | translate }} <span
                                     class="required">*</span></label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.desc.errors">
+                        <div class="medium-10 small-9 columns" form-validation="validate.description.errors">
                             <textarea ng-model="newEarningRule.description" required></textarea>
                             <span class="prompt">{{ "earning_rule.description_prompt" | translate }}</span>
                         </div>
@@ -315,19 +315,18 @@
                         <span class="prompt">{{ "earning_rule.points_amount_prompt" | translate }}</span>
                     </div>
                 </div>
-                    <div class="row" ng-if="newEarningRule.type=='custom_event'||newEarningRule.type=='qrcode'">
+                    <div class="row" ng-if="newEarningRule.type=='custom_event'||newEarningRule.type=='qrcode'||newEarningRule.type=='geolocation'">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.limit.active" | translate }}</label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.active.errors">
-                            <input type="checkbox"
-                                   ng-model="newEarningRule.limit.active"/>
+                            <checkbox ng-model="newEarningRule.limit.active"></checkbox>
                             <span class="prompt">{{ "earning_rule.limit.active_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="(newEarningRule.type=='custom_event'||newEarningRule.type=='qrcode') && newEarningRule.limit.active">
+                    <div class="row" ng-if="(newEarningRule.type=='custom_event'||newEarningRule.type=='qrcode'||newEarningRule.type=='geolocation') && newEarningRule.limit.active">
                         <div class="medium-2 small-3 columns">
-                            <label>{{ "earning_rule.limit.period" | translate }}</label>
+                            <label>{{ "earning_rule.limit.period" | translate }} <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.limit.period.errors">
                             <selectize config="EarningRuleCtrl.availableEarningRuleLimitPeriodsConfig"
@@ -337,9 +336,9 @@
                             <span class="prompt">{{ "earning_rule.limit.period_prompt" | translate }}</span>
                         </div>
                     </div>
-                    <div class="row" ng-if="(newEarningRule.type=='custom_event'||newEarningRule.type=='qrcode') && newEarningRule.limit.active">
+                    <div class="row" ng-if="(newEarningRule.type=='custom_event'||newEarningRule.type=='qrcode'||newEarningRule.type=='geolocation') && newEarningRule.limit.active">
                         <div class="medium-2 small-3 columns">
-                            <label>{{ "earning_rule.limit.limit" | translate }}</label>
+                            <label>{{ "earning_rule.limit.limit" | translate }} <span class="required">*</span></label>
                         </div>
                         <div class="medium-10 small-9 columns" form-validation="validate.limit.limit.errors">
                             <input type="number"
@@ -460,7 +459,7 @@
                         <div class="medium-2 small-3 columns">
                             <label>{{ "earning_rule.pos" | translate }}</label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.levels.errors">
+                        <div class="medium-10 small-9 columns" form-validation="validate.pos.errors">
                             <selectize config="EarningRuleCtrl.posConfig"
                                        options="EarningRuleCtrl.pos"
                                        ng-model="newEarningRule.pos">
@@ -469,7 +468,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="fieldset">
+                <fieldset class="fieldset" ng-show="newEarningRule.type != 'event' || newEarningRule.eventName != 'oloy.account.created'">
                     <legend>Target</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">

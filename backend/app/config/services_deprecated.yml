@@ -117,3 +117,39 @@ services:
     oloy.user.form_type.customer_registration:
         alias: OpenLoyalty\Bundle\UserBundle\Form\Type\CustomerRegistrationFormType
         deprecated: The "%service_id%" service is deprecated since 2.8.0
+
+    oloy.analytics.voter.analytivs:
+        alias: OpenLoyalty\Bundle\AnalyticsBundle\Security\Voter\AnalyticsVoter
+        deprecated: The "%service_id%" service is deprecated since 2.8.0
+
+    oloy.user.level_id_provider:
+        alias: OpenLoyalty\Bundle\UserBundle\Service\OloyLevelIdProvider
+        deprecated: The "%service_id%" service is deprecated since 2.8.0
+
+    oloy.earning_rule.photo_uploader:
+        alias: OpenLoyalty\Bundle\EarningRuleBundle\Service\EarningRulePhotoUploader
+        deprecated: The "%service_id%" service is deprecated since 3.1.0
+
+    oloy.campaign.read_model.repository.campaign_usage:
+        alias: OpenLoyalty\Component\Campaign\Infrastructure\Repository\CampaignUsageElasticsearchRepository
+        deprecated: The "%service_id%" service is deprecated since 3.1.0
+
+    oloy.user.customer.repository:
+        alias: OpenLoyalty\Component\Customer\Domain\CustomerRepository
+        deprecated: The "%service_id%" service is deprecated since 3.1.0
+
+    oloy.transaction.repository:
+        alias: OpenLoyalty\Component\Transaction\Domain\TransactionRepository
+        deprecated: The "%service_id%" service is deprecated since 3.1.0
+
+    oloy.points.account.repository:
+        alias: OpenLoyalty\Component\Account\Domain\AccountRepository
+        deprecated: The "%service_id%" service is deprecated since 3.1.0
+
+    oloy.transaction.voters.transaction:
+        alias: OpenLoyalty\Bundle\TransactionBundle\Security\Voter\TransactionVoter
+        deprecated: The "%service_id%" service is deprecated since 3.2.0
+
+    oloy.email.message_factory:
+        alias: OpenLoyalty\Bundle\EmailBundle\Service\MessageFactory
+        deprecated: The "%service_id%" service is deprecated since 3.2.0

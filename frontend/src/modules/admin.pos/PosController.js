@@ -5,6 +5,7 @@ export default class PosController {
         }
         this.$scope = $scope;
         this.PosService = PosService;
+        this.AuthService = AuthService;
         this.$state = $state;
         this.Flash = Flash;
         this.$scope.newPos = {};

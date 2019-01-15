@@ -1,4 +1,4 @@
-<div class="client-section" ng-init="CustomerProfileCtrl.getData()">
+<div class="client-section" ng-init="CustomerProfileCtrl.getSettingsData()">
     <box-loader loading="loaderVisible" cover="1" class="cover client" delay="1000"></box-loader>
     <div class="row">
         <div class="columns small-12">
@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.firstName.errors">
-                                            <input type="text" ng-model="editableFields.firstName" required>
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.firstName" required>
                                             <span class="prompt">{{ "customer_profile.first_name_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -39,7 +39,7 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.lastName.errors">
-                                            <input type="text" ng-model="editableFields.lastName" required>
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.lastName" required>
                                             <span class="prompt">{{ "customer_profile.last_name_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -48,12 +48,12 @@
                                             <label>{{ "customer_profile.gender" | translate }}</label>
                                         </div>
                                         <div class="medium-10 small-9 columns" form-validation="validate.gender.errors">
-                                            <input type="radio" ng-model="editableFields.gender" value="male" id="male">
+                                            <input type="radio" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.gender" value="male" id="male">
                                             <label for="male">{{ "customer_profile.male" | translate }}</label>
-                                            <input type="radio" ng-model="editableFields.gender" value="female"
+                                            <input type="radio" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.gender" value="female"
                                                    id="female">
                                             <label for="female">{{ "customer_profile.female" | translate }}</label>
-                                            <input type="radio" ng-model="editableFields.gender" value="not_disclosed"
+                                            <input type="radio" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.gender" value="not_disclosed"
                                                    id="not_disclosed">
                                             <label for="not_disclosed">{{ "customer_profile.not_disclosed" | translate }}</label>
                                             <span class="prompt">{{ "customer_profile.gender_prompt" | translate }}</span>
@@ -65,7 +65,7 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.birthDate.errors">
-                                            <input type="text" ng-model="editableFields.birthDate" datepicker required
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.birthDate" datepicker required
                                                    no-time="true">
                                             <span class="prompt">{{ "customer_profile.birth_date_prompt" | translate }}</span>
                                         </div>
@@ -76,7 +76,7 @@
                                                     class="required">*</span></label>
                                         </div>
                                         <div class="medium-10 small-9 columns" form-validation="validate.email.errors">
-                                            <input type="email" ng-model="editableFields.email" required>
+                                            <input type="email" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.email" required>
                                             <span class="prompt">{{ "customer_profile.email_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -85,7 +85,7 @@
                                             <label>{{ "customer_profile.phone" | translate }}</label>
                                         </div>
                                         <div class="medium-10 small-9 columns" form-validation="validate.phone.errors">
-                                            <input type="phone" ng-model="editableFields.phone">
+                                            <input type="phone" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.phone">
                                             <span class="prompt">{{ "customer_profile.phone_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
                                             <label>{{ "customer_profile.add_company" | translate }}</label>
                                         </div>
                                         <div class="medium-10 small-9 columns">
-                                            <checkbox ng-model="showCompany"></checkbox>
+                                            <checkbox ng-disabled="!settings.allowCustomersProfileEdits" ng-model="showCompany"></checkbox>
                                             <span class="prompt">{{ "customer_profile.show_company_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.company.name.errors">
-                                            <input type="text" ng-model="editableFields.company.name">
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.company.name">
                                             <span class="prompt">{{ "customer_profile.company_name_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -116,7 +116,7 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.company.nip.errors">
-                                            <input type="text" ng-model="editableFields.company.nip">
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.company.nip">
                                             <span class="prompt">{{ "customer_profile.company_nip_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -125,7 +125,7 @@
                                             <label>{{ "customer_profile.add_address" | translate }}</label>
                                         </div>
                                         <div class="medium-10 small-9 columns">
-                                            <checkbox ng-model="showAddress"></checkbox>
+                                            <checkbox ng-disabled="!settings.allowCustomersProfileEdits" ng-model="showAddress"></checkbox>
                                             <span class="prompt">{{ "customer_profile.show_address_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -136,7 +136,7 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.address.street.errors">
-                                            <input type="text" ng-model="editableFields.address.street">
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.address.street">
                                             <span class="prompt">{{ "customer_profile.address_street_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -147,7 +147,7 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.address.address1.errors">
-                                            <input type="text" ng-model="editableFields.address.address1">
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.address.address1">
                                             <span class="prompt">{{ "customer_profile.address_address1_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -157,7 +157,7 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.address.address2.errors">
-                                            <input type="text" ng-model="editableFields.address.address2">
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.address.address2">
                                             <span class="prompt">{{ "customer_profile.address_address2_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -168,17 +168,17 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.address.postal.errors">
-                                            <input type="text" ng-model="editableFields.address.postal">
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.address.postal">
                                             <span class="prompt">{{ "customer_profile.postal_prompt" | translate }}</span>
                                         </div>
                                     </div>
                                     <div class="row" ng-show="showAddress">
                                         <div class="medium-2 small-3 columns">
-                                            <label>{{ "customer_profile.city" | translate }}</label>
+                                            <label>{{ "customer_profile.city" | translate }}<span class="required">*</span></label>
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.address.city.errors">
-                                            <input type="text" ng-model="editableFields.address.city">
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.address.city">
                                             <span class="prompt">{{ "customer_profile.address_city_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -188,7 +188,7 @@
                                         </div>
                                         <div class="medium-10 small-9 columns"
                                              form-validation="validate.address.province.errors">
-                                            <input type="text" ng-model="editableFields.address.province">
+                                            <input type="text" ng-disabled="!settings.allowCustomersProfileEdits" ng-model="editableFields.address.province">
                                             <span class="prompt">{{ "customer_profile.address_province_prompt" | translate }}</span>
                                         </div>
                                     </div>
@@ -203,6 +203,7 @@
                                                     config="CustomerProfileCtrl.countryConfig"
                                                     options="CustomerProfileCtrl.country"
                                                     style="border-radius:0"
+                                                    ng-disabled="!settings.allowCustomersProfileEdits"
                                                     ng-model="editableFields.address.country">
                                             </selectize>
                                             <span class="prompt">{{ "customer_profile.address_country_prompt" | translate }}</span>

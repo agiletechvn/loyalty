@@ -252,6 +252,23 @@ export default class AuthService {
         return index !== -1;
     }
 
+    hasPermission(resource, access) {
+        let self = this;
+        let prefix = self.selectPrefix();
+
+        let decodedData = self.decodeToken(self.idToken[prefix]);
+        if (decodedData ) {
+            if (decodedData.superAdmin) {
+                return true;
+            }
+            if (decodedData.permissions && decodedData.permissions[resource] !== undefined) {
+                return decodedData.permissions[resource].indexOf(access) !== -1;
+            }
+        }
+
+        return false;
+    }
+
     logout() {
         let self = this;
         let prefix = self.selectPrefix();

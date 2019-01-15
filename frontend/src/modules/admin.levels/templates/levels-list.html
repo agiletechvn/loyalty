@@ -3,7 +3,7 @@
 <div class="heading" ng-init="LevelCtrl.getData()">
     <h1>{{ "level.heading" | translate }}</h1>
     <div class="action-buttons">
-        <button class="medium button button-septenary-colorized" ui-sref="admin.add-level">
+        <button ng-show="LevelCtrl.AuthService.hasPermission('LEVEL', 'MODIFY')" class="medium button button-septenary-colorized" ui-sref="admin.add-level">
             {{ "level.add" | translate }}
         </button>
     </div>
@@ -42,27 +42,35 @@
                 <td data-title="'level.users'|translate" sortable="'customersCount'">
                     <span ng-bind="row.customersCount"></span>
 
-                    <button class="button button-primary tiny pull-right"
+                    <button ng-show="LevelCtrl.AuthService.hasPermission('CUSTOMER', 'VIEW')" class="button button-primary tiny pull-right"
                             ui-sref="admin.level-users({levelId: row.id, levelName: row.name})">
                         {{ "global.show" | translate }}
                     </button>
                 </td>
                 <td data-title="'level.active'|translate" sortable="'active'">
-                        <span>
-                            <button
-                                    ng-if="row.active"
-                                    class="tiny button button-septenary-colorized"
-                                    ng-click="LevelCtrl.setLevelState(!row.active, row.id)"
-                            >
+                    <span ng-show="LevelCtrl.AuthService.hasPermission('EARNING_RULE', 'MODIFY')">
+                        <button
+                                ng-if="row.active"
+                                class="tiny button button-septenary-colorized"
+                                ng-click="LevelCtrl.setLevelState(!row.active, row.id)"
+                        >
+                            {{'global.active'|translate}}
+                        </button>
+                        <button
+                                ng-if="!row.active"
+                                class="tiny button button-default"
+                                ng-click="LevelCtrl.setLevelState(!row.active, row.id)"
+                        >
+                            {{'global.inactive'|translate}}
+                        </button>
+                    </span>
+                    <span ng-show="!LevelCtrl.AuthService.hasPermission('EARNING_RULE', 'MODIFY')">
+                            <span ng-if="row.active">
                                 {{'global.active'|translate}}
-                            </button>
-                            <button
-                                    ng-if="!row.active"
-                                    class="tiny button button-default"
-                                    ng-click="LevelCtrl.setLevelState(!row.active, row.id)"
-                            >
+                            </span>
+                            <span ng-if="!row.active">
                                 {{'global.inactive'|translate}}
-                            </button>
+                            </span>
                         </span>
                 </td>
                 <td data-title="'level.special_rewards'|translate">
@@ -78,11 +86,11 @@
                         </span>
                 </td>
                 <td data-title="'Actions'">
-                    <button type="button" class="button  button-secondary tiny"
+                    <button ng-show="LevelCtrl.AuthService.hasPermission('LEVEL', 'MODIFY')" type="button" class="button  button-secondary tiny"
                             ui-sref="admin.edit-level({levelId: row.id})">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>
-                    <button class="button button-secondary tiny"
+                    <button ng-show="LevelCtrl.AuthService.hasPermission('SEGMENT_EXPORT', 'VIEW') && LevelCtrl.AuthService.hasPermission('CUSTOMER', 'VIEW')" class="button button-secondary tiny"
                             ng-click="LevelCtrl.getLevelCsvData(row.id, row.name)"><i class="fa fa-download "></i>
                     </button>
                 </td>

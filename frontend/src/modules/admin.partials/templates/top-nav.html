@@ -27,34 +27,43 @@
                         </li>
                     </ul>
                 </li>
-                <li>
+                <li ng-show="RootCtrl.AuthService.hasPermission('AUDIT', 'VIEW')
+                                || RootCtrl.AuthService.hasPermission('ADMIN', 'VIEW')
+                                || RootCtrl.AuthService.hasPermission('ACL', 'VIEW')
+                                || RootCtrl.AuthService.hasPermission('SETTINGS', 'VIEW')
+                ">
                     <span class="drop">
                         <span class="link-name">{{ "global.settings" | translate }}</span>
                         <span class="fi2 flaticon-settings m-l-1"></span>
                     </span>
                     <div class="arrow-up"></div>
                     <ul class="menu settings">
-                        <li>
+                        <li ng-show="RootCtrl.AuthService.hasPermission('SETTINGS', 'MODIFY')">
                             <a ui-sref="admin.settings">
                                 {{ "global.configuration" | translate }}
                             </a>
                         </li>
-                        <li>
+                        <li ng-show="RootCtrl.AuthService.hasPermission('ADMIN', 'VIEW')">
                             <a ui-sref="admin.users-list">
                                 {{ "global.users" | translate }}
                             </a>
                         </li>
-                        <li>
+                        <li ng-show="RootCtrl.AuthService.hasPermission('ACL', 'VIEW')">
+                            <a ui-sref="admin.roles-list">
+                                {{ "global.roles" | translate }}
+                            </a>
+                        </li>
+                        <li ng-show="RootCtrl.AuthService.hasPermission('SETTINGS', 'VIEW')">
                             <a ui-sref="admin.translations">
                                 {{ "global.translations_list" | translate }}
                             </a>
                         </li>
-                        <li>
+                        <li ng-show="RootCtrl.AuthService.hasPermission('SETTINGS', 'VIEW')">
                             <a ui-sref="admin.emails">
                                 {{ "global.emails" | translate }}
                             </a>
                         </li>
-                        <li>
+                        <li ng-show="RootCtrl.AuthService.hasPermission('AUDIT', 'VIEW')">
                             <a ui-sref="admin.logs">
                                 {{ "global.logs" | translate }}
                             </a>
