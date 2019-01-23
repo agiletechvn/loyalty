@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1a64d1151f174f884b948848683ab3f5",
-    "content-hash": "6fe55d68c6162b28fcb8dd34ebaf8b96",
+    "hash": "aa0def1ee415447f6eb409a351f39a5a",
+    "content-hash": "80e3a8e375ac370f9e449538b1c1c1db",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -808,16 +808,16 @@
         },
         {
             "name": "divante-ltd/open-loyalty-framework",
-            "version": "3.1.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DivanteLtd/open-loyalty-framework.git",
-                "reference": "29441f31afd9289829ef14aff6139363eaf354ee"
+                "reference": "7acfdff043f9606e9fbb240f45c080dcc03f7dc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/29441f31afd9289829ef14aff6139363eaf354ee",
-                "reference": "29441f31afd9289829ef14aff6139363eaf354ee",
+                "url": "https://api.github.com/repos/DivanteLtd/open-loyalty-framework/zipball/7acfdff043f9606e9fbb240f45c080dcc03f7dc6",
+                "reference": "7acfdff043f9606e9fbb240f45c080dcc03f7dc6",
                 "shasum": ""
             },
             "require": {
@@ -880,7 +880,7 @@
             "type": "project",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2.x-dev"
+                    "dev-master": "3.3.x-dev"
                 },
                 "symfony-app-dir": "app",
                 "symfony-bin-dir": "bin",
@@ -906,7 +906,7 @@
             "license": [
                 "proprietary"
             ],
-            "time": "2019-01-15 06:52:44"
+            "time": "2019-01-23 07:32:29"
         },
         {
             "name": "doctrine/annotations",

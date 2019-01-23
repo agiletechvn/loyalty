@@ -1,4 +1,4 @@
-Reward Campaigns API
+ Reward Campaigns API
 ====================
 
 These endpoints will allow you to easily manage Reward Campaigns.
@@ -137,6 +137,11 @@ Example
 .. note::
 
     The *testCoupon* or *DiscountCoupon* are an exemplary values. You can name code coupons as you like.
+
+.. attention::
+
+    If you would like to add a photos (one or many ) to the campaign you will need to call the ``/api/campaign/<campaign>/photo`` endpoint with the ``POST`` method.
+    More details you can find in Add a photo to the campaign section.
 
 Exemplary Response
 ^^^^^^^^^^^^^^^^^^
@@ -585,11 +590,14 @@ Definition
 | campaign[daysInactive]                            | request        |  Number of days, while coupon will not be active after purchase              |
 |                                                   |                |  0 means "active immediately"                                                |
 |                                                   |                |  Required for all rewards besides cashback                                   |
-+------------------------------------------------+----------------+---------------------------------------------------------------------------------+
++---------------------------------------------------+----------------+------------------------------------------------------------------------------+
 | campaign[daysValid]                               | request        |  Number of days, while coupon will be valid, after activation                |
 |                                                   |                |  0 means "valid forever"                                                     |
 |                                                   |                |  Required for all rewards besides cashback                                   |
-+------------------------------------------------+----------------+---------------------------------------------------------------------------------+
++---------------------------------------------------+----------------+------------------------------------------------------------------------------+
+| campaign[photos]                                  | request        |  *(optional)* Array of uploaded photos                                       |
++---------------------------------------------------+----------------+------------------------------------------------------------------------------+
+
 Example
 ^^^^^^^
 
@@ -629,6 +637,7 @@ Example
         -d "campaign[campaignActivity][allTimeActive]=0" \
         -d "campaign[campaignActivity][activeFrom]=2017-09-05+10:59" \
         -d "campaign[campaignActivity][activeTo]=2017-12-05+10:59"
+        -f "campaign[photos][0]=@/FILE_PATH/FILE_NAME"
 
 .. warning::
 
@@ -781,7 +790,15 @@ Exemplary Response
               "id": 66,
               "locale": "pl"
           }
-      ]
+      ],
+      "photos" :[
+            {
+                "photoId" : "e82c96cf-32a3-43bd-9034-4df343e5f23ed",
+                "path"  : "campaign_photos/e82c96cf-32a3-43bd-9034-4df343e5fd322294",
+                "orginalName" : "my_image.png",
+                "mimeType" : "image/png"
+            }
+       ]
     }
 
 Get available campaign for a customer
@@ -984,6 +1001,107 @@ Exemplary Response
       "coupons": [{
         "code": "123"
       }]
+    }
+
+Mark logged in customer coupons as used
+---------------------------------------
+
+Mark bought by logged in customer coupons as used using ``/api/admin/customer/campaign/coupons/mark_as_used`` endpoint with the ``POST`` method.
+
+Definition
+^^^^^^^^^^
+
+.. code-block:: text
+
+    POST /api/customer/campaign/coupons/mark_as_used
+
++---------------------------+----------------+-------------------------------------------------------------+
+| Parameter                 | Parameter type |  Description                                                |
++===========================+================+=============================================================+
+| Authorization             | header         | Token received during authentication                        |
++---------------------------+----------------+-------------------------------------------------------------+
+| coupons[][campaignId]     | request        | Campaign UUID                                               |
++---------------------------+----------------+-------------------------------------------------------------+
+| coupons[][couponId]       | request        | Coupon UUID                                                 |
++---------------------------+----------------+-------------------------------------------------------------+
+| coupons[][customerId]     | request        | Customer UUID                                               |
++---------------------------+----------------+-------------------------------------------------------------+
+| coupons[][code]           | request        | Coupon code                                                 |
++---------------------------+----------------+-------------------------------------------------------------+
+| coupons[][used]           | request        | Is coupon used, 1 if true, 0 if not used                    |
++---------------------------+----------------+-------------------------------------------------------------+
+| coupons[][transactionId]  | request        | *(optional)* Transaction ID for which coupon has been used  |
++---------------------------+----------------+-------------------------------------------------------------+
+
+Example
+^^^^^^^
+
+.. code-block:: bash
+
+    curl http://localhost:8181/api/admin/customer/campaign/coupons/mark_as_used \
+        -X "GET" -H "Accept: application/json" \
+        -H "Content-type: application/x-www-form-urlencoded" \
+        -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6..." \
+        -d "coupons[0][campaignId]=00000000-0000-0000-0000-000000000001" \
+        -d "coupons[0][couponId]=00000000-0000-0000-0000-000000000002" \
+        -d "coupons[0][customerId]=00000000-0000-0000-0000-000000000004" \
+        -d "coupons[0][code]=WINTER" \
+        -d "coupons[0][used]=1" \
+        -d "coupons[0][transactionId]=00000000-0000-0000-0000-000000000003"
+
+.. note::
+
+    The *eyJhbGciOiJSUzI1NiIsInR5cCI6...* authorization token is an example value.
+    Your value can be different. Read more about :doc:`Authorization in the </authorization>`.
+
+.. note::
+
+    The *campaignId = 00000000-0000-0000-0000-000000000001* id is an example value. Your value can be different.
+
+.. note::
+
+    The *couponId = 00000000-0000-0000-0000-000000000002* id is an example value. Your value can be different.
+
+.. note::
+
+    The *transactionId = 00000000-0000-0000-0000-000000000003* id is an example value. Your value can be different.
+
+Example Response
+^^^^^^^^^^^^^^^^
+
+.. code-block:: text
+
+    STATUS: 200 OK
+
+.. code-block:: json
+
+    {
+      "coupons": [
+        {
+          "name": "123",
+          "used": true,
+          "campaignId": "00000000-0000-0000-0000-000000000001",
+          "customerId": "00000000-0000-0000-0000-000000000004"
+        }
+      ]
+    }
+
+Example Error Response
+^^^^^^^^^^^^^^^^^^^^^^
+
+If there is no more coupons left, you'll receive follow responses.
+
+.. code-block:: text
+
+    STATUS: 400 Bad Request
+
+.. code-block:: json
+
+    {
+      "error": {
+        "code": 400,
+        "message": "Bad Request"
+      }
     }
 
 Check campaign visibility for the customers
@@ -1691,7 +1809,9 @@ Definition
 | perPage                             | query          | *(optional)* Number of items to display per page, |
 |                                     |                | by default = 10                                   |
 +-------------------------------------+----------------+---------------------------------------------------+
-| sort                                | query          | *(optional)* Sort by column name                  |
+| sort                                | query          | *(optional)* Sort by column name. Also available  |
+|                                     |                | to sort by child fields like                      |
+|                                     |                | `campaignVisibility.visibleFrom`                  |
 +-------------------------------------+----------------+---------------------------------------------------+
 | direction                           | query          | *(optional)* Direction of sorting [ASC, DESC],    |
 |                                     |                | by default = ASC                                  |
@@ -1908,6 +2028,55 @@ Get all campaigns available for logged in customer.
 .. note::
 
     When you will use endpoints starting with ``/api/customer/campaign/available`` you need to authorize using seller account credentials.
+
+.. note::
+
+    The *eyJhbGciOiJSUzI1NiIsInR5cCI6...* authorization token is an exemplary value.
+    Your value can be different. Read more about :doc:`Authorization in the </authorization>`.
+
+
+Change delivery status in bought campaign by customer.
+----------------------------------------------------
+
+To change delivery status ``/api/admin/customer/{customerId}/bought/coupon/{couponId}/changeDeliveryStatus`` endpoint with the ``PUT`` method.
+
+Definition
+^^^^^^^^^^
+
+.. code-block:: text
+
+    POST /api/admin/customer/{customerId}/bought/coupon/{couponId}/changeDeliveryStatus
+
++---------------------------+----------------+----------------------------------------------------------------------------+
+| Parameter                 | Parameter type | Description                                                                |
++===========================+================+============================================================================+
+| Authorization             | header         | Token received during authentication                                       |
++---------------------------+----------------+----------------------------------------------------------------------------+
+| deliveryStatus[status]    | query          | Available statuses: ["canceled","delivered","ordered","shipped"] (required)|
++---------------+----------------+----------------------------------------------------------------------------------------+
+
+
+Example
+^^^^^^^
+
+To change delivery status for customer ID
+
+.. code-block:: bash
+
+    curl http://localhost:8181/api/admin/customer/00000000-0000-474c-b092-b0dd880c07e2/bought/coupon/00000000-0000-0000-0000-b0dd880c07e2/changeDeliveryStatus
+        -X "POST"
+        -H "Accept: application/json"
+        -H "Content-type: application/x-www-form-urlencoded"
+        -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6..."
+        -d "deliveryStatus[status]=canceled"
+
+.. note::
+
+    You can get all avialable statuses via settings choice request ``/api/settings/choices/deliveryStatus``
+
+.. note::
+
+    When you will use endpoints starting with ``/api/admin/customer/{customerId}/bought/coupon/{couponId}/changeDeliveryStatus`` you need to authorize using admin account credentials.
 
 .. note::
 

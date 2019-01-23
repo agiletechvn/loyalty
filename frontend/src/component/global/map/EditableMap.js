@@ -739,12 +739,12 @@ export default class EditableMap {
         let self = this;
         let seller = angular.copy(data);
 
-        let posArr = {};
         delete seller.deleted;
         delete seller.sellerId;
         delete seller.posCity;
         delete seller.posName;
         delete seller.name;
+        delete seller.version;
 
         return seller;
     }

@@ -37,6 +37,9 @@
     margin-left: 0;
   }
   ul:not(.submenu) > li {
+    &:last-child{
+      margin-bottom: 21px;
+    }
     > a {
       &:hover, &focus {
         background-color: $sidebar-expanded-item;

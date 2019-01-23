@@ -1,4 +1,4 @@
-UPGRADE FROM 2.10 to 3.0
+UPGRADE FROM 3.0 to 3.1
 =======================
 
 Before you upgrade

@@ -1156,6 +1156,14 @@ export default class CampaignController {
                     parsedParams.purchasedAtTo = new Date(decodeURIComponent(parsedParams.purchasedAtTo));
                 }
 
+                if (parsedParams.usageDateFrom) {
+                    parsedParams.usageDateFrom = new Date(decodeURIComponent(parsedParams.usageDateFrom));
+                }
+
+                if (parsedParams.usageDateTo) {
+                    parsedParams.usageDateTo = new Date(decodeURIComponent(parsedParams.usageDateTo));
+                }
+
                 self.loaderStates.redeemedCampaigns = true;
                 self.CampaignService.getRedeemedCampaignRewards(parsedParams)
                     .then(

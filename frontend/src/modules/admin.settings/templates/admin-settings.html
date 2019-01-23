@@ -258,7 +258,7 @@
                     </div>
                     <div class="row" ng-if="settings.levelDowngradeMode==='after_x_days'">
                         <div class="small-3 medium-2 columns">
-                            <label>{{ "settings.level_downgrade.days" | translate }}</label>
+                            <label>{{ "settings.level_downgrade.days" | translate }}<span class="required">*</span></label>
                         </div>
                         <div class="small-9 medium-10 columns" form-validation="validate.levelDowngradeDays.errors">
                             <input type="number" ng-model="settings.levelDowngradeDays" />
