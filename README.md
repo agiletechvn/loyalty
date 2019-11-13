@@ -53,6 +53,11 @@ Execute bellow command to run application:
 docker-compose up
 ```
 
+After that execute bellow command to initiate and setup database:
+```
+docker-compose exec --user=www-data php phing setup
+```
+
 Before you start using Open Loyalty you need to define hosts in your local environment. Add host openloyalty.localhost as 127.0.0.1 in your system configuration file (/etc/hosts).
 If you find any problems using docker (for example on Windows environments) please try our Vagrant recipe.
 
