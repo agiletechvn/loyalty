@@ -1,4 +1,4 @@
-FROM composer/composer:1.1-alpine AS composer
+FROM composer:1 AS composer
 FROM divante/open-loyalty-base-php-fpm AS base
 
 ENV SYMFONY_ENV="prod"
@@ -27,7 +27,7 @@ RUN chown www-data:www-data /usr/local/bin/phing
 COPY ./docker/prod/php/conf/php-fpm-pool.conf /usr/local/etc/php-fpm.d/www.conf
 
 COPY ./backend /var/www/openloyalty
-COPY --from=composer /usr/local/bin/composer /usr/local/bin/composer
+COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 RUN rm -rf /var/www/openloyalty/var/cache && rm -rf /var/www/openloyalty/var/logs
 RUN mkdir /var/www/openloyalty/var/locks && mkdir /var/www/openloyalty/var/cache && mkdir /var/www/openloyalty/var/logs && chmod 755 /var/www/openloyalty/var && chmod 755 /var/www/openloyalty/var/cache && chmod 755 /var/www/openloyalty/var/logs && chmod 755 /var/www/openloyalty/var/locks

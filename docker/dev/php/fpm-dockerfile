@@ -1,5 +1,5 @@
-FROM composer/composer:1.1-alpine AS composer
-FROM divante/open-loyalty-base-php-fpm AS base
+FROM composer:1 AS composer
+FROM openloyalty/base-php-fpm AS base
 
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
@@ -9,7 +9,7 @@ RUN pecl install apcu
 RUN docker-php-ext-enable apcu
 
 COPY ./docker/dev/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-COPY --from=composer /usr/local/bin/composer /usr/local/bin/composer
+COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 ADD https://www.phing.info/get/phing-latest.phar /usr/local/bin/phing
 RUN chmod a+x /usr/local/bin/phing

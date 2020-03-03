@@ -1,4 +1,4 @@
-FROM divante/open-loyalty-base-nginx as www
+FROM openloyalty/base-nginx as www
 
 RUN usermod -u 1000 www-data
 
