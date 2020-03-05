@@ -2,40 +2,52 @@
 
 # Open Loyalty
 
-Open Loyalty is technology for loyalty solutions.
-It's a loyalty platform in open source, with ready-to-use gamification and loyalty features, easy to set up and customize, ready to work on-line and off-line.
+Open Loyalty is the technology for loyalty solutions.
+It's an open-source loyalty platform, with ready-to-use gamification and loyalty features, easy to set up and customize, ready to work on-line and off-line.
 
-See Open Loyalty product tour - https://youtu.be/cDZZemHxgAk.
+Book a live demo here www.openloyalty.io
 
 ## Editions
 
-Open Loyalty is available in two editions - Open Source and Enterprise.
-Here you can find Open Source Edition. It is limited for projects with up to 200 members, does not provide guaranteed performance and scalability and therefore, it is recommended for testing purposes only. We strongly advise to use Enterprise Edition in commercial projects.
+Open Loyalty is available in three editions - **Open Source**, **Enterprise** and **Enterprise Cloud**.
+Here you can find Open Source Edition. It is limited for projects with up to 200 members, does not provide guaranteed performance and scalability and therefore, it is recommended for testing purposes only. 
+
+**We strongly advise using Enterprise or Enterprise Cloud Editions in commercial projects.**
 
 Enterprise Edition is not available publicly on GitHub.
 To get the quotation, please visit www.openloyalty.io and send the request.
 
-|                                | Open Source Edition         | Enterprise Edition                           |
-| ------------------------------ | --------------------------- | -------------------------------------------- |
-| Full access to the source code |  Yes                        | Yes                                          |
-| Self-hosted                    |  Yes                        | Yes                                          |
-| Customers limit                |  200                        | Unlimited                                    |
-| Cockpits                       |  Admin Cockpit, POS Cockpit | Admin Cockpit, POS Cockpit, Client Cockpit   |
-| Whitelabel                     |  No                         | Yes                                          |
-| High performance               |  No                         | Yes                                          |
-| Scalability                    |  No                         | Yes                                          |
-| Producer's support             |  No                         | Product support, Technical support, Training |
-| Updates                        |  No                         | Regular                                      |
+|                                | Open Source Edition                  | Enterprise Cloud Edition                      | Enterprise Edition                            |
+| ------------------------------ | ------------------------------------ | --------------------------------------------- | --------------------------------------------- |
+| Full access to the source code |  Yes (v3.2)                          | No (latest version)                           | Yes (latest version)                          |
+| Self-hosted                    |  Yes                                 | No                                            | Yes                                           |
+| Customers limit                |  200                                 | < 200 000                                     | Unlimited                                     |
+| Components                     |  REST API, Admin Panel, Client Panel | REST API, Admin Panel, BI panel, Client Panel | REST API, Admin Panel, BI panel, Client Panel |
+| Whitelabel (your own branding) |  No                                  | No                                            | Yes                                           |
+| High performance               |  No                                  | Yes                                           | Yes                                           |
+| Scalability                    |  No                                  | Yes                                           | Yes                                           |
+| Support                        |  Community                           | Product support                               | Product support, Technical support, Training  |
+| Updates                        |  No                                  | Regular                                       | Regular                                       |
 
 ## Business applications
 
-There is variety of applications for Open Loyalty. Based on it you can build loyalty solutions like: loyalty modules for eCommerce, full loyalty programs for off-line and on-line, motivational programs for sales department or customer care programs with mobile application.
+There is a variety of ways Open Loyalty can be used for Open Loyalty. 
+Based on it you can build loyalty solutions like: 
+* loyalty modules for eCommerce
+* full loyalty programs for off-line and on-line
+* mobile loyalty application
+* motivational programs for the sales department
+* loyalty module for your own product
+
+## Performance and scalability
+High performance and scalability are available in the Enterprise Edition only.
+In this [case study](https://www.openloyalty.io/building-a-massive-scale-loyalty-program-with-aws/) you can read more about how Open Loyalty Enterprise Edition reached over **1500 concurrent API calls 
+with a response time under 1 second** and **Easy scalability with Kubernetes and AWS infrastructure**.
 
 ## Screenshots
 
 ![Admin Cockpit](https://user-images.githubusercontent.com/3582562/54033263-1db79500-41b4-11e9-8f2d-9b91acce50cf.png)
 ![Client Cockpit](https://user-images.githubusercontent.com/3582562/54033264-1db79500-41b4-11e9-984c-a954cd136d5c.png)
-![Client Cockpit](https://user-images.githubusercontent.com/3582562/54033262-1db79500-41b4-11e9-88a6-e5449cb6782b.png)
 
 ## Quick install
 
@@ -47,13 +59,13 @@ Go to the docker directory:
 cd docker
 ```
 
-Execute bellow command to run application: 
+Execute the bellow command to run application: 
 
 ```
 docker-compose up
 ```
 
-After that execute bellow command to initiate and setup database:
+After that execute bellow command to initiate and set up database:
 ```
 docker-compose exec --user=www-data php phing setup
 ```
@@ -65,7 +77,7 @@ If you find any problems using docker (for example on Windows environments) plea
 
 You should have [Vagrant](https://www.vagrantup.com/downloads.html) and [Virtualbox](https://www.virtualbox.org/wiki/Downloads) installed prior to executing this recipe.
 
-Then, please execute following commands:
+Then, please execute the following commands:
 
 ```
 vagrant up
@@ -84,18 +96,18 @@ Default login is **admin** and password **open**. You can also go to customer pa
 
 ## Url access
 
-After starting Open Loyalty it's exposes services under following URLs:
+After starting Open Loyalty it exposes services under following URLs:
 
  * http://openloyalty.localhost:8182 - the administration panel,
  * http://openloyalty.localhost:8183 - the customer panel,
  * http://openloyalty.localhost:8184 - the merchant panel,
  * http://openloyalty.localhost - RESTful API port
  * http://openloyalty.localhost/doc - swagger-like API doc
-
+ 
 
 ## For developers
 
-If you are developer and want to attach source code then you have to build base docker images:
+If you are a developer and want to attach source code then you have to build base docker images:
 
 ```
 ./docker/base/build_dev.sh
@@ -113,7 +125,7 @@ Remember about setup database using bellow command:
 docker-compose -f docker/docker-compose.dev.yml exec --user=www-data php phing setup
 ```
 
-After starting Open Loyalty in developer mode it's exposes services under slightly different URLs:
+After starting Open Loyalty in developer mode it exposes services under slightly different URLs:
 
  * http://openloyalty.localhost:8081/admin - the administration panel,
  * http://openloyalty.localhost:8081/client - the customer panel,
