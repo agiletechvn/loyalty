@@ -17,17 +17,15 @@ Here you can find Open Source Edition. It is limited for projects with up to 200
 Enterprise Edition is not available publicly on GitHub.
 To get the quotation, please visit www.openloyalty.io and send the request.
 
-|                                | Open Source Edition                  | Enterprise Cloud Edition                      | Enterprise Edition                            |
+|                                | Open Source Edition                  | Cloud Edition                                 | Enterprise Edition                            |
 | ------------------------------ | ------------------------------------ | --------------------------------------------- | --------------------------------------------- |
-| Full access to the source code |  Yes (v3.2)                          | No (latest version)                           | Yes (latest version)                          |
-| Self-hosted                    |  Yes                                 | No                                            | Yes                                           |
-| Customers limit                |  200                                 | < 200 000                                     | Unlimited                                     |
-| Components                     |  REST API, Admin Panel, Client Panel | REST API, Admin Panel, BI panel, Client Panel | REST API, Admin Panel, BI panel, Client Panel |
-| Whitelabel (your own branding) |  No                                  | No                                            | Yes                                           |
-| High performance               |  No                                  | Yes                                           | Yes                                           |
-| Scalability                    |  No                                  | Yes                                           | Yes                                           |
-| Support                        |  Community                           | Product support                               | Product support, Technical support, Training  |
-| Updates                        |  No                                  | Regular                                       | Regular                                       |
+| Source code access             |  Yes                                 | No                                            | Yes                                           |
+| Robust & efficient API         |  No                                  | Yes                                           | Yes                                           |
+| Members limit                  |  1000 members                        | Tiered                                        | Unlimited                                     |
+| Hosting                        |  Self-hosted                         | Cloud                                         | Self-hosted                                   |
+| High performance & scalability |  No                                  | Yes                                           | Yes                                           |
+| Maintenance & support          |  No                                  | Yes                                           | Yes                                           |
+| Whitelabel                     |  No                                  | Yes                                           | Yes                                           |
 
 ## Business applications
 
