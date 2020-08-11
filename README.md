@@ -10,36 +10,38 @@ Book a live demo here www.openloyalty.io
 ## Editions
 
 Open Loyalty is available in three editions - **Open Source**, **Enterprise** and **Enterprise Cloud**.
-Here you can find Open Source Edition. It is limited for projects with up to 200 members, does not provide guaranteed performance and scalability and therefore, it is recommended for testing purposes only. 
+Here you can find Open Source Edition. It is limited for projects with up to 200 members, does not provide guaranteed performance and scalability and therefore, it is recommended for testing purposes only.
 
 **We strongly advise using Enterprise or Enterprise Cloud Editions in commercial projects.**
 
 Enterprise Edition is not available publicly on GitHub.
 To get the quotation, please visit www.openloyalty.io and send the request.
 
-|                                | Open Source Edition                  | Cloud Edition                                 | Enterprise Edition                            |
-| ------------------------------ | ------------------------------------ | --------------------------------------------- | --------------------------------------------- |
-| Source code access             |  Yes                                 | No                                            | Yes                                           |
-| Robust & efficient API         |  No                                  | Yes                                           | Yes                                           |
-| Members limit                  |  1000 members                        | Tiered                                        | Unlimited                                     |
-| Hosting                        |  Self-hosted                         | Cloud                                         | Self-hosted                                   |
-| High performance & scalability |  No                                  | Yes                                           | Yes                                           |
-| Maintenance & support          |  No                                  | Yes                                           | Yes                                           |
-| Whitelabel                     |  No                                  | Yes                                           | Yes                                           |
+|                                | Open Source Edition | Cloud Edition | Enterprise Edition |
+| ------------------------------ | ------------------- | ------------- | ------------------ |
+| Source code access             | Yes                 | No            | Yes                |
+| Robust & efficient API         | No                  | Yes           | Yes                |
+| Members limit                  | 1000 members        | Tiered        | Unlimited          |
+| Hosting                        | Self-hosted         | Cloud         | Self-hosted        |
+| High performance & scalability | No                  | Yes           | Yes                |
+| Maintenance & support          | No                  | Yes           | Yes                |
+| Whitelabel                     | No                  | Yes           | Yes                |
 
 ## Business applications
 
-There is a variety of ways Open Loyalty can be used for Open Loyalty. 
-Based on it you can build loyalty solutions like: 
-* loyalty modules for eCommerce
-* full loyalty programs for off-line and on-line
-* mobile loyalty application
-* motivational programs for the sales department
-* loyalty module for your own product
+There is a variety of ways Open Loyalty can be used for Open Loyalty.
+Based on it you can build loyalty solutions like:
+
+- loyalty modules for eCommerce
+- full loyalty programs for off-line and on-line
+- mobile loyalty application
+- motivational programs for the sales department
+- loyalty module for your own product
 
 ## Performance and scalability
+
 High performance and scalability are available in the Enterprise Edition only.
-In this [case study](https://www.openloyalty.io/building-a-massive-scale-loyalty-program-with-aws/) you can read more about how Open Loyalty Enterprise Edition reached over **1500 concurrent API calls 
+In this [case study](https://www.openloyalty.io/building-a-massive-scale-loyalty-program-with-aws/) you can read more about how Open Loyalty Enterprise Edition reached over **1500 concurrent API calls
 with a response time under 1 second** and **Easy scalability with Kubernetes and AWS infrastructure**.
 
 ## Screenshots
@@ -57,13 +59,14 @@ Go to the docker directory:
 cd docker
 ```
 
-Execute the bellow command to run application: 
+Execute the bellow command to run application:
 
 ```
 docker-compose up
 ```
 
 After that execute bellow command to initiate and set up database:
+
 ```
 docker-compose exec --user=www-data php phing setup
 ```
@@ -94,14 +97,19 @@ Default login is **admin** and password **open**. You can also go to customer pa
 
 ## Url access
 
+**Add these lines to /etc/hosts**
+127.0.0.1 loyalty.hottab.asia
+127.0.0.1 admin.loyalty.hottab.asia
+127.0.0.1 customer.loyalty.hottab.asia
+127.0.0.1 merchant.loyalty.hottab.asia
+
 After starting Open Loyalty it exposes services under following URLs:
 
- * http://openloyalty.localhost:8182 - the administration panel,
- * http://openloyalty.localhost:8183 - the customer panel,
- * http://openloyalty.localhost:8184 - the merchant panel,
- * http://openloyalty.localhost - RESTful API port
- * http://openloyalty.localhost/doc - swagger-like API doc
- 
+- http://openloyalty.localhost:8182 - admin.loyalty.hottab.asia - the administration panel,
+- http://openloyalty.localhost:8183 - customer.loyalty.hottab.asia - the customer panel,
+- http://openloyalty.localhost:8184 - merchant.loyalty.hottab.asia - the merchant panel,
+- http://openloyalty.localhost - loyalty.hottab.asia - RESTful API port
+- http://openloyalty.localhost/doc - loyalty.hottab.asia/doc - swagger-like API doc
 
 ## For developers
 
@@ -125,11 +133,11 @@ docker-compose -f docker/docker-compose.dev.yml exec --user=www-data php phing s
 
 After starting Open Loyalty in developer mode it exposes services under slightly different URLs:
 
- * http://openloyalty.localhost:8081/admin - the administration panel,
- * http://openloyalty.localhost:8081/client - the customer panel,
- * http://openloyalty.localhost:8081/pos - the merchant panel,
- * http://openloyalty.localhost - RESTful API port
- * http://openloyalty.localhost/app_dev.php/doc - swagger-like API doc
+- http://openloyalty.localhost:8081/admin - the administration panel,
+- http://openloyalty.localhost:8081/client - the customer panel,
+- http://openloyalty.localhost:8081/pos - the merchant panel,
+- http://openloyalty.localhost - RESTful API port
+- http://openloyalty.localhost/app_dev.php/doc - swagger-like API doc
 
 ## Generate JWT keys
 
@@ -137,7 +145,8 @@ Running `phing setup` will generate the JWT public/private keys for you, but in 
 
 ## Documentation
 
-Technical documentation is located [here](backend/doc/index.rst). 
+Technical documentation is located [here](backend/doc/index.rst).
 
 ## CONTRIBUTING
+
 If you wish to contribute to Open Loyalty, please read the CONTRIBUTING.md file.
