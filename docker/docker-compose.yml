@@ -1,5 +1,6 @@
 version: '2'
-
+volumes:
+  vendor:
 services:
   php:
     container_name: openloyalty_backend
@@ -12,6 +13,11 @@ services:
       - db
     env_file:
       - .env
+    volumes:
+      - ./dev/php/php.ini:/usr/local/etc/php/php.ini
+      - '../backend:/var/www/openloyalty:delegated'
+      - '../open-loyalty-framework:/var/www/open-loyalty-framework:delegated'
+      - vendor:/var/www/openloyalty/vendor # replace vendor folder at local by persisten mount volume
   nginx:
     container_name: openloyalty_frontend
     image: divante/open-loyalty-web
