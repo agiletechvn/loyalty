@@ -436,7 +436,7 @@ class CustomerController extends FOSRestController
     }
 
     /**
-     * Method will return customer status<br/>
+     * Method will return customer status
      * [Example response]<br/>
      * <pre>.
      * {
