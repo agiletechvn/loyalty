@@ -85,7 +85,7 @@ class AclController extends FOSRestController
     {
         $roles = $this->aclManager->getAdminRoles();
 
-        return $this->view([            
+        return $this->view([                  
             'roles' => $roles,
             'total' => count($roles),
         ], Response::HTTP_OK);

@@ -98,11 +98,14 @@ Default login is **admin** and password **open**. You can also go to customer pa
 ## Url access
 
 **Add these lines to /etc/hosts**
+
+```
 127.0.0.1 loyalty.hottab.asia
 127.0.0.1 admin.loyalty.hottab.asia
 127.0.0.1 customer.loyalty.hottab.asia
 127.0.0.1 merchant.loyalty.hottab.asia
 127.0.0.1 mail.loyalty.hottab.asia
+```
 
 After starting Open Loyalty it exposes services under following URLs:
 
